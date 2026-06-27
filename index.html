@@ -3,121 +3,117 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Theatre of War — WW2 Grand Strategy Sandbox</title>
+<title>Theatre of War — WW2 Grand Strategy</title>
 <style>
   :root{
-    --paper:#e9dcc0;
-    --paper-dark:#d8c6a0;
-    --ink:#3a2f1d;
-    --ink-soft:#5c4d33;
-    --sea:#9fb6ad;
-    --panel:#efe6d0;
-    --line:#8a7a55;
-    --accent:#7a2f23;
-    --gold:#b08534;
+    --paper:#e9dcc0; --paper-dark:#d8c6a0; --ink:#3a2f1d; --ink-soft:#5c4d33;
+    --panel:#efe6d0; --accent:#7a2f23; --gold:#b08534; --line:#8a7a55;
   }
   *{box-sizing:border-box;}
   html,body{height:100%;margin:0;}
   body{
-    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
-    background:#2a241b;
-    color:var(--ink);
-    overflow:hidden;
-    user-select:none;
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    background:#2a241b;color:var(--ink);overflow:hidden;user-select:none;
   }
   #app{display:flex;height:100vh;width:100vw;}
   #stage{position:relative;flex:1 1 auto;min-width:0;background:#1f1a13;}
-  canvas{display:block;width:100%;height:100%;cursor:crosshair;}
+  canvas#map{display:block;width:100%;height:100%;cursor:crosshair;}
 
-  /* ---- Top control bar over the map ---- */
-  #topbar{
-    position:absolute;left:12px;top:12px;display:flex;gap:8px;align-items:center;
-    background:rgba(233,220,192,0.92);
-    border:1px solid #7c6a47;border-radius:6px;padding:6px 8px;
-    box-shadow:0 4px 14px rgba(0,0,0,0.4);
-    flex-wrap:wrap;max-width:calc(100% - 24px);
-  }
-  #topbar .title{
-    font-weight:bold;font-size:15px;letter-spacing:1px;color:var(--accent);
-    padding-right:6px;border-right:1px solid #b6a274;margin-right:2px;
-    text-transform:uppercase;
-  }
-  button{
-    font-family:inherit;font-size:13px;cursor:pointer;
-    background:#f3ead3;color:var(--ink);
-    border:1px solid #8a7a55;border-radius:4px;
-    padding:5px 9px;transition:background .12s,transform .05s;
-  }
-  button:hover{background:#fff7e3;}
-  button:active{transform:translateY(1px);}
-  button.active{background:var(--accent);color:#f3ead3;border-color:#5c2018;}
-  button.play{font-weight:bold;min-width:64px;}
-  .spd{min-width:34px;text-align:center;}
-  .grp{display:flex;gap:3px;align-items:center;}
-  .grp .lbl{font-size:11px;color:var(--ink-soft);margin-right:2px;letter-spacing:.5px;}
+  /* top bar */
+  #topbar{position:absolute;left:10px;top:10px;right:10px;display:flex;gap:8px;align-items:center;
+    background:rgba(233,220,192,0.94);border:1px solid #7c6a47;border-radius:6px;padding:6px 9px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.4);flex-wrap:wrap;}
+  #topbar .title{font-weight:bold;font-size:15px;letter-spacing:1px;color:var(--accent);
+    padding-right:8px;border-right:1px solid #b6a274;text-transform:uppercase;}
+  button{font-family:inherit;font-size:13px;cursor:pointer;background:#f3ead3;color:var(--ink);
+    border:1px solid #8a7a55;border-radius:4px;padding:5px 9px;transition:background .12s,transform .05s;}
+  button:hover{background:#fff7e3;} button:active{transform:translateY(1px);}
+  button:disabled{opacity:.45;cursor:not-allowed;}
+  button.primary{background:var(--accent);color:#f3ead3;border-color:#5c2018;font-weight:bold;}
+  button.primary:hover{background:#90382a;}
+  .activeflag{width:34px;height:22px;border:1px solid #4a3f28;border-radius:2px;vertical-align:middle;}
+  #activeName{font-weight:bold;font-size:14px;}
+  .wx{font-size:13px;background:#f3ead3;border:1px solid #b6a274;border-radius:4px;padding:4px 8px;}
+  #resbar{position:absolute;left:10px;top:54px;display:flex;gap:6px;flex-wrap:wrap;
+    background:rgba(233,220,192,0.92);border:1px solid #7c6a47;border-radius:6px;padding:5px 8px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.35);font-size:12.5px;}
+  .res{display:flex;align-items:center;gap:3px;padding:1px 5px;border-right:1px solid #c9b88e;}
+  .res:last-child{border-right:none;}
+  .res b{font-variant-numeric:tabular-nums;}
+  .res .k{color:var(--ink-soft);font-size:11px;letter-spacing:.5px;}
 
-  /* ---- Side panel ---- */
-  #panel{
-    width:340px;flex:0 0 340px;height:100%;
-    background:var(--panel);
-    border-left:3px solid #6e5d3c;
-    display:flex;flex-direction:column;
-    box-shadow:-4px 0 16px rgba(0,0,0,0.4);
-  }
-  .phead{
-    padding:8px 12px;background:#6e5d3c;color:#f0e6cd;
-    font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:bold;
-    display:flex;justify-content:space-between;align-items:center;
-  }
-  .phead .sub{font-size:11px;letter-spacing:1px;opacity:.85;font-weight:normal;}
+  /* side panel */
+  #panel{width:360px;flex:0 0 360px;height:100%;background:var(--panel);
+    border-left:3px solid #6e5d3c;display:flex;flex-direction:column;box-shadow:-4px 0 16px rgba(0,0,0,0.4);}
+  #tabs{display:flex;background:#6e5d3c;}
+  #tabs button{flex:1 1 0;border:none;border-radius:0;background:#6e5d3c;color:#d9c9a3;
+    font-size:11.5px;letter-spacing:.5px;padding:8px 2px;text-transform:uppercase;border-right:1px solid #5a4b30;}
+  #tabs button.sel{background:var(--panel);color:var(--accent);font-weight:bold;}
+  .tabpane{display:none;flex:1 1 auto;overflow-y:auto;padding:10px 12px;}
+  .tabpane.sel{display:block;}
+  h3{margin:0 0 6px;font-size:14px;color:var(--accent);border-bottom:1px solid #c9b88e;padding-bottom:3px;}
+  h4{margin:10px 0 4px;font-size:12px;color:var(--ink-soft);letter-spacing:.5px;text-transform:uppercase;}
+  .stat{display:flex;justify-content:space-between;padding:1.5px 0;font-size:12.5px;}
+  .stat span:last-child{font-weight:bold;font-variant-numeric:tabular-nums;}
+  .meter{height:9px;background:#d8c9a4;border-radius:4px;overflow:hidden;margin:2px 0 5px;}
+  .meter>i{display:block;height:100%;}
 
-  #log{
-    flex:0 0 34%;overflow-y:auto;padding:6px 10px;font-size:12.5px;line-height:1.35;
-    background:#f3ead6;border-bottom:2px solid #b6a274;
-  }
-  #log .e{padding:2px 0;border-bottom:1px dotted #d8c9a4;}
-  #log .t{color:#9a8c6a;font-size:10.5px;margin-right:4px;}
-  #log .war{color:#8c2a1d;}
-  #log .cap{color:#9a6a16;}
-  #log .peace{color:#2f6b3a;}
-  #log .elim{color:#5a2c7a;font-weight:bold;}
-  #log .info{color:#5c4d33;}
-
-  #nationsWrap{flex:1 1 auto;overflow-y:auto;}
-  .nrow{
-    display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;
-    border-bottom:1px solid #ddcfaa;
-  }
-  .nrow:hover{background:#f7eed8;}
-  .nrow.sel{background:#efe0b6;box-shadow:inset 3px 0 0 var(--accent);}
+  /* nation list */
+  .nrow{display:flex;align-items:center;gap:8px;padding:6px 6px;cursor:pointer;border-bottom:1px solid #ddcfaa;border-radius:3px;}
+  .nrow:hover{background:#f7eed8;} .nrow.sel{background:#efe0b6;box-shadow:inset 3px 0 0 var(--accent);}
   .nrow.dead{opacity:.4;text-decoration:line-through;}
-  .sw{width:16px;height:16px;border-radius:3px;border:1px solid #4a3f28;flex:0 0 16px;}
-  .ninfo{flex:1 1 auto;min-width:0;}
-  .nname{font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .nstats{display:flex;gap:4px;margin-top:3px;}
-  .bar{height:6px;flex:1 1 0;background:#d8c9a4;border-radius:3px;overflow:hidden;position:relative;}
-  .bar>i{display:block;height:100%;}
-  .bm{background:#8c2a1d;} .bi{background:#9a6a16;} .ba{background:#2f6b3a;} .bg{background:#3a5a8c;}
-  .ncount{font-size:12px;color:var(--ink-soft);flex:0 0 auto;text-align:right;}
-  .ncount b{font-size:15px;color:var(--ink);}
+  .nflag{width:26px;height:17px;border:1px solid #4a3f28;border-radius:2px;flex:0 0 26px;}
+  .nrow .nm{flex:1 1 auto;min-width:0;font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .nrow .pc{font-size:12px;color:var(--ink-soft);}
 
-  #detail{padding:8px 12px;background:#f0e6cd;border-top:2px solid #b6a274;font-size:12.5px;max-height:30%;overflow-y:auto;}
-  #detail h3{margin:0 0 4px;font-size:14px;color:var(--accent);}
-  #detail .stat{display:flex;justify-content:space-between;padding:1px 0;}
-  #detail .stat span:last-child{font-weight:bold;}
-  #detail .units{margin-top:6px;font-size:11.5px;color:var(--ink-soft);}
-  #detail .wars{margin-top:5px;font-size:11.5px;color:#8c2a1d;}
-  .legend{font-size:11px;color:var(--ink-soft);padding:6px 12px;border-top:1px solid #ccbb92;line-height:1.5;}
+  /* log */
+  #log .e{padding:2.5px 0;border-bottom:1px dotted #d8c9a4;font-size:12.5px;line-height:1.35;}
+  #log .t{color:#9a8c6a;font-size:10.5px;margin-right:4px;}
+  .war{color:#8c2a1d;} .cap{color:#9a6a16;} .peace{color:#2f6b3a;} .elim{color:#5a2c7a;font-weight:bold;}
+  .info{color:#5c4d33;} .battle{color:#7a3010;} .card{color:#2a5a7a;} .good{color:#2f6b3a;} .bad{color:#8c2a1d;}
 
-  /* scrollbars */
-  ::-webkit-scrollbar{width:9px;}
-  ::-webkit-scrollbar-thumb{background:#b09a6a;border-radius:5px;}
-  ::-webkit-scrollbar-track{background:#e4d6b4;}
+  /* units list / orders */
+  .urow{display:flex;align-items:center;gap:7px;padding:4px 5px;border-bottom:1px solid #e0d3b0;font-size:12.5px;cursor:pointer;border-radius:3px;}
+  .urow:hover{background:#f7eed8;} .urow.sel{background:#dcebd8;box-shadow:inset 3px 0 0 #2f6b3a;}
+  .ubar{height:6px;width:60px;background:#cdb;border-radius:3px;overflow:hidden;display:inline-block;}
+  .ubar>i{display:block;height:100%;background:#7a3010;}
+  .tag{font-size:10px;background:#d8c9a4;border-radius:3px;padding:1px 4px;color:#5c4d33;}
 
-  .hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
-    background:rgba(58,47,29,0.85);color:#f0e6cd;padding:6px 14px;border-radius:20px;
-    font-size:13px;letter-spacing:.5px;pointer-events:none;opacity:0;transition:opacity .4s;}
+  /* production */
+  .pbtn{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;margin:3px 0;padding:6px 8px;}
+  .pbtn small{color:var(--ink-soft);font-size:11px;}
+  .qitem{display:flex;justify-content:space-between;align-items:center;padding:4px 6px;border-bottom:1px solid #e0d3b0;font-size:12px;}
+
+  /* cards */
+  #hand{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+  .gcard{border:1px solid #9a8763;border-left-width:5px;border-radius:5px;padding:7px 9px;background:#f6efdb;cursor:pointer;transition:transform .06s,box-shadow .1s;}
+  .gcard:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.2);background:#fbf5e3;}
+  .gcard .cn{font-weight:bold;font-size:13px;}
+  .gcard .cc{font-size:11px;color:var(--ink-soft);margin-top:2px;line-height:1.3;}
+  .gcard .cm{font-size:10.5px;margin-top:3px;letter-spacing:.5px;text-transform:uppercase;}
+  .cat-mil{border-left-color:#8c2a1d;} .cat-ind{border-left-color:#9a6a16;}
+  .cat-pol{border-left-color:#5a2c7a;} .cat-dip{border-left-color:#2a5a7a;} .cat-evt{border-left-color:#2f6b3a;}
+
+  /* modal */
+  #modal{position:absolute;inset:0;background:rgba(25,20,12,0.55);display:none;align-items:center;justify-content:center;z-index:50;}
+  #modal.show{display:flex;}
+  .mbox{background:var(--paper);border:2px solid #6e5d3c;border-radius:8px;max-width:560px;width:90%;max-height:84%;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+  .mhead{background:#6e5d3c;color:#f0e6cd;padding:9px 14px;font-size:15px;font-weight:bold;letter-spacing:.5px;}
+  .mbody{padding:12px 16px;font-size:13.5px;line-height:1.45;}
+  .mfoot{padding:10px 16px;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;border-top:1px solid #c9b88e;}
+  .posture{display:block;width:100%;text-align:left;margin:4px 0;padding:7px 10px;}
+  .posture b{font-size:13px;} .posture small{display:block;color:var(--ink-soft);font-size:11px;margin-top:2px;}
+  .factorrow{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dotted #cdbf9a;}
+  .vs{display:flex;gap:14px;margin:8px 0;}
+  .vs>div{flex:1 1 0;background:#f3ead3;border:1px solid #c9b88e;border-radius:5px;padding:8px;}
+  .cas{font-size:20px;font-weight:bold;color:#8c2a1d;font-variant-numeric:tabular-nums;}
+
+  .hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:rgba(58,47,29,0.9);color:#f0e6cd;
+    padding:6px 16px;border-radius:20px;font-size:13px;pointer-events:none;opacity:0;transition:opacity .35s;max-width:80%;text-align:center;}
   .hint.show{opacity:1;}
+  ::-webkit-scrollbar{width:9px;} ::-webkit-scrollbar-thumb{background:#b09a6a;border-radius:5px;} ::-webkit-scrollbar-track{background:#e4d6b4;}
+  .legend{font-size:11px;color:var(--ink-soft);padding:6px 12px;border-top:1px solid #ccbb92;line-height:1.5;}
+  .muted{color:var(--ink-soft);font-style:italic;}
 </style>
 </head>
 <body>
@@ -126,25 +122,37 @@
     <canvas id="map"></canvas>
     <div id="topbar">
       <span class="title">Theatre&nbsp;of&nbsp;War</span>
-      <button id="btnPlay" class="play">▶ Play</button>
-      <div class="grp">
-        <span class="lbl">SPEED</span>
-        <button class="spd" data-spd="0.5">0.5×</button>
-        <button class="spd" data-spd="1">1×</button>
-        <button class="spd" data-spd="2">2×</button>
-        <button class="spd" data-spd="4">4×</button>
-      </div>
+      <button id="btnEnd" class="primary">⏭ End Turn</button>
+      <span class="wx" id="turnLbl">Turn 1</span>
+      <span class="wx" id="wxLbl">☀ Clear</span>
+      <span style="flex:1 1 auto"></span>
+      <span class="muted" style="font-size:11px">Commanding:</span>
+      <canvas class="activeflag" id="activeFlag" width="34" height="22"></canvas>
+      <span id="activeName">—</span>
       <button id="btnNew">⟳ New World</button>
-      <span class="lbl" id="tickLbl">Turn 0</span>
     </div>
+    <div id="resbar"></div>
     <div class="hint" id="hint"></div>
+    <div id="modal"><div class="mbox">
+      <div class="mhead" id="modalHead"></div>
+      <div class="mbody" id="modalBody"></div>
+      <div class="mfoot" id="modalFoot"></div>
+    </div></div>
   </div>
+
   <div id="panel">
-    <div class="phead">War Log <span class="sub" id="worldSeed"></span></div>
-    <div id="log"></div>
-    <div class="phead">Nations <span class="sub" id="natCount"></span></div>
-    <div id="nationsWrap"></div>
-    <div id="detail"><em style="color:#8a7a55">Click a nation to inspect its high command.</em></div>
+    <div id="tabs">
+      <button data-tab="nation" class="sel">Nation</button>
+      <button data-tab="province">Province</button>
+      <button data-tab="build">Build</button>
+      <button data-tab="cards">Cards</button>
+      <button data-tab="log">Log</button>
+    </div>
+    <div class="tabpane sel" id="tab-nation"></div>
+    <div class="tabpane" id="tab-province"></div>
+    <div class="tabpane" id="tab-build"></div>
+    <div class="tabpane" id="tab-cards"></div>
+    <div class="tabpane" id="tab-log"><div id="log"></div></div>
     <div class="legend" id="legend"></div>
   </div>
 </div>
@@ -152,1219 +160,1370 @@
 "use strict";
 (function(){
 /* ============================================================ *
- *  Theatre of War — observer-mode WW2 grand-strategy sandbox    *
- *  Single file, vanilla JS, canvas render. No dependencies.     *
+ *  THEATRE OF WAR — player-driven, turn-based, god-mode         *
+ *  WW2 grand strategy. Single self-contained file. No deps.     *
  * ============================================================ */
 
-/* ---------------- Config / tuning constants ---------------- */
-const GW = 168, GH = 104;          // province cell grid
-const CELL = 7;                    // offscreen px per cell
-const MAPW = GW*CELL, MAPH = GH*CELL;
+/* ---------------- Config ---------------- */
+const GW=168, GH=104, CELL=7, MAPW=GW*CELL, MAPH=GH*CELL;
+const SEEDS_MIN=460, SEEDS_MAX=600;
+const NAT_MIN=8, NAT_MAX=15;
 
-const SEEDS_MIN = 460, SEEDS_MAX = 620;   // province seed count
-const NAT_MIN = 8,  NAT_MAX = 15;         // nation count
-
-const BASE_TICK_MS = 760;          // tick interval at 1x (slow & watchable)
-const DIPLO_EVERY = 4;             // evaluate war declarations every N ticks
-const CAPTURE_COOLDOWN = 9;        // ticks a province is locked after changing hands
-const STALEMATE_PEACE = 46;        // ticks of no change before white-peace becomes possible
-const AIR_RANGE = 2;               // province-graph distance air units project support
-const MAX_UNITS_PER_PROV = 3.2;    // soft cap on a nation's units vs its province count
-const LOG_CAP = 140;
-
-/* ---------------- Seedable RNG (mulberry32) ---------------- */
-let _seed = 1;
-let rng = mulberry32(_seed);
-function mulberry32(a){
-  return function(){
-    a |= 0; a = (a + 0x6D2B79F5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-const rnd   = ()=>rng();
-const rint  = (a,b)=>a + Math.floor(rng()*(b-a+1));
-const rrange= (a,b)=>a + rng()*(b-a);
-const pick  = arr=>arr[Math.floor(rng()*arr.length)];
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t;}
-  return arr;
-}
-const clamp = (v,a,b)=>v<a?a:(v>b?b:v);
+/* ---------------- RNG ---------------- */
+let _seed=1, rng=mulberry32(1);
+function mulberry32(a){return function(){a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
+const rnd=()=>rng();
+const rint=(a,b)=>a+Math.floor(rng()*(b-a+1));
+const rrange=(a,b)=>a+rng()*(b-a);
+const pick=a=>a[Math.floor(rng()*a.length)];
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+const clamp=(v,a,b)=>v<a?a:(v>b?b:v);
 const smoothstep=(a,b,x)=>{x=clamp((x-a)/(b-a),0,1);return x*x*(3-2*x);};
+const fmt=n=>Math.round(n).toLocaleString('en-US');
 
 /* ---------------- Names ---------------- */
-const GOV = ["Empire of","Republic of","Kingdom of","Federation of","Union of","Duchy of",
-             "States of","Dominion of","Commonwealth of","People's Rep. of"];
-const SYL_A=["Val","Kar","Bel","Tor","Mor","Ast","Dra","Vol","Gar","Lus","Rha","Nor","Ser","Hel",
-             "Zan","Cael","Bran","Esk","Fal","Grim","Hav","Ist","Jor","Kor","Lan","Mer","Oss","Per",
-             "Quel","Rud","Stav","Thal","Ulm","Ven","Wol","Yar"];
-const SYL_B=["mar","dov","ish","ren","gor"," via","kos","ten","sk","gard","mor","dan","lyn","reth",
-             "burg","stan","heim","grad","oria","ova","ica","esh","und","ach","old","wyn"];
-const SUF =["ia","land","mark","grad","ovia","esia","stan","reich","nia","or"];
+const GOV=["Empire of","Republic of","Kingdom of","Federation of","Union of","Duchy of","States of","Dominion of","Commonwealth of","People's Rep. of"];
+const SYA=["Val","Kar","Bel","Tor","Mor","Ast","Dra","Vol","Gar","Lus","Rha","Nor","Ser","Hel","Zan","Cael","Bran","Esk","Fal","Grim","Hav","Ist","Jor","Kor","Lan","Mer","Oss","Per","Quel","Rud","Stav","Thal","Ulm","Ven","Wol","Yar"];
+const SYB=["mar","dov","ish","ren","gor","kos","ten","sk","gard","mor","dan","lyn","reth","burg","stan","heim","grad","oria","ova","ica","esh","und","ach","old","wyn"];
+const SUF=["ia","land","mark","grad","ovia","esia","stan","reich","nia","or"];
 function genName(used){
-  for(let tries=0;tries<40;tries++){
-    let core = pick(SYL_A) + (rnd()<0.65?pick(SYL_B):"") ;
-    if(rnd()<0.5) core += pick(SUF);
-    core = core.charAt(0).toUpperCase()+core.slice(1);
-    let name = rnd()<0.55 ? pick(GOV)+" "+core : core;
-    if(!used.has(name)){used.add(name);return {full:name, short:core};}
+  for(let i=0;i<50;i++){
+    let c=pick(SYA)+(rnd()<0.65?pick(SYB):"");
+    if(rnd()<0.5)c+=pick(SUF);
+    c=c.charAt(0).toUpperCase()+c.slice(1);
+    let full=rnd()<0.55?pick(GOV)+" "+c:c;
+    if(!used.has(full)){used.add(full);return{full,short:c};}
   }
-  let f="Nation-"+rint(100,999); used.add(f); return {full:f, short:f};
+  let f="State-"+rint(100,999);used.add(f);return{full:f,short:f};
 }
 
-/* ---------------- Coarse value-noise helpers ---------------- */
-function makeCoarse(w,h){const a=new Float32Array(w*h);for(let i=0;i<a.length;i++)a[i]=rnd();return {w,h,a};}
-function sampleCoarse(c,u,v){ // u,v in [0,1]
-  const fx=u*(c.w-1), fy=v*(c.h-1);
-  const x0=Math.floor(fx), y0=Math.floor(fy);
-  const x1=Math.min(x0+1,c.w-1), y1=Math.min(y0+1,c.h-1);
-  const tx=fx-x0, ty=fy-y0;
-  const a=c.a[y0*c.w+x0], b=c.a[y0*c.w+x1], d=c.a[y1*c.w+x0], e=c.a[y1*c.w+x1];
-  const top=a+(b-a)*tx, bot=d+(e-d)*tx;
-  return top+(bot-top)*ty;
+/* ---------------- Value noise ---------------- */
+function makeCoarse(w,h){const a=new Float32Array(w*h);for(let i=0;i<a.length;i++)a[i]=rnd();return{w,h,a};}
+function sampleCoarse(c,u,v){
+  const fx=u*(c.w-1),fy=v*(c.h-1),x0=Math.floor(fx),y0=Math.floor(fy);
+  const x1=Math.min(x0+1,c.w-1),y1=Math.min(y0+1,c.h-1),tx=fx-x0,ty=fy-y0;
+  const a=c.a[y0*c.w+x0],b=c.a[y0*c.w+x1],d=c.a[y1*c.w+x0],e=c.a[y1*c.w+x1];
+  return (a+(b-a)*tx)+((d+(e-d)*tx)-(a+(b-a)*tx))*ty;
+}
+
+/* ---------------- Terrain ---------------- */
+const TERRAIN={
+  Plains:   {name:"Plains",   col:"#c9c081", def:0.00, move:1, sym:null},
+  Forest:   {name:"Forest",   col:"#9bb077", def:0.25, move:2, sym:"forest"},
+  Hills:    {name:"Hills",    col:"#c2b070", def:0.30, move:2, sym:"hills"},
+  Mountains:{name:"Mountains",col:"#b6a890", def:0.55, move:3, sym:"mtn"},
+  Marsh:    {name:"Marsh",    col:"#a7b48c", def:0.20, move:3, sym:"marsh"},
+  Urban:    {name:"Urban",    col:"#c4b6a6", def:0.40, move:1, sym:"urban"},
+  Desert:   {name:"Desert",   col:"#dcc998", def:0.05, move:2, sym:"desert"},
+  Tundra:   {name:"Tundra",   col:"#cdd0c2", def:0.15, move:2, sym:"tundra"},
+};
+
+/* ---------------- Weather ---------------- */
+const WEATHER={
+  Clear:    {n:"Clear",    icon:"☀", air:1.00, armor:1.00, move:1.0, cas:1.00, ambush:1.0},
+  Overcast: {n:"Overcast", icon:"☁", air:0.85, armor:1.00, move:1.0, cas:1.00, ambush:1.05},
+  Rain:     {n:"Rain",     icon:"🌧", air:0.60, armor:0.85, move:1.3, cas:1.00, ambush:1.1},
+  Mud:      {n:"Mud",      icon:"🟤", air:0.70, armor:0.55, move:1.8, cas:0.95, ambush:1.0},
+  Storm:    {n:"Storm",    icon:"⛈", air:0.30, armor:0.80, move:1.5, cas:1.10, ambush:1.15},
+  Fog:      {n:"Fog",      icon:"🌫", air:0.30, armor:0.90, move:1.2, cas:1.10, ambush:1.45},
+  Snow:     {n:"Snow",     icon:"❄", air:0.70, armor:0.80, move:1.4, cas:1.10, ambush:1.1},
+  Blizzard: {n:"Blizzard", icon:"🌨", air:0.20, armor:0.55, move:2.0, cas:1.30, ambush:1.2},
+  Heatwave: {n:"Heatwave", icon:"🔥", air:0.95, armor:0.90, move:1.1, cas:1.05, ambush:1.0},
+};
+const WX_KEYS=Object.keys(WEATHER);
+
+/* ---------------- Unit definitions ---------------- */
+const UDEF={
+  Infantry:  {dom:"ground", men:10000, move:2, atk:6,  def:8,  ic:18, steel:6,  fuel:0,  turns:2},
+  Armor:     {dom:"ground", men:8000,  move:3, atk:12, def:8,  ic:40, steel:22, fuel:10, turns:3},
+  Artillery: {dom:"ground", men:6000,  move:2, atk:10, def:5,  ic:30, steel:16, fuel:2,  turns:3},
+  Fighter:   {dom:"air",    men:1400,  move:6, atk:7,  def:6,  ic:34, steel:16, fuel:8,  turns:3},
+  Bomber:    {dom:"air",    men:1800,  move:5, atk:11, def:4,  ic:46, steel:24, fuel:14, turns:4},
+  Destroyer: {dom:"sea",    men:320,   move:4, atk:6,  def:7,  ic:30, steel:18, fuel:8,  turns:3},
+  Battleship:{dom:"sea",    men:2200,  move:3, atk:15, def:13, ic:85, steel:55, fuel:22, turns:6},
+  Carrier:   {dom:"sea",    men:2800,  move:4, atk:9,  def:7,  ic:90, steel:55, fuel:18, turns:6},
+};
+const GROUND=["Infantry","Armor","Artillery"], AIR=["Fighter","Bomber"], SEA=["Destroyer","Battleship","Carrier"];
+
+/* ---------------- Battle postures ---------------- */
+const POSTURES=[
+  {n:"Frontal Assault", win:0.00,  atkCas:1.35, defCas:1.20, d:"Direct push. Bloody for everyone."},
+  {n:"Flanking Maneuver",win:0.12, atkCas:0.90, defCas:1.15, d:"Hit the flank — better odds, fewer losses."},
+  {n:"Ambush",          win:0.20,  atkCas:0.65, defCas:1.45, d:"Surprise strike. Brutal if it lands; needs cover/fog."},
+  {n:"Encirclement",    win:0.16,  atkCas:1.00, defCas:1.55, d:"Cut them off. Shatters defenders if successful."},
+  {n:"Pincer Movement", win:0.11,  atkCas:1.00, defCas:1.30, d:"Two-pronged squeeze."},
+  {n:"Infiltration",    win:0.14,  atkCas:0.80, defCas:1.05, d:"Slip through the lines, low casualties."},
+  {n:"Shock Assault",   win:0.09,  atkCas:1.20, defCas:1.35, d:"Armoured spearhead. Hits hard."},
+  {n:"Probing Attack",  win:-0.06, atkCas:0.55, defCas:0.55, d:"Cautious — minimal losses, low chance."},
+  {n:"Night Raid",      win:0.10,  atkCas:0.75, defCas:1.10, d:"Strike in darkness."},
+  {n:"Blitz Breakthrough",win:0.18,atkCas:1.10, defCas:1.25, d:"Fast armoured punch. Burns fuel."},
+  {n:"Human Wave",      win:0.17,  atkCas:1.95, defCas:1.55, d:"Overwhelm with bodies. Horrific casualties."},
+  {n:"Fighting Withdrawal",win:-0.25,atkCas:0.45,defCas:0.40, d:"Pull back, preserve the force."},
+];
+
+/* ============================================================ *
+ *  FLAGS                                                        *
+ * ============================================================ */
+function hsl(h,s,l){return`hsl(${h},${s}%,${l}%)`;}
+function genFlag(n){
+  const c=document.createElement('canvas'); c.width=64; c.height=40;
+  const x=c.getContext('2d');
+  const h=n.hue;
+  const A=hsl(h,clamp(n.sat+10,30,75),clamp(n.lig-6,30,62));
+  const B=hsl((h+rint(110,250))%360,clamp(n.sat,30,70),clamp(n.lig+10,45,72));
+  const C=rnd()<0.5?"#efe6d0":hsl((h+180)%360,20,28);
+  const pat=rint(0,8);
+  x.fillStyle=A; x.fillRect(0,0,64,40);
+  if(pat===0){ x.fillStyle=B; x.fillRect(0,13,64,14); }                       // 3 horiz
+  else if(pat===1){ x.fillStyle=B; x.fillRect(21,0,22,40); }                  // 3 vert
+  else if(pat===2){ x.fillStyle=B; x.fillRect(0,20,64,20); }                  // 2 horiz
+  else if(pat===3){ x.fillStyle=B; x.beginPath();x.moveTo(0,0);x.lineTo(64,0);x.lineTo(0,40);x.closePath();x.fill(); } // diagonal
+  else if(pat===4){ x.fillStyle=B; x.fillRect(0,0,32,20); x.fillRect(32,20,32,20); } // quarter
+  else if(pat===5){ x.fillStyle=B; x.fillRect(0,16,64,8); x.fillRect(28,0,8,40); }   // cross
+  else if(pat===6){ x.fillStyle=B; x.fillRect(0,16,64,8); x.fillRect(18,0,8,40); }   // nordic
+  else if(pat===7){ x.fillStyle=B; x.fillRect(0,0,26,40); }                   // hoist band
+  // emblem
+  x.save(); x.translate(pat===7?13:(pat===5||pat===6?(pat===6?22:32):32), 20);
+  x.fillStyle=C; x.strokeStyle=C; x.lineWidth=2;
+  const em=rint(0,6), r=9;
+  if(em===0){ // star
+    x.beginPath();for(let i=0;i<5;i++){const a=-Math.PI/2+i*2*Math.PI/5;x.lineTo(Math.cos(a)*r,Math.sin(a)*r);const a2=a+Math.PI/5;x.lineTo(Math.cos(a2)*r*0.45,Math.sin(a2)*r*0.45);}x.closePath();x.fill();
+  } else if(em===1){ x.beginPath();x.arc(0,0,r-1,0,7);x.fill(); }             // disc
+  else if(em===2){ x.lineWidth=3;x.beginPath();x.moveTo(0,-r);x.lineTo(0,r);x.moveTo(-r,0);x.lineTo(r,0);x.stroke(); } // cross
+  else if(em===3){ x.beginPath();x.arc(0,0,r,0.5,7);x.arc(3,0,r-2,7,0.5,true);x.fill(); } // crescent
+  else if(em===4){ // eagle-ish bird
+    x.beginPath();x.moveTo(-r,0);x.quadraticCurveTo(0,-r,r,0);x.quadraticCurveTo(0,-2,0,0);x.quadraticCurveTo(0,-2,-r,0);x.fill();
+    x.fillRect(-1,-1,2,r);
+  } else if(em===5){ x.beginPath();x.moveTo(0,-r);x.lineTo(r,0);x.lineTo(0,r);x.lineTo(-r,0);x.closePath();x.fill(); } // diamond
+  else { x.lineWidth=3;x.beginPath();x.moveTo(-3,-r);x.lineTo(2,-2);x.lineTo(-2,1);x.lineTo(3,r);x.stroke(); } // bolt
+  x.restore();
+  x.strokeStyle="rgba(40,30,16,0.6)"; x.lineWidth=2; x.strokeRect(1,1,62,38);
+  return c;
 }
 
 /* ============================================================ *
- *  WORLD STATE                                                  *
+ *  WORLD GENERATION                                            *
  * ============================================================ */
-let W = null;
+let W=null;
 
 function newWorld(seed){
-  _seed = seed>>>0;
-  rng = mulberry32(_seed);
-  W = generateWorld();
-  selectNation(-1);
-  rebuildMapCanvas();
-  rebuildSelOverlay();
-  renderPanel(true);
-  document.getElementById('worldSeed').textContent = "Seed "+_seed;
-  setTick(0);
+  _seed=seed>>>0; rng=mulberry32(_seed);
+  W=generateWorld();
+  selProv=-1; selUnits.clear(); orderTargets=null;
+  rebuildIndex();
+  rebuildMapCanvas(); rebuildSelOverlay();
+  setActive(W.nations.findIndex(n=>n.alive));
+  switchTab('nation'); renderAll();
+  showHint("New world drawn. You command every nation — select units and give orders, then End Turn.");
 }
 
 function generateWorld(){
-  /* ---- 1. height field (land vs sea) ---- */
+  // height
   const hA=makeCoarse(16,11), hB=makeCoarse(34,22);
-  const offX=makeCoarse(26,17), offY=makeCoarse(26,17);
+  const oX=makeCoarse(26,17), oY=makeCoarse(26,17);
+  const elev=makeCoarse(20,13), moist=makeCoarse(22,15);
   const height=new Float32Array(GW*GH);
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const u=x/(GW-1), v=y/(GH-1);
-      let h = sampleCoarse(hA,u,v)*0.62 + sampleCoarse(hB,u,v)*0.38;
-      // edge falloff -> continents ringed by ocean
-      const dx=Math.abs(u-0.5)*2, dy=Math.abs(v-0.5)*2;
-      const m=Math.max(dx*0.96, dy);
-      const fall = 1 - smoothstep(0.62,1.02,m);
-      height[y*GW+x] = h*fall;
-    }
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const u=x/(GW-1),v=y/(GH-1);
+    let h=sampleCoarse(hA,u,v)*0.62+sampleCoarse(hB,u,v)*0.38;
+    const dx=Math.abs(u-0.5)*2,dy=Math.abs(v-0.5)*2,m=Math.max(dx*0.96,dy);
+    height[y*GW+x]=h*(1-smoothstep(0.62,1.02,m));
   }
-
-  /* ---- 2. province seeds + warped Voronoi ---- */
-  const S = rint(SEEDS_MIN, SEEDS_MAX);
-  const seeds=[];
-  for(let i=0;i<S;i++) seeds.push({x:rrange(0,GW-1), y:rrange(0,GH-1)});
-  const cellProv = new Int32Array(GW*GH);
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const u=x/(GW-1), v=y/(GH-1);
-      const px = x + (sampleCoarse(offX,u,v)-0.5)*8.5;
-      const py = y + (sampleCoarse(offY,u,v)-0.5)*8.5;
-      let best=-1, bestD=1e9;
-      for(let i=0;i<S;i++){
-        const dx=seeds[i].x-px, dy=seeds[i].y-py;
-        const d=dx*dx+dy*dy;
-        if(d<bestD){bestD=d;best=i;}
-      }
-      cellProv[y*GW+x]=best;
-    }
+  // voronoi
+  const S=rint(SEEDS_MIN,SEEDS_MAX), seeds=[];
+  for(let i=0;i<S;i++)seeds.push({x:rrange(0,GW-1),y:rrange(0,GH-1)});
+  const cellProv=new Int32Array(GW*GH);
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const u=x/(GW-1),v=y/(GH-1);
+    const px=x+(sampleCoarse(oX,u,v)-0.5)*8.5, py=y+(sampleCoarse(oY,u,v)-0.5)*8.5;
+    let best=-1,bd=1e9;
+    for(let i=0;i<S;i++){const dx=seeds[i].x-px,dy=seeds[i].y-py,d=dx*dx+dy*dy;if(d<bd){bd=d;best=i;}}
+    cellProv[y*GW+x]=best;
   }
-
-  /* ---- 3. provinces: centroid, land/sea by majority ---- */
   const provinces=[];
-  for(let i=0;i<S;i++) provinces.push({id:i,sx:0,sy:0,n:0,land:0,sea:0,cx:0,cy:0,
-                                       isSea:false,coastal:false,nation:-1,seaControl:-1,
-                                       neighbors:[],_nb:new Set(),cd:0});
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const idx=y*GW+x, p=provinces[cellProv[idx]];
-      p.sx+=x; p.sy+=y; p.n++;
-      if(height[idx]>0.40) p.land++; else p.sea++;
-    }
+  for(let i=0;i<S;i++)provinces.push({id:i,sx:0,sy:0,n:0,land:0,sea:0,cx:0,cy:0,isSea:false,coastal:false,
+    nation:-1,seaControl:-1,neighbors:[],_nb:new Set(),terrain:"Plains",elev:0,moist:0,lat:0,
+    dep:{farm:0,oil:0,ore:0,factory:0},rivers:new Set(),motifs:[],cd:0,entrench:0,name:""});
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const idx=y*GW+x,p=provinces[cellProv[idx]];
+    p.sx+=x;p.sy+=y;p.n++;
+    if(height[idx]>0.40)p.land++;else p.sea++;
   }
-  for(const p of provinces){
-    if(p.n===0){p.cx=0;p.cy=0;continue;}
-    p.cx=p.sx/p.n; p.cy=p.sy/p.n;
-    p.isSea = p.sea>=p.land;
+  for(const p of provinces){if(p.n===0)continue;p.cx=p.sx/p.n;p.cy=p.sy/p.n;p.isSea=p.sea>=p.land;
+    p.elev=sampleCoarse(elev,p.cx/(GW-1),p.cy/(GH-1));
+    p.moist=sampleCoarse(moist,p.cx/(GW-1),p.cy/(GH-1));
+    p.lat=p.cy/(GH-1);
   }
-
-  /* ---- 4. adjacency ---- */
+  // adjacency
   const addNb=(a,b)=>{const A=provinces[a],B=provinces[b];if(!A._nb.has(b)){A._nb.add(b);A.neighbors.push(b);}if(!B._nb.has(a)){B._nb.add(a);B.neighbors.push(a);}};
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const idx=y*GW+x, p=cellProv[idx];
-      if(x+1<GW){const q=cellProv[idx+1]; if(q!==p) addNb(p,q);}
-      if(y+1<GH){const q=cellProv[idx+GW]; if(q!==p) addNb(p,q);}
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const idx=y*GW+x,p=cellProv[idx];
+    if(x+1<GW){const q=cellProv[idx+1];if(q!==p)addNb(p,q);}
+    if(y+1<GH){const q=cellProv[idx+GW];if(q!==p)addNb(p,q);}}
+  for(const p of provinces)p._nb=null;
+  for(const p of provinces)if(!p.isSea)for(const q of p.neighbors)if(provinces[q].isSea){p.coastal=true;break;}
+
+  const landProvinces=provinces.filter(p=>!p.isSea&&p.n>0).map(p=>p.id);
+  const seaProvinces=provinces.filter(p=>p.isSea&&p.n>0).map(p=>p.id);
+
+  // terrain
+  for(const id of landProvinces){
+    const p=provinces[id];
+    let t="Plains";
+    if(p.elev>0.72)t="Mountains";
+    else if(p.elev>0.58)t="Hills";
+    else if(p.lat<0.16||p.lat>0.93)t="Tundra";
+    else if(p.moist<0.30&&p.lat>0.45&&p.lat<0.8)t="Desert";
+    else if(p.moist>0.66&&p.elev<0.42)t=(rnd()<0.5?"Marsh":"Forest");
+    else if(p.moist>0.52)t="Forest";
+    p.terrain=t;
+    p.name=provinceName(p.id);
+  }
+  // resource deposits
+  for(const id of landProvinces){
+    const p=provinces[id], t=p.terrain;
+    if(t==="Plains"&&rnd()<0.55)p.dep.farm=rint(2,5);
+    else if((t==="Forest"||t==="Marsh"||t==="Tundra")&&rnd()<0.3)p.dep.farm=rint(1,3);
+    if((t==="Hills"||t==="Mountains")&&rnd()<0.5)p.dep.ore=rint(2,5);
+    if(rnd()<0.06)p.dep.oil=rint(2,5);
+    if((t==="Desert"||t==="Marsh")&&rnd()<0.12)p.dep.oil+=rint(1,4);
+    if(rnd()<0.10)p.dep.factory=rint(1,3);
+  }
+  // rivers: mark a fraction of internal land-land borders
+  for(const id of landProvinces){
+    const p=provinces[id];
+    for(const q of p.neighbors){
+      if(q<=id)continue;
+      const pq=provinces[q];
+      if(pq.isSea)continue;
+      if(rnd()<0.07){ p.rivers.add(q); pq.rivers.add(id); }
     }
   }
-  for(const p of provinces) p._nb=null;
-  for(const p of provinces){
-    if(!p.isSea){
-      for(const q of p.neighbors){ if(provinces[q].isSea){p.coastal=true;break;} }
-    }
+  // motifs (texture sample points), stable
+  for(const id of landProvinces){
+    const p=provinces[id];
+    const count=Math.max(1,Math.floor(p.n/9));
+    for(let i=0;i<count;i++) p.motifs.push({x:p.cx+rrange(-1,1)*Math.sqrt(p.n)*0.35, y:p.cy+rrange(-1,1)*Math.sqrt(p.n)*0.3});
   }
 
-  const landProvinces = provinces.filter(p=>!p.isSea && p.n>0).map(p=>p.id);
-  const seaProvinces  = provinces.filter(p=> p.isSea && p.n>0).map(p=>p.id);
-
-  /* ---- 5. nations: capitals + competitive flood fill ---- */
-  let numNat = rint(NAT_MIN, NAT_MAX);
-  numNat = Math.min(numNat, Math.max(2, Math.floor(landProvinces.length/6)));
-  // choose spread-out capitals
-  const caps=[];
-  const shuffledLand=shuffle(landProvinces.slice());
-  for(const cand of shuffledLand){
-    if(caps.length>=numNat) break;
-    let ok=true;
-    for(const c of caps){
-      const a=provinces[cand], b=provinces[c];
-      const dd=(a.cx-b.cx)**2+(a.cy-b.cy)**2;
-      if(dd < (GW*0.13)**2){ok=false;break;}
-    }
-    if(ok) caps.push(cand);
-  }
-  while(caps.length<numNat){ const c=pick(landProvinces); if(!caps.includes(c)) caps.push(c); }
+  // nations
+  let numNat=clamp(rint(NAT_MIN,NAT_MAX),2,Math.floor(landProvinces.length/6));
+  const caps=[]; const sl=shuffle(landProvinces.slice());
+  for(const c of sl){ if(caps.length>=numNat)break; let ok=true;
+    for(const k of caps){const a=provinces[c],b=provinces[k];if((a.cx-b.cx)**2+(a.cy-b.cy)**2<(GW*0.13)**2){ok=false;break;}}
+    if(ok)caps.push(c); }
+  while(caps.length<numNat){const c=pick(landProvinces);if(!caps.includes(c))caps.push(c);}
   numNat=caps.length;
 
-  const used=new Set();
-  const nations=[];
-  // varied target sizes (skewed so some large, some tiny)
-  const weights=[]; let wsum=0;
-  for(let i=0;i<numNat;i++){const w=Math.pow(rnd(),1.8)+0.12; weights.push(w); wsum+=w;}
+  const used=new Set(), nations=[], weights=[]; let wsum=0;
+  for(let i=0;i<numNat;i++){const w=Math.pow(rnd(),1.8)+0.12;weights.push(w);wsum+=w;}
   for(let i=0;i<numNat;i++){
     const nm=genName(used);
-    const hue=Math.floor((i*360/numNat + rrange(-14,14)+360)%360);
-    const sat=rint(34,52), lig=rint(52,64);
-    // stats: rolled independently of size; small nations get a slight quality skew later
-    const n={
-      id:i, name:nm.full, short:nm.short,
-      hue, sat, lig,
-      color:`hsl(${hue},${sat}%,${lig}%)`,
-      colorDark:`hsl(${hue},${Math.min(sat+12,70)}%,${Math.max(lig-34,16)}%)`,
-      colorLight:`hsl(${hue},${Math.min(sat+6,70)}%,${Math.min(lig+18,86)}%)`,
-      military:rrange(0.45,1.0), industry:rrange(0.4,1.0),
-      manpower:rrange(0.4,1.0), aggression:rrange(0.2,1.0),
-      capital:caps[i], alive:true,
-      provinces:new Set([caps[i]]),
-      target:Math.max(1, Math.round(weights[i]/wsum * landProvinces.length*0.96)),
-      prodAccum:rrange(0,1), enemies:new Set(),
+    const hue=Math.floor((i*360/numNat+rrange(-14,14)+360)%360), sat=rint(34,52), lig=rint(50,63);
+    const n={id:i,name:nm.full,short:nm.short,hue,sat,lig,
+      color:hsl(hue,sat,lig), colorDark:hsl(hue,Math.min(sat+12,70),Math.max(lig-34,16)),
+      colorLight:hsl(hue,Math.min(sat+6,70),Math.min(lig+20,86)),
+      military:rrange(0.5,1.0), industry:rrange(0.45,1.0), manpowerStat:rrange(0.45,1.0), aggression:rrange(0.2,1.0),
+      capital:caps[i], alive:true, provinces:new Set([caps[i]]), target:Math.max(1,Math.round(weights[i]/wsum*landProvinces.length*0.96)),
+      enemies:new Set(), allies:new Set(),
+      res:{manpower:rint(20,60)*1000, supplies:rint(40,90), fuel:rint(30,70), steel:rint(40,90), cp:rint(4,9)},
+      ic:0, stability:rint(55,80), warSupport:rint(50,75), casualties:0,
+      queue:[], hand:[],
     };
-    provinces[caps[i]].nation=i;
+    provinces[caps[i]].nation=i; provinces[caps[i]].terrain="Urban"; provinces[caps[i]].dep.factory=Math.max(provinces[caps[i]].dep.factory,3);
     nations.push(n);
   }
-
-  // competitive BFS growth
-  const queues = nations.map(n=>[n.capital]);
-  let active=true, guard=0;
-  while(active && guard++<200000){
-    active=false;
-    const order=shuffle(nations.map((_,i)=>i));
-    for(const i of order){
-      const n=nations[i];
-      if(n.provinces.size>=n.target) continue;
+  // competitive growth
+  const queues=nations.map(n=>[n.capital]); let active=true,guard=0;
+  while(active&&guard++<200000){active=false;
+    for(const i of shuffle(nations.map((_,i)=>i))){
+      const n=nations[i]; if(n.provinces.size>=n.target)continue;
       const q=queues[i];
-      while(q.length){
-        const cur=q[q.length-1];
-        let claimed=false;
-        const nbs=shuffle(provinces[cur].neighbors.slice());
-        for(const nb of nbs){
-          const pb=provinces[nb];
-          if(!pb.isSea && pb.n>0 && pb.nation===-1){
-            pb.nation=i; n.provinces.add(nb); q.push(nb); claimed=true; active=true; break;
-          }
-        }
-        if(claimed) break; else q.pop();
-      }
-    }
-  }
-  // leftover land -> neighbour nation
-  let changed=true, lg=0;
-  while(changed && lg++<60){
-    changed=false;
-    for(const id of landProvinces){
-      if(provinces[id].nation!==-1) continue;
-      for(const nb of provinces[id].neighbors){
-        const pb=provinces[nb];
-        if(!pb.isSea && pb.nation>=0){ provinces[id].nation=pb.nation; nations[pb.nation].provinces.add(id); changed=true; break; }
-      }
-    }
-  }
-  // any stragglers (islands) -> nearest capital
-  for(const id of landProvinces){
-    if(provinces[id].nation!==-1) continue;
-    let best=0,bd=1e9; const p=provinces[id];
+      while(q.length){const cur=q[q.length-1];let claimed=false;
+        for(const nb of shuffle(provinces[cur].neighbors.slice())){const pb=provinces[nb];
+          if(!pb.isSea&&pb.n>0&&pb.nation===-1){pb.nation=i;n.provinces.add(nb);q.push(nb);claimed=true;active=true;break;}}
+        if(claimed)break;else q.pop();}
+    }}
+  let changed=true,lg=0;
+  while(changed&&lg++<60){changed=false;
+    for(const id of landProvinces){if(provinces[id].nation!==-1)continue;
+      for(const nb of provinces[id].neighbors){const pb=provinces[nb];
+        if(!pb.isSea&&pb.nation>=0){provinces[id].nation=pb.nation;nations[pb.nation].provinces.add(id);changed=true;break;}}}}
+  for(const id of landProvinces){if(provinces[id].nation!==-1)continue;
+    let best=0,bd=1e9;const p=provinces[id];
     for(const n of nations){const c=provinces[n.capital];const d=(c.cx-p.cx)**2+(c.cy-p.cy)**2;if(d<bd){bd=d;best=n.id;}}
-    provinces[id].nation=best; nations[best].provinces.add(id);
+    provinces[id].nation=best;nations[best].provinces.add(id);}
+  // decorrelate size/strength
+  const sizes=nations.map(n=>n.provinces.size),mx=Math.max(...sizes),mn=Math.min(...sizes);
+  for(const n of nations){const t=(n.provinces.size-mn)/Math.max(1,mx-mn);
+    n.military=clamp(n.military+(0.5-t)*0.35,0.4,1.1);
+    n.industry=clamp(n.industry+(t-0.5)*0.12,0.35,1.05);
+    n.flag=genFlag(n);
   }
+  // urban here and there for variety
+  for(const id of landProvinces){const p=provinces[id];
+    if(p.terrain!=="Urban"&&p.dep.factory>=2&&rnd()<0.4)p.terrain="Urban";}
 
-  // size/strength decorrelation: smaller nations get a quality bump, big ones a slight penalty
-  const sizes=nations.map(n=>n.provinces.size);
-  const maxSize=Math.max(...sizes), minSize=Math.min(...sizes);
-  for(const n of nations){
-    const t=(n.provinces.size-minSize)/Math.max(1,(maxSize-minSize)); // 0 small ..1 big
-    n.military = clamp(n.military + (0.5-t)*0.35, 0.35, 1.05);
-    n.industry = clamp(n.industry + (t-0.5)*0.12, 0.3, 1.0); // big slightly more industry
-  }
+  // weather bands (north/central/south)
+  const bands=[pick(WX_KEYS),pick(WX_KEYS),pick(WX_KEYS)];
 
-  const world={
-    seed:_seed, tick:0, cellProv, provinces, nations,
-    landProvinces, seaProvinces,
-    units:[], nextUnitId:1, wars:new Map(),
-    log:[], sel:-1,
-    captureFlash:[],   // {prov, t} for brief highlight
-  };
+  const world={seed:_seed,turn:1,cellProv,provinces,nations,landProvinces,seaProvinces,
+    units:[],nextUnitId:1,wars:new Map(),log:[],captureFlash:[],bands,globalCas:0};
 
-  // seed starting forces
   seedStartingForces(world);
   return world;
 }
 
-/* ---------------- Units ---------------- */
-const GROUND=["Infantry","Armor","Artillery"];
-const AIR=["Fighter","Bomber"];
-const SEA=["Destroyer","Battleship","Carrier"];
-const DOMAIN_OF={Infantry:"ground",Armor:"ground",Artillery:"ground",
-                Fighter:"air",Bomber:"air",Destroyer:"sea",Battleship:"sea",Carrier:"sea"};
-const BASE_STR={Infantry:90,Armor:120,Artillery:80,Fighter:60,Bomber:75,Destroyer:80,Battleship:140,Carrier:110};
+function provinceName(id){
+  // deterministic-ish evocative sector name
+  const R=mulberry32(id*2654435761>>>0);
+  const A=["North","South","East","West","Upper","Lower","Old","New","High","Far"];
+  const B=["vale","ford","march","reach","fell","moor","heath","gard","stead","holm","ridge","bourg","wick","dorf","kamp"];
+  const a=A[Math.floor(R()*A.length)], b=B[Math.floor(R()*B.length)];
+  const root=SYA[Math.floor(R()*SYA.length)];
+  return (R()<0.4?a+" ":"")+root+b;
+}
 
+/* ---------------- Units ---------------- */
 function makeUnit(world,nation,type,prov){
-  const u={id:world.nextUnitId++,nation,type,domain:DOMAIN_OF[type],prov,
-           maxStr:BASE_STR[type], str:BASE_STR[type]};
-  world.units.push(u);
-  return u;
+  const d=UDEF[type];
+  const u={id:world.nextUnitId++,nation,type,dom:d.dom,prov,
+    men:d.men,maxMen:d.men,org:rint(70,95),morale:rint(70,95),entrench:0,mp:d.move,vet:0};
+  world.units.push(u); return u;
 }
 function seedStartingForces(world){
   for(const n of world.nations){
     const provs=[...n.provinces];
-    // capital garrison
+    makeUnit(world,n.id,"Infantry",n.capital);
     makeUnit(world,n.id,"Infantry",n.capital);
     makeUnit(world,n.id,"Armor",n.capital);
     makeUnit(world,n.id,"Artillery",n.capital);
-    // scatter a few infantry to border-ish provinces
-    const extra=Math.min(provs.length, 2+Math.floor(n.provinces.size/4));
-    for(let i=0;i<extra;i++){
-      makeUnit(world,n.id,"Infantry",pick(provs));
-    }
-    // a coastal navy + air if possible
+    const extra=Math.min(provs.length,1+Math.floor(n.provinces.size/4));
+    for(let i=0;i<extra;i++)makeUnit(world,n.id,"Infantry",pick(provs));
     const coast=provs.filter(p=>world.provinces[p].coastal);
     if(coast.length){
-      const cp=pick(coast);
-      const seaNb=world.provinces[cp].neighbors.filter(q=>world.provinces[q].isSea);
-      if(seaNb.length){
-        const sp=pick(seaNb);
-        makeUnit(world,n.id,"Destroyer",sp);
-        if(rnd()<0.5) makeUnit(world,n.id,rnd()<0.5?"Battleship":"Carrier",sp);
-        world.provinces[sp].seaControl=n.id;
-      }
+      const cp=pick(coast), seaNb=world.provinces[cp].neighbors.filter(q=>world.provinces[q].isSea);
+      if(seaNb.length){const sp=pick(seaNb);makeUnit(world,n.id,"Destroyer",sp);
+        if(rnd()<0.5)makeUnit(world,n.id,rnd()<0.5?"Battleship":"Carrier",sp);
+        world.provinces[sp].seaControl=n.id;}
     }
     makeUnit(world,n.id,"Fighter",n.capital);
   }
 }
 
-/* ---------------- Per-tick spatial index ---------------- */
-// provIndex[provId] = Map<nationId, {count, str, byType:{type:count}}>
+/* ---------------- Spatial index ---------------- */
 let provIndex=null;
 function rebuildIndex(){
   provIndex=new Array(W.provinces.length);
-  for(const u of W.units){
-    let m=provIndex[u.prov];
-    if(!m){m=new Map();provIndex[u.prov]=m;}
-    let e=m.get(u.nation);
-    if(!e){e={count:0,str:0,byType:{},units:[]};m.set(u.nation,e);}
-    e.count++; e.str+=u.str; e.byType[u.type]=(e.byType[u.type]||0)+1; e.units.push(u);
-  }
+  for(const u of W.units){let m=provIndex[u.prov];if(!m){m=new Map();provIndex[u.prov]=m;}
+    let e=m.get(u.nation);if(!e){e={men:0,units:[]};m.set(u.nation,e);}
+    e.men+=u.men;e.units.push(u);}
 }
-function forceAt(prov,nation){
-  const m=provIndex[prov]; if(!m)return null; return m.get(nation)||null;
+function unitsIn(prov,nation){const m=provIndex&&provIndex[prov];if(!m)return[];const e=m.get(nation);return e?e.units:[];}
+function nationsIn(prov){const m=provIndex&&provIndex[prov];return m?[...m.keys()]:[];}
+
+/* ============================================================ *
+ *  WEATHER (per band)                                          *
+ * ============================================================ */
+function bandOf(prov){const p=W.provinces[prov];return p.lat<0.34?0:(p.lat<0.67?1:2);}
+function weatherAt(prov){return WEATHER[W.bands[bandOf(prov)]];}
+function rollWeather(){
+  for(let i=0;i<3;i++){
+    if(rnd()<0.55){
+      // bias: north colder, south hotter
+      let opts=WX_KEYS.slice();
+      if(i===0)opts=opts.concat(["Snow","Snow","Blizzard","Overcast","Fog"]);
+      if(i===2)opts=opts.concat(["Clear","Clear","Heatwave","Overcast"]);
+      W.bands[i]=pick(opts);
+    }
+  }
 }
 
 /* ============================================================ *
- *  SIMULATION TICK                                              *
+ *  ECONOMY                                                    *
+ * ============================================================ */
+function income(n){
+  let mp=2000,sup=4,fuel=0,steel=0,ic=0;
+  for(const id of n.provinces){const p=W.provinces[id];
+    mp+=p.dep.farm*900+300;
+    steel+=p.dep.ore*1.6;
+    fuel+=p.dep.oil*1.4;
+    ic+=p.dep.factory*2.2+0.5;
+    sup+=0.4;
+  }
+  const eff=clamp(0.4+n.stability/100*0.8,0.4,1.2);
+  return {manpower:mp*clamp(0.5+n.manpowerStat,0.6,1.6),
+          supplies:sup, fuel:fuel, steel:steel,
+          ic:ic*eff*clamp(0.6+n.industry*0.6,0.6,1.4),
+          cp:1+ (n.stability+n.warSupport)/120 + n.provinces.size/40};
+}
+function applyIncome(n){
+  const inc=income(n);
+  n.res.manpower+=inc.manpower; n.res.supplies+=inc.supplies;
+  n.res.fuel+=inc.fuel; n.res.steel+=inc.steel; n.res.cp+=inc.cp;
+  n.ic=inc.ic; // available IC this turn
+}
+function canAfford(n,type){const d=UDEF[type];return n.res.steel>=d.steel&&n.res.fuel>=d.fuel;}
+function queueUnit(n,type,prov){
+  const d=UDEF[type];
+  if(!canAfford(n,type)){toast("Not enough steel/fuel.");return false;}
+  n.res.steel-=d.steel; n.res.fuel-=d.fuel;
+  n.queue.push({type,prov,remain:d.turns,ic:d.ic});
+  return true;
+}
+function advanceProduction(n){
+  // pour this turn's IC into the front of the queue
+  let pool=n.ic;
+  for(const item of n.queue){
+    if(pool<=0)break;
+    const per=item.ic/UDEF[item.type].turns;
+    if(pool>=per){pool-=per;item.remain--;}
+  }
+  // complete
+  for(let i=n.queue.length-1;i>=0;i--){
+    if(n.queue[i].remain<=0){
+      const it=n.queue[i];
+      const prov=n.provinces.has(it.prov)?it.prov:n.capital;
+      const u=makeUnit(W,n.id,it.type,prov);
+      log(`${n.short} fielded a new ${it.type} at ${W.provinces[prov].name}.`,"info");
+      n.queue.splice(i,1);
+    }
+  }
+}
+function reinforce(n){
+  // spend manpower + supplies to top up under-strength units
+  let spentMp=0, healed=0;
+  for(const u of W.units){
+    if(u.nation!==n.id)continue;
+    if(u.men>=u.maxMen && u.org>=95)continue;
+    const need=u.maxMen-u.men;
+    const cost=need*1.0;
+    if(n.res.manpower>=cost && n.res.supplies>=1){
+      n.res.manpower-=cost; n.res.supplies-=Math.min(2,n.res.supplies); spentMp+=cost;
+      u.men=u.maxMen; u.org=Math.min(100,u.org+25*clamp(0.5+n.manpowerStat,0.5,1.5)); healed++;
+    } else if(n.res.manpower>50){
+      const aff=Math.min(need,n.res.manpower);
+      n.res.manpower-=aff; u.men+=aff; spentMp+=aff;
+    }
+  }
+  if(healed||spentMp) log(`${n.short} reinforced its forces (${fmt(spentMp)} men committed).`,"info");
+  renderAll();
+}
+
+/* ============================================================ *
+ *  CARDS / EVENTS                                              *
+ * ============================================================ */
+// helpers usable by cards
+function addRes(n,k,v){n.res[k]=Math.max(0,(n.res[k]||0)+v);}
+function addStab(n,v){n.stability=clamp(n.stability+v,0,100);}
+function addWar(n,v){n.warSupport=clamp(n.warSupport+v,0,100);}
+function frontProvinces(n){const out=[];for(const id of n.provinces){for(const q of W.provinces[id].neighbors){const pq=W.provinces[q];if(!pq.isSea&&pq.nation>=0&&pq.nation!==n.id){out.push(id);break;}}}return out;}
+function randOwned(n){const a=[...n.provinces];return a.length?pick(a):n.capital;}
+
+const CARDS=[
+ // ---- Military Ops ----
+ {id:"reinforce_drive",name:"Conscription Drive",cat:"mil",cost:2,desc:"+25,000 manpower; −4 stability (unpopular draft).",
+  apply:n=>{addRes(n,'manpower',25000);addStab(n,-4);}},
+ {id:"veteran",name:"Veteran Cadre",cat:"mil",cost:3,desc:"All your units gain +12 organization and morale.",
+  apply:n=>{for(const u of W.units)if(u.nation===n.id){u.org=clamp(u.org+12,0,100);u.morale=clamp(u.morale+12,0,100);}}},
+ {id:"barrage",name:"Artillery Barrage",cat:"mil",cost:3,desc:"Bombard an enemy front: inflict ~2,000 casualties on a bordering enemy stack.",
+  apply:n=>{const fr=frontProvinces(n);for(const id of shuffle(fr)){for(const q of W.provinces[id].neighbors){const pq=W.provinces[q];if(!pq.isSea&&pq.nation>=0&&pq.nation!==n.id){const us=unitsIn(q,pq.nation);if(us.length){let tot=0;for(const u of us){const c=Math.min(u.men,u.men*0.18);u.men-=c;tot+=c;}W.nations[pq.nation].casualties+=tot;W.globalCas+=tot;log(`${n.short}'s artillery barrage savages ${pq.short} at ${pq.name}: ${fmt(tot)} casualties.`,"battle");return;}}}}toast("No enemy front to bombard.");}},
+ {id:"airraid",name:"Air Raid",cat:"mil",cost:3,desc:"Strategic bombing: enemy neighbour loses 6 supplies & 3 stability.",
+  apply:n=>{const others=W.nations.filter(o=>o.alive&&o.id!==n.id&&n.enemies.has(o.id));const t=others.length?pick(others):pick(W.nations.filter(o=>o.alive&&o.id!==n.id));if(t){addRes(t,'supplies',-6);addStab(t,-3);log(`${n.short} bombs ${t.short}'s industry.`,"battle");}}},
+ {id:"fortify",name:"Fortify Lines",cat:"mil",cost:2,desc:"All front units entrench +2 (sturdier defense).",
+  apply:n=>{for(const id of frontProvinces(n))for(const u of unitsIn(id,n.id))u.entrench=Math.min(6,u.entrench+2);}},
+ {id:"forcedmarch",name:"Forced March",cat:"mil",cost:2,desc:"Refresh all your units' movement points this turn; −5 org each.",
+  apply:n=>{for(const u of W.units)if(u.nation===n.id){u.mp=UDEF[u.type].move;u.org=clamp(u.org-5,0,100);}}},
+ {id:"commando",name:"Commando Raid",cat:"mil",cost:2,desc:"Sabotage: a random enemy loses 8 steel & 6 fuel.",
+  apply:n=>{const t=pickEnemy(n);if(t){addRes(t,'steel',-8);addRes(t,'fuel',-6);log(`${n.short} commandos raid ${t.short}'s depots.`,"battle");}}},
+ {id:"scorched",name:"Scorched Earth",cat:"mil",cost:1,desc:"+10 stability now, but −8 supplies (deny the enemy).",
+  apply:n=>{addStab(n,10);addRes(n,'supplies',-8);}},
+ {id:"elite",name:"Elite Volunteers",cat:"mil",cost:4,desc:"Spawn a fresh, fully-organized Armor division at your capital.",
+  apply:n=>{const u=makeUnit(W,n.id,"Armor",n.provinces.has(n.capital)?n.capital:randOwned(n));u.org=100;u.morale=100;u.vet=1;}},
+ {id:"winteroff",name:"Winter Offensive",cat:"mil",cost:3,desc:"Force snow in the north & boost your units there.",
+  apply:n=>{W.bands[0]="Snow";for(const u of W.units)if(u.nation===n.id&&bandOf(u.prov)===0){u.morale=clamp(u.morale+10,0,100);}}},
+
+ // ---- Industry / Economy ----
+ {id:"warbonds",name:"War Bonds",cat:"ind",cost:2,desc:"+10 steel, +8 supplies from public subscription.",
+  apply:n=>{addRes(n,'steel',10);addRes(n,'supplies',8);}},
+ {id:"lendlease",name:"Lend-Lease",cat:"ind",cost:3,desc:"+14 fuel, +14 steel, +12 supplies.",
+  apply:n=>{addRes(n,'fuel',14);addRes(n,'steel',14);addRes(n,'supplies',12);}},
+ {id:"oilfind",name:"Oil Discovery",cat:"ind",cost:2,desc:"A province strikes oil (+oil deposit) and +18 fuel.",
+  apply:n=>{const p=W.provinces[randOwned(n)];p.dep.oil+=3;addRes(n,'fuel',18);mapDirty=true;log(`${n.short} strikes oil at ${p.name}.`,"good");}},
+ {id:"oremine",name:"Ore Strike",cat:"ind",cost:2,desc:"New ore seam (+ore deposit) and +16 steel.",
+  apply:n=>{const p=W.provinces[randOwned(n)];p.dep.ore+=3;addRes(n,'steel',16);mapDirty=true;}},
+ {id:"factory",name:"Factory Retooling",cat:"ind",cost:3,desc:"Build a factory in a province (+industry forever).",
+  apply:n=>{const p=W.provinces[randOwned(n)];p.dep.factory+=2;mapDirty=true;log(`${n.short} expands industry at ${p.name}.`,"good");}},
+ {id:"massprod",name:"Mass Production",cat:"ind",cost:4,desc:"Halve the remaining build time of everything in your queue.",
+  apply:n=>{for(const it of n.queue)it.remain=Math.max(1,Math.ceil(it.remain/2));}},
+ {id:"rationing",name:"Rationing",cat:"ind",cost:1,desc:"+12 supplies, +10 manpower; −5 stability.",
+  apply:n=>{addRes(n,'supplies',12);addRes(n,'manpower',10000);addStab(n,-5);}},
+ {id:"synthfuel",name:"Synthetic Fuel",cat:"ind",cost:3,desc:"+24 fuel from synthetic plants.",
+  apply:n=>{addRes(n,'fuel',24);}},
+
+ // ---- Politics / Stability ----
+ {id:"rally",name:"Rally the Nation",cat:"pol",cost:2,desc:"+15 stability, +10 war support.",
+  apply:n=>{addStab(n,15);addWar(n,10);}},
+ {id:"propaganda",name:"Propaganda Blitz",cat:"pol",cost:2,desc:"+12 war support; +6 CP next turns of morale.",
+  apply:n=>{addWar(n,12);for(const u of W.units)if(u.nation===n.id)u.morale=clamp(u.morale+6,0,100);}},
+ {id:"martial",name:"Martial Law",cat:"pol",cost:1,desc:"+18 stability now; −6 war support (heavy-handed).",
+  apply:n=>{addStab(n,18);addWar(n,-6);}},
+ {id:"totalwar",name:"Total War Decree",cat:"pol",cost:4,desc:"+30 manpower & +12 IC efficiency (stability), but −10 stability.",
+  apply:n=>{addRes(n,'manpower',30000);addStab(n,-10);n.ic*=1.12;}},
+ {id:"purge",name:"Purge the Ranks",cat:"pol",cost:2,desc:"+10 stability; randomly removes a weak unit.",
+  apply:n=>{addStab(n,10);const own=W.units.filter(u=>u.nation===n.id).sort((a,b)=>a.men-b.men);if(own.length>3){own[0].men=-1;}}},
+
+ // ---- Diplomacy ----
+ {id:"declare",name:"Declare War",cat:"dip",cost:2,desc:"Declare war on a bordering neighbour.",
+  apply:n=>{const nb=[...nationNeighbors(n.id)].filter(b=>W.nations[b].alive&&!atWar(n.id,b));if(nb.length){declareWar(n.id,pick(nb));}else toast("No neighbour to declare war on.");}},
+ {id:"peace",name:"Sue for Peace",cat:"dip",cost:2,desc:"End one of your wars (white peace).",
+  apply:n=>{for(const[k,war]of[...W.wars]){if(war.a===n.id||war.b===n.id){endWar(k,"white");return;}}toast("Not at war.");}},
+ {id:"nap",name:"Non-Aggression Pact",cat:"dip",cost:1,desc:"+6 stability from secured borders.",
+  apply:n=>{addStab(n,6);}},
+ {id:"alliance",name:"Form Alliance",cat:"dip",cost:3,desc:"Ally a non-enemy nation; you both gain war support.",
+  apply:n=>{const cand=W.nations.filter(o=>o.alive&&o.id!==n.id&&!n.enemies.has(o.id)&&!n.allies.has(o.id));if(cand.length){const t=pick(cand);n.allies.add(t.id);t.allies.add(n.id);addWar(n,8);addWar(t,8);log(`${n.short} and ${t.short} form an alliance.`,"peace");}}},
+ {id:"sabotage",name:"Espionage",cat:"dip",cost:3,desc:"Steal intel & resources from a random rival (+10 steel, they −10).",
+  apply:n=>{const t=pickEnemy(n)||pick(W.nations.filter(o=>o.alive&&o.id!==n.id));if(t){addRes(n,'steel',10);addRes(t,'steel',-10);addStab(t,-3);log(`${n.short} spies steal from ${t.short}.`,"card");}}},
+
+ // ---- Random Events (instant on draw) ----
+ {id:"ev_winter",name:"Harsh Winter",cat:"evt",instant:true,desc:"Blizzards sweep the north. −6 supplies, units lose org.",
+  apply:n=>{W.bands[0]="Blizzard";addRes(n,'supplies',-6);for(const u of W.units)if(u.nation===n.id&&bandOf(u.prov)===0)u.org=clamp(u.org-12,0,100);}},
+ {id:"ev_harvest",name:"Bumper Harvest",cat:"evt",instant:true,desc:"+20,000 manpower, +6 stability.",
+  apply:n=>{addRes(n,'manpower',20000);addStab(n,6);}},
+ {id:"ev_epidemic",name:"Epidemic Outbreak",cat:"evt",instant:true,desc:"Disease costs manpower & stability.",
+  apply:n=>{addRes(n,'manpower',-18000);addStab(n,-8);for(const u of W.units)if(u.nation===n.id&&rnd()<0.3)u.men=Math.max(1,u.men-u.men*0.1);}},
+ {id:"ev_tech",name:"Technological Breakthrough",cat:"evt",instant:true,desc:"+8 military quality (doctrine) & +10 steel.",
+  apply:n=>{n.military=clamp(n.military+0.08,0,1.3);addRes(n,'steel',10);}},
+ {id:"ev_strike",name:"Labour Strike",cat:"evt",instant:true,desc:"Factories idle: −10 stability, IC cut this turn.",
+  apply:n=>{addStab(n,-10);n.ic*=0.7;}},
+ {id:"ev_partisan",name:"Partisan Uprising",cat:"evt",instant:true,desc:"Unrest in the rear: −8 stability, lose some supplies.",
+  apply:n=>{addStab(n,-8);addRes(n,'supplies',-5);}},
+ {id:"ev_defector",name:"Defector Intel",cat:"evt",instant:true,desc:"Enemy plans revealed: +5 CP & +6 war support.",
+  apply:n=>{addRes(n,'cp',5);addWar(n,6);}},
+ {id:"ev_disaster",name:"Natural Disaster",cat:"evt",instant:true,desc:"Flood/quake ruins a province's output briefly.",
+  apply:n=>{const p=W.provinces[randOwned(n)];p.dep.farm=Math.max(0,p.dep.farm-1);addStab(n,-5);log(`Disaster strikes ${p.name} (${n.short}).`,"bad");mapDirty=true;}},
+ {id:"ev_hero",name:"Heroic Stand",cat:"evt",instant:true,desc:"A defiant defense lifts the nation: +12 war support, +8 stability.",
+  apply:n=>{addWar(n,12);addStab(n,8);}},
+ {id:"ev_munitions",name:"Munitions Accident",cat:"evt",instant:true,desc:"An arsenal explodes: −12 steel, −8 supplies.",
+  apply:n=>{addRes(n,'steel',-12);addRes(n,'supplies',-8);}},
+];
+function pickEnemy(n){const e=[...n.enemies].filter(id=>W.nations[id].alive);return e.length?W.nations[pick(e)]:null;}
+
+function drawCard(n){
+  if(n.res.cp<2){toast("Need 2 Command Points to draw.");return;}
+  n.res.cp-=2;
+  // bad-event likelihood rises as stability falls
+  let pool=CARDS.slice();
+  if(n.stability<40){for(let i=0;i<6;i++)pool.push(CARDS.find(c=>c.id==="ev_strike"),CARDS.find(c=>c.id==="ev_partisan"));}
+  const c=pick(pool);
+  if(c.instant){
+    c.apply(n);
+    log(`${n.short} — Event: ${c.name}. ${c.desc}`,"card");
+  } else {
+    n.hand.push(c);
+    if(n.hand.length>8)n.hand.shift();
+    log(`${n.short} drew a card: ${c.name}.`,"card");
+  }
+  renderAll();
+}
+function playCard(n,idx){
+  const c=n.hand[idx]; if(!c)return;
+  if(n.res.cp<c.cost){toast(`Need ${c.cost} CP.`);return;}
+  n.res.cp-=c.cost;
+  c.apply(n);
+  log(`${n.short} played ${c.name}. ${c.desc}`,"card");
+  n.hand.splice(idx,1);
+  cleanupDead();
+  renderAll();
+}
+
+/* ============================================================ *
+ *  DIPLOMACY                                                   *
  * ============================================================ */
 function warKey(a,b){return a<b?a+"-"+b:b+"-"+a;}
 function atWar(a,b){return W.wars.has(warKey(a,b));}
-
+function declareWar(a,b){
+  if(atWar(a,b))return;
+  W.wars.set(warKey(a,b),{a,b,start:W.turn});
+  W.nations[a].enemies.add(b);W.nations[b].enemies.add(a);
+  W.nations[a].allies.delete(b);W.nations[b].allies.delete(a);
+  addWar(W.nations[a],5);
+  log(`${W.nations[a].short} declared war on ${W.nations[b].short}!`,"war");
+  renderAll();
+}
+function endWar(key,kind){
+  const war=W.wars.get(key);if(!war)return;W.wars.delete(key);
+  const A=W.nations[war.a],B=W.nations[war.b];
+  if(A)A.enemies.delete(war.b);if(B)B.enemies.delete(war.a);
+  if(kind==="white"&&A&&B&&A.alive&&B.alive)log(`${A.short} and ${B.short} sign a white peace.`,"peace");
+  renderAll();
+}
 function nationNeighbors(nid){
-  // nations sharing a land border, OR both touching a common sea province (naval reach)
-  const set=new Set();
-  const n=W.nations[nid];
-  for(const pid of n.provinces){
-    const p=W.provinces[pid];
-    for(const q of p.neighbors){
-      const pq=W.provinces[q];
-      if(!pq.isSea){ if(pq.nation>=0 && pq.nation!==nid) set.add(pq.nation); }
-      else {
-        // look across the sea province to other coasts
-        for(const r of pq.neighbors){
-          const pr=W.provinces[r];
-          if(!pr.isSea && pr.nation>=0 && pr.nation!==nid) set.add(pr.nation);
-        }
-      }
-    }
-  }
+  const set=new Set(),n=W.nations[nid];
+  for(const pid of n.provinces){const p=W.provinces[pid];
+    for(const q of p.neighbors){const pq=W.provinces[q];
+      if(!pq.isSea){if(pq.nation>=0&&pq.nation!==nid)set.add(pq.nation);}
+      else for(const r of pq.neighbors){const pr=W.provinces[r];if(!pr.isSea&&pr.nation>=0&&pr.nation!==nid)set.add(pr.nation);}}}
   return set;
 }
 
-function nationStrength(nid){
-  let s=0;
-  for(const u of W.units) if(u.nation===nid) s+=u.str;
-  return s*W.nations[nid].military + W.nations[nid].provinces.size*40;
-}
+/* ============================================================ *
+ *  ORDERS — selection / movement / attack                     *
+ * ============================================================ */
+let active=-1;          // active (commanded) nation
+let selProv=-1;         // selected province
+let selUnits=new Set(); // selected unit ids
+let orderTargets=null;  // {moves:Set, attacks:Set}
 
-function tickDiplomacy(){
-  if(W.tick % DIPLO_EVERY !== 0) return;
-  for(const n of W.nations){
-    if(!n.alive) continue;
-    if(rnd() > n.aggression*0.5) continue;            // not feeling warlike this round
-    const nbrs=[...nationNeighbors(n.id)].filter(b=>W.nations[b].alive && !atWar(n.id,b));
-    if(!nbrs.length) continue;
-    const myStr=nationStrength(n.id);
-    // prefer the weaker neighbour
-    nbrs.sort((a,b)=>nationStrength(a)-nationStrength(b));
-    const target=nbrs[0];
-    const theirStr=nationStrength(target);
-    const ratio=myStr/Math.max(1,theirStr);
-    // likelier to attack if stronger; aggression scales it
-    const p = clamp(n.aggression * (0.18 + 0.32*smoothstep(0.6,1.8,ratio)), 0, 0.9);
-    if(rnd()<p){
-      W.wars.set(warKey(n.id,target),{a:n.id,b:target,start:W.tick,lastChange:W.tick});
-      n.enemies.add(target); W.nations[target].enemies.add(n.id);
-      log(`${n.short} declared war on ${W.nations[target].short}.`,"war");
-    }
-  }
-  // white peace on stalemate / exhaustion
-  for(const [k,war] of [...W.wars]){
-    if(W.tick - war.lastChange > STALEMATE_PEACE && rnd()<0.06){
-      endWar(k,"white");
-    }
-  }
+function setActive(nid){
+  active=nid; selUnits.clear(); orderTargets=null;
+  if(nid>=0){selProv=W.nations[nid].capital;selDirty=true;}
+  renderAll();
 }
-
-function endWar(key,kind){
-  const war=W.wars.get(key); if(!war)return;
-  W.wars.delete(key);
-  const A=W.nations[war.a], B=W.nations[war.b];
-  if(A) A.enemies.delete(war.b);
-  if(B) B.enemies.delete(war.a);
-  if(kind==="white" && A&&B&&A.alive&&B.alive){
-    log(`${A.short} and ${B.short} signed a white peace.`,"peace");
-  }
+function moveCost(unit,from,to){
+  const pt=W.provinces[to];
+  if(unit.dom==="sea")return pt.isSea?1:99;
+  if(unit.dom==="air")return 1;
+  if(pt.isSea)return 99; // ground can't walk on sea (amphibious handled as attack)
+  let c=TERRAIN[pt.terrain].move;
+  if(W.provinces[from].rivers.has(to))c+=1;
+  return Math.ceil(c*weatherAt(to).move);
 }
-
-function tickProduction(){
-  // soft cap per nation
-  const counts=new Array(W.nations.length).fill(0);
-  for(const u of W.units) counts[u.nation]++;
-  for(const n of W.nations){
-    if(!n.alive) continue;
-    n.prodAccum += n.industry*0.5 + 0.06;
-    const cap=Math.ceil(n.provinces.size*MAX_UNITS_PER_PROV)+3;
-    while(n.prodAccum>=1 && counts[n.id]<cap){
-      n.prodAccum-=1;
-      spawnUnit(n);
-      counts[n.id]++;
-    }
-    if(counts[n.id]>=cap) n.prodAccum=Math.min(n.prodAccum,0.9);
-  }
-}
-function spawnUnit(n){
-  const atWarNow=n.enemies.size>0;
-  const r=rnd();
-  let type;
-  // mostly ground; some air; sea only if coastal access
-  const coastProvs=[...n.provinces].filter(p=>W.provinces[p].coastal);
-  if(r<0.62) type=pick(GROUND);
-  else if(r<0.82) type=pick(AIR);
-  else if(coastProvs.length) type=pick(SEA);
-  else type=pick(GROUND);
-
-  if(DOMAIN_OF[type]==="sea"){
-    const cp=pick(coastProvs);
-    const seaNb=W.provinces[cp].neighbors.filter(q=>W.provinces[q].isSea &&
-                  (W.provinces[q].seaControl===n.id || W.provinces[q].seaControl===-1));
-    const sp = seaNb.length?pick(seaNb):cp;
-    makeUnit(W,n.id,type,sp);
-  } else {
-    // spawn at capital if owned, else a random owned province
-    const home = n.provinces.has(n.capital) ? n.capital : pick([...n.provinces]);
-    makeUnit(W,n.id,type,home);
-  }
-}
-
-function tickReinforce(){
-  for(const u of W.units){
-    const n=W.nations[u.nation];
-    if(u.str<u.maxStr){
-      u.str=Math.min(u.maxStr, u.str + (1.5+n.manpower*4.5));
-    }
-  }
-}
-
-/* ---------------- Movement toward fronts ---------------- */
-function tickMovement(){
-  for(const n of W.nations){
-    if(!n.alive || n.enemies.size===0) continue;
-    // GROUND/AIR: BFS over owned land from front provinces
-    const fronts=[];
-    for(const pid of n.provinces){
-      const p=W.provinces[pid];
-      let isFront=false;
-      for(const q of p.neighbors){
-        const pq=W.provinces[q];
-        if(!pq.isSea && pq.nation>=0 && n.enemies.has(pq.nation)){isFront=true;break;}
-        if(pq.isSea){
-          // amphibious front: enemy coast across a sea we don't fully own
-          for(const r of pq.neighbors){
-            const pr=W.provinces[r];
-            if(!pr.isSea && pr.nation>=0 && n.enemies.has(pr.nation)){isFront=true;break;}
-          }
+function computeTargets(){
+  orderTargets={moves:new Set(),attacks:new Set()};
+  if(selProv<0||selUnits.size===0)return;
+  const units=[...selUnits].map(id=>W.units.find(u=>u.id===id)).filter(Boolean);
+  if(!units.length)return;
+  const p=W.provinces[selProv];
+  for(const q of p.neighbors){
+    const pq=W.provinces[q];
+    // attack target: enemy-owned land (or enemy navy in sea)
+    const enemyHere = (!pq.isSea && pq.nation>=0 && pq.nation!==active) ||
+                      (pq.isSea && nationsIn(q).some(x=>x!==active));
+    if(enemyHere){
+      // any selected unit able to reach/attack
+      let can=false;
+      for(const u of units){
+        if(u.mp<=0)continue;
+        if(u.dom==="sea"&&!pq.isSea)continue;
+        if(u.dom!=="sea"&&pq.isSea){ // amphibious: need our navy controlling that sea? allow if coastal assault
+          if(pq.seaControl===active)can=true; continue;
         }
-        if(isFront)break;
+        can=true;
       }
-      if(isFront) fronts.push(pid);
-    }
-    if(fronts.length){
-      const dist=bfsDistance(fronts, q=>!W.provinces[q].isSea && W.provinces[q].nation===n.id);
-      for(const u of W.units){
-        if(u.nation!==n.id) continue;
-        if(u.domain==="sea") continue;
-        const cur=u.prov, dc=dist[cur];
-        if(dc===undefined || dc===0) continue;
-        // step to a neighbour with smaller distance
-        let bestNb=-1,bestD=dc;
-        for(const nb of W.provinces[cur].neighbors){
-          if(W.provinces[nb].isSea || W.provinces[nb].nation!==n.id) continue;
-          const d=dist[nb]; if(d!==undefined && d<bestD){bestD=d;bestNb=nb;}
-        }
-        if(bestNb>=0 && rnd()<0.85) u.prov=bestNb;
+      if(can)orderTargets.attacks.add(q);
+    } else {
+      // move target: passable & not enemy
+      let can=false;
+      for(const u of units){
+        const c=moveCost(u,selProv,q);
+        if(c<=u.mp && c<90)can=true;
       }
-    }
-    // SEA: move navies toward contested seas / enemy coasts
-    const seaTargets=[];
-    for(const pid of W.seaProvinces){
-      const p=W.provinces[pid];
-      let want=false;
-      // enemy navy here?
-      const m=provIndex[pid];
-      if(m){ for(const en of n.enemies){ if(m.has(en)){want=true;break;} } }
-      if(!want){
-        for(const q of p.neighbors){
-          const pq=W.provinces[q];
-          if(!pq.isSea && pq.nation>=0 && n.enemies.has(pq.nation)){want=true;break;}
-        }
-      }
-      if(want) seaTargets.push(pid);
-    }
-    if(seaTargets.length){
-      const sdist=bfsDistance(seaTargets, q=>W.provinces[q].isSea);
-      for(const u of W.units){
-        if(u.nation!==n.id || u.domain!=="sea") continue;
-        const cur=u.prov, dc=sdist[cur];
-        if(dc===undefined || dc===0) continue;
-        let bestNb=-1,bestD=dc;
-        for(const nb of W.provinces[cur].neighbors){
-          if(!W.provinces[nb].isSea) continue;
-          const d=sdist[nb]; if(d!==undefined && d<bestD){bestD=d;bestNb=nb;}
-        }
-        if(bestNb>=0 && rnd()<0.8) u.prov=bestNb;
-      }
+      if(can)orderTargets.moves.add(q);
     }
   }
 }
-function bfsDistance(sources, passable){
-  const dist={};
-  const q=[];
-  for(const s of sources){dist[s]=0;q.push(s);}
-  let head=0;
-  while(head<q.length){
-    const cur=q[head++]; const dc=dist[cur];
-    for(const nb of W.provinces[cur].neighbors){
-      if(dist[nb]!==undefined) continue;
-      if(!passable(nb)) continue;
-      dist[nb]=dc+1; q.push(nb);
-    }
-  }
-  return dist;
-}
-
-/* ---------------- Air support helper ---------------- */
-function provincesWithin(prov,r){
-  const seen=new Set([prov]); let frontier=[prov];
-  for(let i=0;i<r;i++){
-    const nx=[];
-    for(const c of frontier){
-      for(const nb of W.provinces[c].neighbors){
-        if(!seen.has(nb)){seen.add(nb);nx.push(nb);}
-      }
-    }
-    frontier=nx;
-  }
-  return seen;
-}
-function airSupport(nation,prov){
-  const area=provincesWithin(prov,AIR_RANGE);
-  let s=0;
-  for(const pid of area){
-    const m=provIndex[pid]; if(!m)continue;
-    const e=m.get(nation); if(!e)continue;
-    for(const u of e.units){ if(u.domain==="air") s+=u.str*(u.type==="Bomber"?0.55:0.4); }
-  }
-  return s;
-}
-
-/* ---------------- Combat ---------------- */
-function tickCombat(){
-  rebuildIndex();
-  const capturedDir=new Set();   // "attacker-defender" already captured this tick
-  const seaDir=new Set();
-
-  // ---- LAND combat (incl. amphibious) ----
-  for(const [k,war] of W.wars){
-    for(const dir of [[war.a,war.b],[war.b,war.a]]){
-      const [atk,def]=dir;
-      if(!W.nations[atk].alive || !W.nations[def].alive) continue;
-      const dirKey=atk+"-"+def;
-      // gather candidate target provinces (defender land bordering attacker presence)
-      const cands=[];
-      for(const tpid of W.nations[def].provinces){
-        const tp=W.provinces[tpid];
-        if(tp.cd>0) continue;
-        // attacker force reachable: from adjacent attacker land prov, or adjacent sea attacker controls/has navy
-        let atkStr=0, amphib=false;
-        for(const nb of tp.neighbors){
-          const pnb=W.provinces[nb];
-          if(!pnb.isSea && pnb.nation===atk){
-            const f=forceAt(nb,atk); if(f) atkStr+=f.str*0.9;
-          } else if(pnb.isSea){
-            const f=forceAt(nb,atk);
-            if(f && (pnb.seaControl===atk || (f.str>0))){ atkStr+=f.str*0.5; amphib=true; }
-          }
-        }
-        if(atkStr<=0) continue;
-        const df=forceAt(tpid,def);
-        const defStr=df?df.str:0;
-        cands.push({tpid,atkStr,defStr,amphib});
-      }
-      if(!cands.length) continue;
-      // pick the best couple of fronts; only the strongest may capture this tick
-      cands.sort((a,b)=>(b.atkStr-b.defStr)-(a.atkStr-a.defStr));
-      const battles=cands.slice(0,2);
-      for(let bi=0;bi<battles.length;bi++){
-        const c=battles[bi];
-        resolveBattle(atk,def,c,capturedDir,dirKey,war,bi===0);
-      }
-    }
-  }
-
-  // ---- SEA control battles ----
-  for(const [k,war] of W.wars){
-    for(const dir of [[war.a,war.b],[war.b,war.a]]){
-      const [atk,def]=dir;
-      if(!W.nations[atk].alive || !W.nations[def].alive) continue;
-      const dirKey="S"+atk+"-"+def;
-      if(seaDir.has(dirKey)) continue;
-      // find sea provinces with attacker navy adjacent to def navy/control
-      let best=null;
-      for(const sp of W.seaProvinces){
-        const p=W.provinces[sp]; if(p.cd>0) continue;
-        const fa=forceAt(sp,atk); if(!fa) continue;
-        const fd=forceAt(sp,def);
-        const defControl = p.seaControl===def;
-        if(!fd && !defControl) continue;
-        const defStr=(fd?fd.str:0) + (defControl?60:0);
-        const adv=fa.str - defStr;
-        if(!best || adv>best.adv) best={sp,atkStr:fa.str,defStr,adv};
-      }
-      if(best && best.atkStr>0){
-        const r=rrange(0.8,1.2)*W.nations[atk].military;
-        const dr=rrange(0.85,1.15)*W.nations[def].military*1.05;
-        const ap=best.atkStr*r, dp=best.defStr*dr;
-        applyCasualties(atk,best.sp,best.defStr>0?0.10*(dp/(ap+1)):0);
-        applyCasualties(def,best.sp,0.16*(ap/(dp+1)));
-        if(ap>dp*1.25 && !seaDir.has(dirKey)){
-          const p=W.provinces[best.sp];
-          if(p.seaControl!==atk){
-            p.seaControl=atk; p.cd=CAPTURE_COOLDOWN; seaDir.add(dirKey);
-            war.lastChange=W.tick;
-            W.captureFlash.push({prov:best.sp,t:W.tick,sea:true});
-            log(`${W.nations[atk].short} seized naval control off ${nameFor(best.sp)}.`,"cap");
-          }
-        }
-      }
-    }
-  }
-
-  cleanupDead();
-  checkEliminations();
-}
-
-function nameFor(pid){
-  const p=W.provinces[pid];
-  return "Sector "+(pid%97+1);
-}
-
-function resolveBattle(atk,def,c,capturedDir,dirKey,war,mayCapture){
-  const aMil=W.nations[atk].military, dMil=W.nations[def].military;
-  const aAir=airSupport(atk,c.tpid), dAir=airSupport(def,c.tpid);
-  const ap=(c.atkStr*aMil + aAir)*rrange(0.78,1.22);
-  const dp=(c.defStr*dMil*1.28 + dAir + 25)*rrange(0.82,1.18); // defender bonus + dug-in base
-  // casualties both sides
-  applyCasualtiesAdjacent(atk,c.tpid,def, 0.09*(dp/(ap+1)));
-  applyCasualties(def,c.tpid, 0.13*(ap/(dp+1)));
-  // air attrition
-  airAttrition(atk,c.tpid, 0.05*(dAir/(aAir+ap+1)));
-  airAttrition(def,c.tpid, 0.05*(aAir/(dAir+dp+1)));
-
-  if(mayCapture && !capturedDir.has(dirKey) && ap>dp*1.18){
-    captureProvince(atk,def,c.tpid,c.amphib);
-    capturedDir.add(dirKey);
-    war.lastChange=W.tick;
-  }
-}
-
-function applyCasualties(nation,prov,frac){
-  if(frac<=0)return;
-  const f=forceAt(prov,nation); if(!f)return;
-  for(const u of f.units){ u.str -= u.maxStr*frac*rrange(0.6,1.1); }
-}
-function applyCasualtiesAdjacent(nation,targetProv,enemy,frac){
-  // attacker units sit in provinces adjacent to target
-  if(frac<=0)return;
-  for(const nb of W.provinces[targetProv].neighbors){
-    const f=forceAt(nb,nation); if(!f)continue;
-    for(const u of f.units){ u.str -= u.maxStr*frac*rrange(0.5,1.0); }
-  }
-}
-function airAttrition(nation,prov,frac){
-  if(frac<=0)return;
-  const area=provincesWithin(prov,AIR_RANGE);
-  for(const pid of area){
-    const f=forceAt(pid,nation); if(!f)continue;
-    for(const u of f.units){ if(u.domain==="air") u.str-=u.maxStr*frac; }
-  }
-}
-
-function captureProvince(atk,def,pid,amphib){
-  const p=W.provinces[pid];
-  const oldName=W.nations[def].short;
-  // remove from defender, add to attacker
-  W.nations[def].provinces.delete(pid);
-  p.nation=atk; W.nations[atk].provinces.add(pid);
-  p.cd=CAPTURE_COOLDOWN;
-  W.captureFlash.push({prov:pid,t:W.tick});
-  mapDirty=true;
-  // defender units in the province retreat or perish
-  const df=provIndex[pid] && provIndex[pid].get(def);
-  if(df){
-    const retreat=[];
-    for(const nb of p.neighbors){
-      const pn=W.provinces[nb];
-      if(!pn.isSea && pn.nation===def) retreat.push(nb);
-    }
-    for(const u of df.units){
-      if(retreat.length && rnd()<0.55) u.prov=pick(retreat);
-      else u.str=-1; // destroyed
-    }
-  }
-  // a couple of attacker units advance into the captured province
+function doMove(to){
+  const units=[...selUnits].map(id=>W.units.find(u=>u.id===id)).filter(Boolean);
   let moved=0;
-  for(const nb of p.neighbors){
-    if(moved>=2) break;
-    const fa=provIndex[nb] && provIndex[nb].get(atk);
-    if(fa){
-      for(const u of fa.units){
-        if(u.domain==="ground" && rnd()<0.6){ u.prov=pid; moved++; if(moved>=2)break; }
-      }
-    }
+  for(const u of units){
+    const c=moveCost(u,selProv,to);
+    if(c<=u.mp&&c<90){u.prov=to;u.mp-=c;u.entrench=0;moved++;}
   }
-  if(amphib && moved===0){
-    // amphibious landing: spawn a beachhead infantry from naval strength
-    makeUnit(W,atk,"Infantry",pid).str=70;
-  }
-  log(`${W.nations[atk].short} captured ${nameFor(pid)} from ${oldName}.`,"cap");
-  rebuildIndex();
-}
-
-function cleanupDead(){
-  const survivors=[];
-  for(const u of W.units){ if(u.str>1) survivors.push(u); }
-  W.units=survivors;
-}
-
-function checkEliminations(){
-  for(const n of W.nations){
-    if(n.alive && n.provinces.size===0){
-      n.alive=false;
-      // end its wars
-      for(const [k,war] of [...W.wars]){ if(war.a===n.id||war.b===n.id) endWar(k,"conquest"); }
-      // destroy remaining units
-      W.units=W.units.filter(u=>u.nation!==n.id);
-      log(`${n.short} has been conquered and erased from the map.`,"elim");
-      if(W.sel===n.id) selectNation(-1);
-    }
+  if(moved){
+    rebuildIndex();
+    log(`${W.nations[active].short}: ${moved} unit(s) moved to ${W.provinces[to].name}.`,"info");
+    selProv=to; selDirty=true; computeTargets(); renderAll();
   }
 }
-
-function tickCooldowns(){
-  for(const p of W.provinces){ if(p.cd>0) p.cd--; }
-  // trim capture flashes
-  W.captureFlash=W.captureFlash.filter(f=>W.tick-f.t<6);
-}
-
-function simTick(){
-  W.tick++;
-  rebuildIndex();
-  tickDiplomacy();
-  tickProduction();
-  tickReinforce();
-  rebuildIndex();
-  tickMovement();
-  tickCombat();
-  tickCooldowns();
-  setTick(W.tick);
-  renderPanel(false);
-}
-
-/* ---------------- Logging ---------------- */
-function log(msg,type){
-  W.log.push({t:W.tick,msg,type:type||"info"});
-  if(W.log.length>LOG_CAP) W.log.shift();
-  logDirty=true;
+function doAttackInit(to){
+  const atkUnits=[...selUnits].map(id=>W.units.find(u=>u.id===id)).filter(u=>u&&u.mp>0);
+  if(!atkUnits.length){toast("Selected units have no movement left.");return;}
+  openCombatModal(selProv,to,atkUnits);
 }
 
 /* ============================================================ *
- *  RENDERING                                                    *
+ *  COMBAT                                                      *
  * ============================================================ */
-const display=document.getElementById('map');
-const dctx=display.getContext('2d');
-const mapCanvas=document.createElement('canvas'); mapCanvas.width=MAPW; mapCanvas.height=MAPH;
-const mctx=mapCanvas.getContext('2d');
-const selCanvas=document.createElement('canvas'); selCanvas.width=MAPW; selCanvas.height=MAPH;
-const sctx=selCanvas.getContext('2d');
-let mapDirty=true, selDirty=true, logDirty=true;
+function unitPower(u,role){
+  const d=UDEF[u.type];
+  const base=(u.men/1000)*(role==="atk"?d.atk:d.def);
+  const cond=(u.org/100*0.5+0.5)*(u.morale/100*0.55+0.45)*(1+u.vet*0.15);
+  return base*cond;
+}
+function airNaval(prov,nation,dom){
+  // sum power of nation's air/sea units in prov and neighbours
+  let s=0;
+  const set=[prov,...W.provinces[prov].neighbors];
+  for(const id of set)for(const u of unitsIn(id,nation))if(u.dom===dom)s+=unitPower(u,"atk");
+  return s;
+}
+function computeBattle(fromProv,toProv,atkUnits,atkPostureIdx){
+  const aNation=W.nations[active];
+  const toP=W.provinces[toProv];
+  const defNation = toP.isSea ? (nationsIn(toProv).find(x=>x!==active)) : toP.nation;
+  const dNation = defNation>=0 ? W.nations[defNation] : null;
+  const defUnits = dNation ? unitsIn(toProv,dNation.id) : [];
+  const wx=weatherAt(toProv), terr=TERRAIN[toP.terrain]||{def:0,name:toP.isSea?"Sea":"Coast"};
+  const posture=POSTURES[atkPostureIdx];
+  // defender posture (auto)
+  const defPosture = defUnits.length ? pick([POSTURES[0],POSTURES[7],POSTURES[1],{n:"Defensive Stand",win:0,atkCas:1.0,defCas:0.8,d:"Dug-in defense."}]) : {n:"Undefended",win:0,atkCas:0.3,defCas:1.0,d:""};
+
+  // base powers (armour degraded by mud/snow, air by poor visibility)
+  let aPow=0; for(const u of atkUnits){let p=unitPower(u,"atk");if(u.type==="Armor")p*=wx.armor;if(u.dom==="air")p*=wx.air;aPow+=p;}
+  let dPow=0; for(const u of defUnits){let p=unitPower(u,"def");if(u.type==="Armor")p*=wx.armor;if(u.dom==="air")p*=wx.air;dPow+=p;}
+
+  // doctrine
+  aPow*=clamp(0.7+aNation.military*0.5,0.7,1.3)*clamp(0.7+aNation.warSupport/100*0.5,0.7,1.2);
+  if(dNation)dPow*=clamp(0.7+dNation.military*0.5,0.7,1.3)*clamp(0.7+dNation.warSupport/100*0.5,0.7,1.2);
+
+  // factor breakdown for display
+  const factors=[];
+  // terrain (defender)
+  const terrBonus=terr.def; dPow*=(1+terrBonus); if(terrBonus>0)factors.push([`Terrain: ${terr.name}`,`+${Math.round(terrBonus*100)}% def`]);
+  // entrenchment
+  let entr=0; for(const u of defUnits)entr=Math.max(entr,u.entrench); if(entr>0){dPow*=(1+entr*0.06);factors.push([`Entrenchment lv${entr}`,`+${Math.round(entr*6)}% def`]);}
+  // river crossing
+  if(W.provinces[fromProv].rivers.has(toProv)){aPow*=0.78;factors.push(["River crossing","−22% atk"]);}
+  // combined arms
+  const types=new Set(atkUnits.map(u=>u.type)); const ca=["Infantry","Armor","Artillery"].filter(t=>types.has(t)).length;
+  if(ca>=2){aPow*=1+0.08*(ca-1);factors.push(["Combined arms",`+${8*(ca-1)}% atk`]);}
+  // air superiority
+  const aAir=airNaval(fromProv,active,"air")*wx.air, dAir=dNation?airNaval(toProv,dNation.id,"air")*wx.air:0;
+  if(aAir>dAir+1){aPow*=1.10;factors.push(["Air superiority","+10% atk"]);}
+  else if(dAir>aAir+1){dPow*=1.08;factors.push(["Enemy air cover","+8% def"]);}
+  // naval bombardment (coastal target)
+  if(toP.coastal||toP.isSea){const aSea=airNaval(fromProv,active,"sea");if(aSea>0){aPow*=1.08;factors.push(["Naval bombardment","+8% atk"]);}}
+  // supply (war support proxy already in); morale low check
+  // posture
+  factors.unshift([`Your posture: ${posture.n}`, (posture.win>=0?"+":"")+Math.round(posture.win*100)+"% odds"]);
+  if(dNation)factors.push([`Enemy: ${defPosture.n}`,""]);
+  // weather
+  factors.push([`Weather: ${wx.icon} ${wx.n}`, wx.air<0.6?"air grounded":(wx.move>1.3?"mud/snow slows":"")]);
+
+  // win probability
+  let wp = aPow/(aPow+dPow+1);
+  wp += posture.win - defPosture.win*0.5;
+  wp += (aNation.military-(dNation?dNation.military:0.5))*0.12;
+  wp += rrange(-0.13,0.13); // fog of war
+  wp = clamp(wp,0.05,0.95);
+
+  return {aNation,dNation,defNationId:defNation,atkUnits,defUnits,wx,terr,posture,defPosture,factors,aPow,dPow,wp,toProv,fromProv,entr};
+}
+
+function resolveBattle(b, postureIdx){
+  const {aNation,dNation,atkUnits,defUnits,wx,posture,wp,toProv,fromProv}=b;
+  const attackerWins = rnd()<wp;
+  // casualties (real men)
+  const ratio=(b.aPow+1)/(b.dPow+1);
+  let defFrac=clamp(0.05*ratio*posture.defCas*wx.cas*(attackerWins?1.4:0.8),0.03,0.7);
+  let atkFrac=clamp(0.05/ratio*posture.atkCas*wx.cas*(attackerWins?0.85:1.25),0.03,0.65);
+  let atkCas=0,defCas=0;
+  for(const u of atkUnits){const c=Math.min(u.men, u.men*atkFrac*rrange(0.7,1.2));u.men-=c;atkCas+=c;u.org=clamp(u.org-rrange(8,22),0,100);u.morale=clamp(u.morale-(attackerWins?rrange(0,6):rrange(6,16)),0,100);u.mp=0;}
+  for(const u of defUnits){const c=Math.min(u.men, u.men*defFrac*rrange(0.7,1.2));u.men-=c;defCas+=c;u.org=clamp(u.org-rrange(8,22),0,100);u.morale=clamp(u.morale-(attackerWins?rrange(6,16):rrange(0,6)),0,100);}
+  aNation.casualties+=atkCas; if(dNation)dNation.casualties+=defCas; W.globalCas+=atkCas+defCas;
+
+  // veterancy for survivors
+  for(const u of atkUnits)if(u.men>1&&rnd()<0.25)u.vet=Math.min(3,u.vet+ (attackerWins?1:0));
+
+  let captured=false;
+  const toP=W.provinces[toProv];
+  if(attackerWins && !toP.isSea){
+    // capture if attacker has a surviving ground unit
+    const survivors=atkUnits.filter(u=>u.men>500 && u.dom==="ground");
+    if(survivors.length || defUnits.length===0){
+      captured=true;
+      const oldOwner=toP.nation;
+      if(oldOwner>=0){W.nations[oldOwner].provinces.delete(toProv);}
+      toP.nation=active; aNation.provinces.add(toProv); toP.entrench=0; toP.cd=2;
+      // defender survivors retreat or die
+      for(const u of defUnits){
+        if(u.men<=500){u.men=-1;continue;}
+        const retreat=W.provinces[toProv].neighbors.filter(q=>!W.provinces[q].isSea&&W.provinces[q].nation===oldOwner);
+        if(retreat.length&&rnd()<0.6)u.prov=pick(retreat);else u.men=-1;
+      }
+      // advance attacker ground units
+      let moved=0;for(const u of survivors){if(moved>=2)break;u.prov=toProv;moved++;}
+      W.captureFlash.push({prov:toProv,t:W.turn});
+      mapDirty=true;
+      // feedback
+      addStab(aNation,3);addWar(aNation,4);addRes(aNation,'cp',3);
+      if(dNation){addStab(dNation,-5);addWar(dNation,-4);}
+    }
+  } else if(attackerWins && toP.isSea){
+    captured=true; toP.seaControl=active; toP.cd=2; W.captureFlash.push({prov:toProv,t:W.turn,sea:true}); mapDirty=true;
+    addRes(aNation,'cp',2);
+  }
+  // war support hit from casualties
+  addWar(aNation,-atkCas/20000); if(dNation)addWar(dNation,-defCas/20000);
+
+  cleanupDead(); checkEliminations();
+  rebuildIndex();
+
+  // log narrative
+  const where=toP.name+(toP.isSea?" (open sea)":"");
+  const verb=attackerWins?(captured?(toP.isSea?"seized the waters off":"captured"):"broke through at"):"was repelled at";
+  log(`${aNation.short} ${verb} ${where} — ${posture.n}, ${wx.n}. Losses: ${aNation.short} ${fmt(atkCas)}, ${dNation?dNation.short:"defenders"} ${fmt(defCas)}.`, "battle");
+
+  return {attackerWins,captured,atkCas,defCas};
+}
+
+function cleanupDead(){W.units=W.units.filter(u=>u.men>1);}
+function checkEliminations(){
+  for(const n of W.nations){
+    if(n.alive&&n.provinces.size===0){
+      n.alive=false;
+      for(const[k,war]of[...W.wars])if(war.a===n.id||war.b===n.id)endWar(k,"conquest");
+      W.units=W.units.filter(u=>u.nation!==n.id);
+      log(`${n.short} has been conquered and erased from the map.`,"elim");
+      if(active===n.id)setActive(W.nations.findIndex(x=>x.alive));
+    }
+  }
+}
+
+/* ============================================================ *
+ *  END TURN                                                    *
+ * ============================================================ */
+function endTurn(){
+  rollWeather();
+  for(const n of W.nations){
+    if(!n.alive)continue;
+    applyIncome(n);
+    advanceProduction(n);
+    // stability/war drift toward equilibrium
+    n.stability=clamp(n.stability+(60-n.stability)*0.06,0,100);
+    n.warSupport=clamp(n.warSupport+(55-n.warSupport)*0.05,0,100);
+    // entrenchment grows for stationary units; reset movement
+    // forced negative event if stability critical
+    if(n.stability<25&&rnd()<0.4){const c=pick(CARDS.filter(x=>x.instant&&(x.id==="ev_strike"||x.id==="ev_partisan")));c.apply(n);log(`${n.short} — Crisis: ${c.name}!`,"bad");}
+  }
+  for(const u of W.units){u.mp=UDEF[u.type].move; if(u.org<100)u.org=clamp(u.org+8,0,100);}
+  // entrench stationary ground units
+  rebuildIndex();
+  for(const u of W.units)if(u.dom==="ground")u.entrench=Math.min(6,u.entrench+1);
+  for(const p of W.provinces)if(p.cd>0)p.cd--;
+  W.captureFlash=W.captureFlash.filter(f=>W.turn-f.t<3);
+  W.turn++;
+  cleanupDead(); checkEliminations();
+  selUnits.clear(); computeTargets();
+  renderAll();
+  showHint(`Turn ${W.turn}. Weather shifted, production advanced, income collected.`);
+}
+
+/* ============================================================ *
+ *  LOG                                                         *
+ * ============================================================ */
+function log(msg,type){W.log.push({t:W.turn,msg,type:type||"info"});if(W.log.length>200)W.log.shift();logDirty=true;}
+
+/* ============================================================ *
+ *  RENDERING                                                   *
+ * ============================================================ */
+const display=document.getElementById('map'), dctx=display.getContext('2d');
+const mapCanvas=document.createElement('canvas');mapCanvas.width=MAPW;mapCanvas.height=MAPH;const mctx=mapCanvas.getContext('2d');
+const selCanvas=document.createElement('canvas');selCanvas.width=MAPW;selCanvas.height=MAPH;const sctx=selCanvas.getContext('2d');
+let mapDirty=true,selDirty=true,logDirty=true;
 let view={ox:0,oy:0,scale:1,dpr:1};
 
 function resize(){
-  const r=display.getBoundingClientRect();
-  const dpr=window.devicePixelRatio||1;
-  display.width=Math.max(2,Math.floor(r.width*dpr));
-  display.height=Math.max(2,Math.floor(r.height*dpr));
-  view.dpr=dpr;
-  const scale=Math.min(display.width/GW, display.height/GH);
-  view.scale=scale;
-  view.ox=(display.width-GW*scale)/2;
-  view.oy=(display.height-GH*scale)/2;
+  const r=display.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  display.width=Math.max(2,Math.floor(r.width*dpr));display.height=Math.max(2,Math.floor(r.height*dpr));
+  view.dpr=dpr;const s=Math.min(display.width/GW,display.height/GH);view.scale=s;
+  view.ox=(display.width-GW*s)/2;view.oy=(display.height-GH*s)/2;
 }
-function cellToDisp(cx,cy){ return [view.ox+(cx+0.5)*view.scale, view.oy+(cy+0.5)*view.scale]; }
+function cellToDisp(cx,cy){return[view.ox+(cx+0.5)*view.scale,view.oy+(cy+0.5)*view.scale];}
 
+let grainPattern=null;
 function rebuildMapCanvas(){
-  // ocean base
-  mctx.fillStyle="#a9c0b6"; mctx.fillRect(0,0,MAPW,MAPH);
-  // fill cells
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const pid=W.cellProv[y*GW+x];
-      const p=W.provinces[pid];
-      let col;
-      if(p.isSea){
-        if(p.seaControl>=0){
-          const n=W.nations[p.seaControl];
-          col=`hsl(${n.hue},22%,62%)`;
-        } else {
-          col=((x+y)&1)?"#a9c0b6":"#a3bbb0";
-        }
-      } else {
-        const n=W.nations[p.nation];
-        col=n?n.color:"#cbb98f";
-      }
-      mctx.fillStyle=col;
-      mctx.fillRect(x*CELL,y*CELL,CELL,CELL);
-    }
+  mctx.fillStyle="#a9c0b6";mctx.fillRect(0,0,MAPW,MAPH);
+  // base cells
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const pid=W.cellProv[y*GW+x],p=W.provinces[pid];let col;
+    if(p.isSea){col=p.seaControl>=0?hsl(W.nations[p.seaControl].hue,22,62):(((x+y)&1)?"#a9c0b6":"#a3bbb0");}
+    else{const n=W.nations[p.nation];const terr=TERRAIN[p.terrain];
+      // blend terrain color with nation tint
+      col=n?mix(terr.col,n.color,0.45):terr.col;}
+    mctx.fillStyle=col;mctx.fillRect(x*CELL,y*CELL,CELL,CELL);
   }
-  // province + nation borders (edge detection)
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const idx=y*GW+x; const pid=W.cellProv[idx]; const p=W.provinces[pid];
-      // right edge
-      if(x+1<GW){
-        const q=W.cellProv[idx+1];
-        if(q!==pid) drawEdge(mctx,p,W.provinces[q],x+1,y,true);
-      }
-      if(y+1<GH){
-        const q=W.cellProv[idx+GW];
-        if(q!==pid) drawEdge(mctx,p,W.provinces[q],x,y+1,false);
-      }
-    }
-  }
+  // terrain motifs
+  drawMotifs();
+  // rivers
+  mctx.strokeStyle="rgba(40,90,140,0.7)";mctx.lineWidth=2.2;
+  for(const p of W.provinces){if(p.isSea)continue;for(const q of p.rivers){if(q<=p.id)continue;const pq=W.provinces[q];
+    mctx.beginPath();mctx.moveTo(p.cx*CELL+CELL/2,p.cy*CELL+CELL/2);mctx.lineTo(pq.cx*CELL+CELL/2,pq.cy*CELL+CELL/2);mctx.stroke();}}
+  // borders
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const idx=y*GW+x,pid=W.cellProv[idx],p=W.provinces[pid];
+    if(x+1<GW){const q=W.cellProv[idx+1];if(q!==pid)drawEdge(p,W.provinces[q],x+1,y,true);}
+    if(y+1<GH){const q=W.cellProv[idx+GW];if(q!==pid)drawEdge(p,W.provinces[q],x,y+1,false);}}
+  // deposit glyphs
+  drawDeposits();
   // graticule
-  mctx.strokeStyle="rgba(90,75,45,0.10)"; mctx.lineWidth=1;
-  for(let gx=0;gx<=GW;gx+=14){ mctx.beginPath();mctx.moveTo(gx*CELL,0);mctx.lineTo(gx*CELL,MAPH);mctx.stroke(); }
-  for(let gy=0;gy<=GH;gy+=14){ mctx.beginPath();mctx.moveTo(0,gy*CELL);mctx.lineTo(MAPW,gy*CELL);mctx.stroke(); }
-  // paper grain
+  mctx.strokeStyle="rgba(90,75,45,0.09)";mctx.lineWidth=1;
+  for(let gx=0;gx<=GW;gx+=14){mctx.beginPath();mctx.moveTo(gx*CELL,0);mctx.lineTo(gx*CELL,MAPH);mctx.stroke();}
+  for(let gy=0;gy<=GH;gy+=14){mctx.beginPath();mctx.moveTo(0,gy*CELL);mctx.lineTo(MAPW,gy*CELL);mctx.stroke();}
   applyGrain();
   mapDirty=false;
 }
-function drawEdge(ctx,pa,pb,ex,ey,vertical){
-  // nation border (between two different land nations) thick & dark; else thin province line
-  let thick=false, col="rgba(70,58,34,0.45)";
-  if(!pa.isSea && !pb.isSea && pa.nation!==pb.nation){ thick=true; col="rgba(40,30,16,0.92)"; }
-  else if(pa.isSea!==pb.isSea){ thick=true; col="rgba(55,45,28,0.55)"; } // coastline
-  ctx.strokeStyle=col; ctx.lineWidth=thick?2.0:0.8;
-  ctx.beginPath();
-  if(vertical){ ctx.moveTo(ex*CELL,ey*CELL); ctx.lineTo(ex*CELL,(ey+1)*CELL); }
-  else { ctx.moveTo(ex*CELL,ey*CELL); ctx.lineTo((ex+1)*CELL,ey*CELL); }
-  ctx.stroke();
+function mix(c1,c2,t){
+  // c1 hex, c2 hsl string -> just overlay c2 translucently; simpler: return c1 with alpha blend done via canvas not trivial.
+  // Use a tiny offscreen to blend. For speed, parse both to rgb.
+  const a=toRGB(c1),b=toRGB(c2);
+  return `rgb(${Math.round(a[0]+(b[0]-a[0])*t)},${Math.round(a[1]+(b[1]-a[1])*t)},${Math.round(a[2]+(b[2]-a[2])*t)})`;
 }
-let grainPattern=null;
-function applyGrain(){
-  if(!grainPattern){
-    const g=document.createElement('canvas'); g.width=g.height=120; const gx=g.getContext('2d');
-    const img=gx.createImageData(120,120);
-    for(let i=0;i<img.data.length;i+=4){
-      const v=200+Math.floor(Math.random()*55);
-      img.data[i]=img.data[i+1]=img.data[i+2]=v;
-      img.data[i+3]=Math.random()<0.5?10:0;
+let _rgbCache={};
+function toRGB(c){
+  if(_rgbCache[c])return _rgbCache[c];
+  const d=document.createElement('canvas');d.width=d.height=1;const x=d.getContext('2d');x.fillStyle=c;x.fillRect(0,0,1,1);
+  const p=x.getImageData(0,0,1,1).data;const r=[p[0],p[1],p[2]];_rgbCache[c]=r;return r;
+}
+function drawMotifs(){
+  mctx.save();
+  for(const p of W.provinces){
+    if(p.isSea)continue;const t=TERRAIN[p.terrain];if(!t.sym)continue;
+    mctx.strokeStyle="rgba(50,40,22,0.45)";mctx.fillStyle="rgba(50,40,22,0.4)";mctx.lineWidth=1;
+    for(const m of p.motifs){const X=m.x*CELL+CELL/2,Y=m.y*CELL+CELL/2;
+      if(t.sym==="mtn"){mctx.beginPath();mctx.moveTo(X-3,Y+2);mctx.lineTo(X,Y-3);mctx.lineTo(X+3,Y+2);mctx.stroke();}
+      else if(t.sym==="hills"){mctx.beginPath();mctx.arc(X-2,Y,2,Math.PI,0);mctx.arc(X+2,Y,2,Math.PI,0);mctx.stroke();}
+      else if(t.sym==="forest"){mctx.beginPath();mctx.arc(X,Y,1.6,0,7);mctx.fill();mctx.beginPath();mctx.moveTo(X,Y);mctx.lineTo(X,Y+3);mctx.stroke();}
+      else if(t.sym==="marsh"){mctx.beginPath();mctx.moveTo(X-3,Y);mctx.lineTo(X+3,Y);mctx.moveTo(X-3,Y+2);mctx.lineTo(X+3,Y+2);mctx.stroke();}
+      else if(t.sym==="urban"){mctx.fillRect(X-2,Y-2,2,2);mctx.fillRect(X+1,Y-1,2,2);mctx.fillRect(X-1,Y+1,2,2);}
+      else if(t.sym==="desert"){mctx.beginPath();mctx.arc(X,Y,0.9,0,7);mctx.fill();}
+      else if(t.sym==="tundra"){mctx.beginPath();mctx.moveTo(X-2,Y);mctx.lineTo(X+2,Y);mctx.moveTo(X,Y-2);mctx.lineTo(X,Y+2);mctx.stroke();}
     }
-    gx.putImageData(img,0,0);
-    grainPattern=mctx.createPattern(g,'repeat');
   }
-  mctx.fillStyle=grainPattern; mctx.fillRect(0,0,MAPW,MAPH);
-  // subtle vignette
-  const grd=mctx.createRadialGradient(MAPW/2,MAPH/2,MAPH*0.3,MAPW/2,MAPH/2,MAPW*0.7);
-  grd.addColorStop(0,"rgba(0,0,0,0)"); grd.addColorStop(1,"rgba(60,45,20,0.18)");
-  mctx.fillStyle=grd; mctx.fillRect(0,0,MAPW,MAPH);
+  mctx.restore();
 }
-
+function drawDeposits(){
+  mctx.save();mctx.textAlign="center";mctx.textBaseline="middle";mctx.font=`${Math.max(7,CELL*1.2)}px serif`;
+  for(const p of W.provinces){if(p.isSea)continue;const X=p.cx*CELL+CELL/2,Y=p.cy*CELL+CELL/2;
+    let g="";
+    if(p.dep.factory>=2)g="⚙"; else if(p.dep.oil>=2)g="⬢"; else if(p.dep.ore>=2)g="▲"; else if(p.dep.farm>=3)g="❖";
+    if(g){mctx.fillStyle="rgba(40,30,15,0.55)";mctx.fillText(g,X,Y);}
+  }
+  mctx.restore();
+}
+function drawEdge(pa,pb,ex,ey,vertical){
+  let thick=false,col="rgba(70,58,34,0.4)";
+  if(!pa.isSea&&!pb.isSea&&pa.nation!==pb.nation){thick=true;col="rgba(35,26,12,0.95)";}
+  else if(pa.isSea!==pb.isSea){thick=true;col="rgba(55,45,28,0.5)";}
+  mctx.strokeStyle=col;mctx.lineWidth=thick?2.0:0.7;mctx.beginPath();
+  if(vertical){mctx.moveTo(ex*CELL,ey*CELL);mctx.lineTo(ex*CELL,(ey+1)*CELL);}
+  else{mctx.moveTo(ex*CELL,ey*CELL);mctx.lineTo((ex+1)*CELL,ey*CELL);}
+  mctx.stroke();
+}
+function applyGrain(){
+  if(!grainPattern){const g=document.createElement('canvas');g.width=g.height=120;const gx=g.getContext('2d');
+    const img=gx.createImageData(120,120);for(let i=0;i<img.data.length;i+=4){const v=200+Math.floor(Math.random()*55);img.data[i]=img.data[i+1]=img.data[i+2]=v;img.data[i+3]=Math.random()<0.5?9:0;}
+    gx.putImageData(img,0,0);grainPattern=mctx.createPattern(g,'repeat');}
+  mctx.fillStyle=grainPattern;mctx.fillRect(0,0,MAPW,MAPH);
+  const grd=mctx.createRadialGradient(MAPW/2,MAPH/2,MAPH*0.3,MAPW/2,MAPH/2,MAPW*0.7);
+  grd.addColorStop(0,"rgba(0,0,0,0)");grd.addColorStop(1,"rgba(60,45,20,0.16)");mctx.fillStyle=grd;mctx.fillRect(0,0,MAPW,MAPH);
+}
 function rebuildSelOverlay(){
   sctx.clearRect(0,0,MAPW,MAPH);
-  if(W.sel<0){ selDirty=false; return; }
-  sctx.fillStyle="rgba(20,15,8,0.46)";
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const pid=W.cellProv[y*GW+x];
-      if(W.provinces[pid].nation!==W.sel){
-        sctx.fillRect(x*CELL,y*CELL,CELL,CELL);
-      }
-    }
-  }
-  // bright outline of selected territory
-  sctx.strokeStyle="rgba(255,238,180,0.95)"; sctx.lineWidth=2.2;
-  for(let y=0;y<GH;y++){
-    for(let x=0;x<GW;x++){
-      const idx=y*GW+x; const pid=W.cellProv[idx];
-      if(W.provinces[pid].nation!==W.sel) continue;
-      if(x+1<GW && W.provinces[W.cellProv[idx+1]].nation!==W.sel){sctx.beginPath();sctx.moveTo((x+1)*CELL,y*CELL);sctx.lineTo((x+1)*CELL,(y+1)*CELL);sctx.stroke();}
-      if(x>0 && W.provinces[W.cellProv[idx-1]].nation!==W.sel){sctx.beginPath();sctx.moveTo(x*CELL,y*CELL);sctx.lineTo(x*CELL,(y+1)*CELL);sctx.stroke();}
-      if(y+1<GH && W.provinces[W.cellProv[idx+GW]].nation!==W.sel){sctx.beginPath();sctx.moveTo(x*CELL,(y+1)*CELL);sctx.lineTo((x+1)*CELL,(y+1)*CELL);sctx.stroke();}
-      if(y>0 && W.provinces[W.cellProv[idx-GW]].nation!==W.sel){sctx.beginPath();sctx.moveTo(x*CELL,y*CELL);sctx.lineTo((x+1)*CELL,y*CELL);sctx.stroke();}
-    }
-  }
+  if(active<0){selDirty=false;return;}
+  sctx.fillStyle="rgba(20,15,8,0.30)";
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const pid=W.cellProv[y*GW+x];if(W.provinces[pid].nation!==active)sctx.fillRect(x*CELL,y*CELL,CELL,CELL);}
+  sctx.strokeStyle="rgba(255,238,180,0.9)";sctx.lineWidth=2;
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const idx=y*GW+x,pid=W.cellProv[idx];if(W.provinces[pid].nation!==active)continue;
+    if(x+1<GW&&W.provinces[W.cellProv[idx+1]].nation!==active){sctx.beginPath();sctx.moveTo((x+1)*CELL,y*CELL);sctx.lineTo((x+1)*CELL,(y+1)*CELL);sctx.stroke();}
+    if(x>0&&W.provinces[W.cellProv[idx-1]].nation!==active){sctx.beginPath();sctx.moveTo(x*CELL,y*CELL);sctx.lineTo(x*CELL,(y+1)*CELL);sctx.stroke();}
+    if(y+1<GH&&W.provinces[W.cellProv[idx+GW]].nation!==active){sctx.beginPath();sctx.moveTo(x*CELL,(y+1)*CELL);sctx.lineTo((x+1)*CELL,(y+1)*CELL);sctx.stroke();}
+    if(y>0&&W.provinces[W.cellProv[idx-GW]].nation!==active){sctx.beginPath();sctx.moveTo(x*CELL,y*CELL);sctx.lineTo((x+1)*CELL,y*CELL);sctx.stroke();}}
   selDirty=false;
 }
 
-/* ---- unit counter rendering ---- */
 function draw(){
   dctx.setTransform(1,0,0,1,0,0);
-  dctx.fillStyle="#1b160f"; dctx.fillRect(0,0,display.width,display.height);
+  dctx.fillStyle="#1b160f";dctx.fillRect(0,0,display.width,display.height);
   if(!W){requestAnimationFrame(draw);return;}
-  if(mapDirty) rebuildMapCanvas();
-  if(selDirty) rebuildSelOverlay();
-  // blit base map (scaled to fit)
+  if(mapDirty)rebuildMapCanvas();
+  if(selDirty)rebuildSelOverlay();
   dctx.imageSmoothingEnabled=true;
-  dctx.drawImage(mapCanvas,0,0,MAPW,MAPH, view.ox,view.oy, GW*view.scale, GH*view.scale);
-  if(W.sel>=0) dctx.drawImage(selCanvas,0,0,MAPW,MAPH, view.ox,view.oy, GW*view.scale, GH*view.scale);
-
+  dctx.drawImage(mapCanvas,0,0,MAPW,MAPH,view.ox,view.oy,GW*view.scale,GH*view.scale);
+  if(active>=0)dctx.drawImage(selCanvas,0,0,MAPW,MAPH,view.ox,view.oy,GW*view.scale,GH*view.scale);
+  drawOrderHighlights();
+  drawSelection();
   drawUnits();
-  drawCaptureFlashes();
-  drawCartouche();
+  drawCapitals();
+  drawFlashes();
+  drawCompass();
   requestAnimationFrame(draw);
 }
-
+function drawOrderHighlights(){
+  if(!orderTargets)return;
+  const s=view.scale;
+  for(const q of orderTargets.moves){const p=W.provinces[q];const[x,y]=cellToDisp(p.cx,p.cy);
+    dctx.fillStyle="rgba(80,170,90,0.28)";dctx.strokeStyle="rgba(40,120,50,0.9)";dctx.lineWidth=2;
+    dctx.beginPath();dctx.arc(x,y,s*1.7,0,7);dctx.fill();dctx.stroke();}
+  for(const q of orderTargets.attacks){const p=W.provinces[q];const[x,y]=cellToDisp(p.cx,p.cy);
+    dctx.fillStyle="rgba(200,60,40,0.30)";dctx.strokeStyle="rgba(150,30,20,0.95)";dctx.lineWidth=2.5;
+    dctx.beginPath();dctx.arc(x,y,s*1.7,0,7);dctx.fill();dctx.stroke();
+    dctx.fillStyle="rgba(150,30,20,0.95)";dctx.font=`bold ${Math.round(s*1.6)}px serif`;dctx.textAlign="center";dctx.textBaseline="middle";dctx.fillText("⚔",x,y);}
+}
+function drawSelection(){
+  if(selProv<0)return;const p=W.provinces[selProv];const[x,y]=cellToDisp(p.cx,p.cy);const s=view.scale;
+  dctx.strokeStyle="#2a5a7a";dctx.lineWidth=2.5;dctx.beginPath();dctx.arc(x,y,s*2.0,0,7);dctx.stroke();
+}
 function drawUnits(){
-  // aggregate units per province per nation
-  const agg=new Map(); // prov -> Map nation -> {count,str,byType}
-  for(const u of W.units){
-    let m=agg.get(u.prov); if(!m){m=new Map();agg.set(u.prov,m);}
-    let e=m.get(u.nation); if(!e){e={count:0,str:0,byType:{}};m.set(u.nation,e);}
-    e.count++; e.str+=u.str; e.byType[u.type]=(e.byType[u.type]||0)+1;
-  }
+  const agg=new Map();
+  for(const u of W.units){let m=agg.get(u.prov);if(!m){m=new Map();agg.set(u.prov,m);}
+    let e=m.get(u.nation);if(!e){e={count:0,men:0,byType:{},sel:false};m.set(u.nation,e);}
+    e.count++;e.men+=u.men;e.byType[u.type]=(e.byType[u.type]||0)+1;if(selUnits.has(u.id))e.sel=true;}
   const size=clamp(view.scale*1.7,11,24);
-  for(const [pid,m] of agg){
-    const p=W.provinces[pid];
-    const [bx,by]=cellToDisp(p.cx,p.cy);
-    const nats=[...m.keys()];
-    nats.forEach((nid,i)=>{
-      const e=m.get(nid);
-      // dominant type
-      let domType="Infantry",domN=-1;
-      for(const t in e.byType){ if(e.byType[t]>domN){domN=e.byType[t];domType=t;} }
-      let ox=0,oy=0;
-      if(nats.length>1){ const ang=(i/nats.length)*Math.PI*2; ox=Math.cos(ang)*size*0.55; oy=Math.sin(ang)*size*0.55; }
-      drawCounter(dctx,bx+ox,by+oy,size,W.nations[nid],domType,e.count);
-    });
-  }
+  for(const[pid,m]of agg){const p=W.provinces[pid];const[bx,by]=cellToDisp(p.cx,p.cy);
+    const nats=[...m.keys()];nats.forEach((nid,i)=>{const e=m.get(nid);
+      let domType="Infantry",dn=-1;for(const t in e.byType)if(e.byType[t]>dn){dn=e.byType[t];domType=t;}
+      let ox=0,oy=0;if(nats.length>1){const a=(i/nats.length)*Math.PI*2;ox=Math.cos(a)*size*0.6;oy=Math.sin(a)*size*0.6;}
+      drawCounter(bx+ox,by+oy,size,W.nations[nid],domType,e.count,e.men,e.sel&&nid===active);});}
 }
-
-function drawCounter(ctx,x,y,s,nation,type,count){
-  const dom=DOMAIN_OF[type];
-  ctx.save();
-  ctx.translate(x,y);
-  ctx.lineJoin="round";
-  if(dom==="ground"){
-    const w=s*1.45,h=s;
-    ctx.fillStyle=nation.colorLight; ctx.strokeStyle=nation.colorDark; ctx.lineWidth=Math.max(1.4,s*0.11);
-    roundRect(ctx,-w/2,-h/2,w,h,2); ctx.fill(); ctx.stroke();
-    ctx.strokeStyle=nation.colorDark; ctx.fillStyle=nation.colorDark; ctx.lineWidth=Math.max(1.2,s*0.09);
-    if(type==="Infantry"){
-      ctx.beginPath();ctx.moveTo(-w/2+2,-h/2+2);ctx.lineTo(w/2-2,h/2-2);
-      ctx.moveTo(w/2-2,-h/2+2);ctx.lineTo(-w/2+2,h/2-2);ctx.stroke();
-    } else if(type==="Armor"){
-      ctx.beginPath();ctx.ellipse(0,0,w*0.30,h*0.30,0,0,Math.PI*2);ctx.stroke();
-    } else { // artillery
-      ctx.beginPath();ctx.arc(0,0,h*0.17,0,Math.PI*2);ctx.fill();
-    }
-  } else if(dom==="air"){
-    // aircraft silhouette
-    ctx.fillStyle=nation.colorLight; ctx.strokeStyle=nation.colorDark; ctx.lineWidth=Math.max(1.2,s*0.08);
-    const k=s*0.62;
-    ctx.beginPath();
-    ctx.moveTo(0,-k);                 // nose
-    ctx.lineTo(k*0.16,-k*0.2);
-    ctx.lineTo(k*0.95,k*0.05);        // right wing
-    ctx.lineTo(k*0.16,k*0.18);
-    ctx.lineTo(k*0.22,k*0.85);        // right tail
-    ctx.lineTo(0,k*0.6);
-    ctx.lineTo(-k*0.22,k*0.85);       // left tail
-    ctx.lineTo(-k*0.16,k*0.18);
-    ctx.lineTo(-k*0.95,k*0.05);       // left wing
-    ctx.lineTo(-k*0.16,-k*0.2);
-    ctx.closePath(); ctx.fill(); ctx.stroke();
-    if(type==="Bomber"){ ctx.fillStyle=nation.colorDark; ctx.beginPath();ctx.arc(-k*0.5,k*0.05,k*0.08,0,7);ctx.arc(k*0.5,k*0.05,k*0.08,0,7);ctx.fill(); }
-  } else { // sea
-    ctx.fillStyle=nation.colorLight; ctx.strokeStyle=nation.colorDark; ctx.lineWidth=Math.max(1.2,s*0.08);
-    const w=s*1.5,h=s*0.85;
-    // hull
-    ctx.beginPath();
-    ctx.moveTo(-w/2,0); ctx.lineTo(-w*0.36,h*0.32); ctx.lineTo(w*0.40,h*0.32);
-    ctx.lineTo(w/2,0); ctx.lineTo(-w/2,0); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.fillStyle=nation.colorDark;
-    if(type==="Carrier"){ ctx.fillRect(-w*0.42,-h*0.12,w*0.84,h*0.14); }
-    else if(type==="Battleship"){ ctx.fillRect(-w*0.10,-h*0.34,w*0.20,h*0.34); ctx.fillRect(-w*0.34,-h*0.16,w*0.10,h*0.16); ctx.fillRect(w*0.22,-h*0.16,w*0.10,h*0.16);}
-    else { ctx.fillRect(-w*0.06,-h*0.30,w*0.12,h*0.30); } // destroyer tower
-  }
-  // count badge
-  if(count>1){
-    ctx.fillStyle="rgba(40,30,16,0.92)";
-    const r=s*0.28;
-    ctx.beginPath();ctx.arc(s*0.78,-s*0.62,r,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#f3ead3"; ctx.font=`bold ${Math.round(s*0.42)}px sans-serif`;
-    ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.fillText(count>99?"99":(""+count),s*0.78,-s*0.6);
-  }
-  ctx.restore();
-}
-function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
-}
-
-function drawCaptureFlashes(){
-  for(const f of W.captureFlash){
-    const age=W.tick-f.t; const a=clamp(1-age/6,0,1);
-    const p=W.provinces[f.prov]; const [x,y]=cellToDisp(p.cx,p.cy);
-    dctx.strokeStyle=`rgba(${f.sea?'120,160,210':'200,60,40'},${a})`;
-    dctx.lineWidth=3;
-    dctx.beginPath();dctx.arc(x,y,view.scale*2.4*(0.6+age*0.25),0,Math.PI*2);dctx.stroke();
-  }
-}
-
-function drawCartouche(){
-  // compass rose, bottom-left
-  const cx=view.ox+44, cy=view.oy+GH*view.scale-44, R=26;
-  dctx.save();
-  dctx.globalAlpha=0.82;
-  dctx.fillStyle="rgba(233,220,192,0.85)"; dctx.strokeStyle="#5c4d33"; dctx.lineWidth=1.5;
-  dctx.beginPath();dctx.arc(cx,cy,R,0,Math.PI*2);dctx.fill();dctx.stroke();
-  dctx.fillStyle="#7a2f23";
-  dctx.beginPath();dctx.moveTo(cx,cy-R+3);dctx.lineTo(cx-5,cy);dctx.lineTo(cx+5,cy);dctx.closePath();dctx.fill();
-  dctx.fillStyle="#3a2f1d";
-  dctx.beginPath();dctx.moveTo(cx,cy+R-3);dctx.lineTo(cx-5,cy);dctx.lineTo(cx+5,cy);dctx.closePath();dctx.fill();
-  dctx.fillStyle="#3a2f1d"; dctx.font="bold 11px serif"; dctx.textAlign="center";dctx.textBaseline="middle";
-  dctx.fillText("N",cx,cy-R-7);
+function drawCounter(x,y,s,nation,type,count,men,sel){
+  const dom=UDEF[type].dom;dctx.save();dctx.translate(x,y);dctx.lineJoin="round";
+  if(sel){dctx.strokeStyle="#1d5a2a";dctx.lineWidth=s*0.18;dctx.strokeRect(-s*0.85,-s*0.62,s*1.7,s*1.24);}
+  if(dom==="ground"){const w=s*1.45,h=s;
+    dctx.fillStyle=nation.colorLight;dctx.strokeStyle=nation.colorDark;dctx.lineWidth=Math.max(1.4,s*0.11);
+    rr(-w/2,-h/2,w,h,2);dctx.fill();dctx.stroke();
+    dctx.strokeStyle=nation.colorDark;dctx.fillStyle=nation.colorDark;dctx.lineWidth=Math.max(1.2,s*0.09);
+    if(type==="Infantry"){dctx.beginPath();dctx.moveTo(-w/2+2,-h/2+2);dctx.lineTo(w/2-2,h/2-2);dctx.moveTo(w/2-2,-h/2+2);dctx.lineTo(-w/2+2,h/2-2);dctx.stroke();}
+    else if(type==="Armor"){dctx.beginPath();dctx.ellipse(0,0,w*0.30,h*0.30,0,0,7);dctx.stroke();}
+    else{dctx.beginPath();dctx.arc(0,0,h*0.17,0,7);dctx.fill();}
+  } else if(dom==="air"){dctx.fillStyle=nation.colorLight;dctx.strokeStyle=nation.colorDark;dctx.lineWidth=Math.max(1.2,s*0.08);
+    const k=s*0.62;dctx.beginPath();dctx.moveTo(0,-k);dctx.lineTo(k*0.16,-k*0.2);dctx.lineTo(k*0.95,k*0.05);dctx.lineTo(k*0.16,k*0.18);dctx.lineTo(k*0.22,k*0.85);dctx.lineTo(0,k*0.6);dctx.lineTo(-k*0.22,k*0.85);dctx.lineTo(-k*0.16,k*0.18);dctx.lineTo(-k*0.95,k*0.05);dctx.lineTo(-k*0.16,-k*0.2);dctx.closePath();dctx.fill();dctx.stroke();
+    if(type==="Bomber"){dctx.fillStyle=nation.colorDark;dctx.beginPath();dctx.arc(-k*0.5,k*0.05,k*0.08,0,7);dctx.arc(k*0.5,k*0.05,k*0.08,0,7);dctx.fill();}
+  } else {dctx.fillStyle=nation.colorLight;dctx.strokeStyle=nation.colorDark;dctx.lineWidth=Math.max(1.2,s*0.08);
+    const w=s*1.5,h=s*0.85;dctx.beginPath();dctx.moveTo(-w/2,0);dctx.lineTo(-w*0.36,h*0.32);dctx.lineTo(w*0.40,h*0.32);dctx.lineTo(w/2,0);dctx.closePath();dctx.fill();dctx.stroke();
+    dctx.fillStyle=nation.colorDark;if(type==="Carrier")dctx.fillRect(-w*0.42,-h*0.12,w*0.84,h*0.14);
+    else if(type==="Battleship"){dctx.fillRect(-w*0.10,-h*0.34,w*0.20,h*0.34);dctx.fillRect(-w*0.34,-h*0.16,w*0.10,h*0.16);dctx.fillRect(w*0.22,-h*0.16,w*0.10,h*0.16);}
+    else dctx.fillRect(-w*0.06,-h*0.30,w*0.12,h*0.30);}
+  if(count>1){dctx.fillStyle="rgba(40,30,16,0.92)";const r=s*0.28;dctx.beginPath();dctx.arc(s*0.8,-s*0.62,r,0,7);dctx.fill();
+    dctx.fillStyle="#f3ead3";dctx.font=`bold ${Math.round(s*0.42)}px sans-serif`;dctx.textAlign="center";dctx.textBaseline="middle";dctx.fillText(count>99?"99":""+count,s*0.8,-s*0.6);}
   dctx.restore();
+}
+function rr(x,y,w,h,r){dctx.beginPath();dctx.moveTo(x+r,y);dctx.arcTo(x+w,y,x+w,y+h,r);dctx.arcTo(x+w,y+h,x,y+h,r);dctx.arcTo(x,y+h,x,y,r);dctx.arcTo(x,y,x+w,y,r);dctx.closePath();}
+function drawCapitals(){
+  const s=view.scale;
+  for(const n of W.nations){if(!n.alive||!n.provinces.has(n.capital))continue;const p=W.provinces[n.capital];const[x,y]=cellToDisp(p.cx,p.cy);
+    const fw=Math.max(16,s*2.1),fh=fw*0.62;
+    if(n.flag)dctx.drawImage(n.flag,x-fw/2,y-s*2.6-fh,fw,fh);
+    dctx.fillStyle="#3a2f1d";dctx.font=`bold ${Math.round(Math.max(8,s*1.0))}px serif`;dctx.textAlign="center";dctx.textBaseline="middle";
+    dctx.fillStyle="rgba(255,250,235,0.7)";dctx.fillText("★",x,y-s*1.3);
+  }
+}
+function drawFlashes(){for(const f of W.captureFlash){const age=W.turn-f.t,a=clamp(1-age/3,0,1);const p=W.provinces[f.prov];const[x,y]=cellToDisp(p.cx,p.cy);
+  dctx.strokeStyle=`rgba(${f.sea?'120,160,210':'200,60,40'},${a})`;dctx.lineWidth=3;dctx.beginPath();dctx.arc(x,y,view.scale*2.4*(0.6+age*0.3),0,7);dctx.stroke();}}
+function drawCompass(){const cx=view.ox+40,cy=view.oy+GH*view.scale-40,R=24;dctx.save();dctx.globalAlpha=0.82;
+  dctx.fillStyle="rgba(233,220,192,0.85)";dctx.strokeStyle="#5c4d33";dctx.lineWidth=1.5;dctx.beginPath();dctx.arc(cx,cy,R,0,7);dctx.fill();dctx.stroke();
+  dctx.fillStyle="#7a2f23";dctx.beginPath();dctx.moveTo(cx,cy-R+3);dctx.lineTo(cx-5,cy);dctx.lineTo(cx+5,cy);dctx.closePath();dctx.fill();
+  dctx.fillStyle="#3a2f1d";dctx.beginPath();dctx.moveTo(cx,cy+R-3);dctx.lineTo(cx-5,cy);dctx.lineTo(cx+5,cy);dctx.closePath();dctx.fill();
+  dctx.font="bold 10px serif";dctx.textAlign="center";dctx.textBaseline="middle";dctx.fillText("N",cx,cy-R-6);dctx.restore();}
+
+/* ============================================================ *
+ *  PANEL UI                                                    *
+ * ============================================================ */
+const panes={nation:document.getElementById('tab-nation'),province:document.getElementById('tab-province'),
+  build:document.getElementById('tab-build'),cards:document.getElementById('tab-cards'),log:document.getElementById('tab-log')};
+const logEl=document.getElementById('log');
+let curTab='nation';
+function switchTab(t){curTab=t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('sel',b.dataset.tab===t));
+  document.querySelectorAll('.tabpane').forEach(p=>p.classList.remove('sel'));document.getElementById('tab-'+t).classList.add('sel');renderAll();}
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+
+function meter(val,col){return`<div class="meter"><i style="width:${clamp(val,0,100)}%;background:${col}"></i></div>`;}
+function renderAll(){
+  renderTop();renderResbar();
+  if(curTab==='nation')renderNation();
+  else if(curTab==='province')renderProvince();
+  else if(curTab==='build')renderBuild();
+  else if(curTab==='cards')renderCards();
+  if(logDirty||curTab==='log')renderLog();
+}
+function renderTop(){
+  document.getElementById('turnLbl').textContent="Turn "+W.turn;
+  const wx=active>=0?weatherAt(W.nations[active].capital):WEATHER.Clear;
+  document.getElementById('wxLbl').textContent=`${wx.icon} ${wx.n}`;
+  const af=document.getElementById('activeFlag');
+  if(active>=0){const n=W.nations[active];af.getContext('2d').clearRect(0,0,34,22);if(n.flag)af.getContext('2d').drawImage(n.flag,0,0,34,22);
+    document.getElementById('activeName').textContent=n.short;}
+}
+function renderResbar(){
+  if(active<0){document.getElementById('resbar').innerHTML="";return;}
+  const n=W.nations[active],inc=income(n);
+  const r=(k,v,d)=>`<div class="res"><span class="k">${k}</span><b>${v}</b>${d!=null?`<span class="k">(+${d})</span>`:""}</div>`;
+  document.getElementById('resbar').innerHTML=
+    r("CP",Math.floor(n.res.cp),Math.round(inc.cp))+
+    r("MANPWR",fmt(n.res.manpower),fmt(inc.manpower))+
+    r("IC",Math.round(inc.ic))+
+    r("STEEL",Math.round(n.res.steel),Math.round(inc.steel))+
+    r("FUEL",Math.round(n.res.fuel),Math.round(inc.fuel))+
+    r("SUPPLY",Math.round(n.res.supplies))+
+    `<div class="res"><span class="k">STAB</span><b>${Math.round(n.stability)}</b></div>`+
+    `<div class="res"><span class="k">WAR SUP</span><b>${Math.round(n.warSupport)}</b></div>`;
+}
+function renderNation(){
+  let h=`<h3>Nations <span class="muted" style="font-weight:normal;font-size:11px">— click to command</span></h3>`;
+  const list=W.nations.slice().sort((a,b)=>(a.alive!==b.alive?(a.alive?-1:1):b.provinces.size-a.provinces.size));
+  for(const n of list){
+    h+=`<div class="nrow ${n.id===active?'sel':''} ${n.alive?'':'dead'}" data-nid="${n.id}">
+      <canvas class="nflag" width="26" height="17" data-flag="${n.id}"></canvas>
+      <span class="nm">${n.name}</span><span class="pc">${n.provinces.size}p · ${fmt(n.casualties)}†</span></div>`;
+  }
+  if(active>=0){
+    const n=W.nations[active];
+    const units=W.units.filter(u=>u.nation===n.id);
+    const byType={};for(const u of units)byType[u.type]=(byType[u.type]||0)+1;
+    const comp=Object.keys(byType).map(t=>`${t} ×${byType[t]}`).join(" · ")||"none";
+    const enemies=[...n.enemies].map(e=>W.nations[e].short).join(", ")||"none";
+    const allies=[...n.allies].map(e=>W.nations[e].short).join(", ")||"none";
+    h+=`<h3 style="margin-top:12px">${n.name}</h3>
+      <div class="stat"><span>Provinces</span><span>${n.provinces.size}</span></div>
+      <div class="stat"><span>Total casualties</span><span>${fmt(n.casualties)} men</span></div>
+      <h4>Doctrine</h4>
+      <div class="stat"><span>Military quality</span><span>${Math.round(n.military*100)}</span></div>${meter(n.military*100,'#8c2a1d')}
+      <div class="stat"><span>Industry</span><span>${Math.round(n.industry*100)}</span></div>${meter(n.industry*100,'#9a6a16')}
+      <div class="stat"><span>Manpower base</span><span>${Math.round(n.manpowerStat*100)}</span></div>${meter(n.manpowerStat*100,'#2f6b3a')}
+      <h4>Home Front</h4>
+      <div class="stat"><span>Stability</span><span>${Math.round(n.stability)}</span></div>${meter(n.stability,'#5a2c7a')}
+      <div class="stat"><span>War support</span><span>${Math.round(n.warSupport)}</span></div>${meter(n.warSupport,'#2a5a7a')}
+      <h4>Forces (${units.length})</h4><div style="font-size:12px;color:#5c4d33">${comp}</div>
+      <h4>Diplomacy</h4>
+      <div class="stat"><span>At war with</span><span style="color:#8c2a1d">${enemies}</span></div>
+      <div class="stat"><span>Allied with</span><span style="color:#2f6b3a">${allies}</span></div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button id="btnReinforce">Reinforce (manpower)</button>
+      </div>`;
+  }
+  panes.nation.innerHTML=h;
+  panes.nation.querySelectorAll('canvas[data-flag]').forEach(c=>{const n=W.nations[+c.dataset.flag];if(n.flag)c.getContext('2d').drawImage(n.flag,0,0,26,17);});
+  panes.nation.querySelectorAll('.nrow').forEach(r=>r.addEventListener('click',()=>{const id=+r.dataset.nid;if(W.nations[id].alive)setActive(id);}));
+  const br=document.getElementById('btnReinforce');if(br)br.addEventListener('click',()=>reinforce(W.nations[active]));
+}
+function renderProvince(){
+  if(selProv<0){panes.province.innerHTML='<p class="muted">Click a province on the map to inspect it.</p>';return;}
+  const p=W.provinces[selProv];
+  const owner=p.isSea?(p.seaControl>=0?W.nations[p.seaControl].short+" (naval control)":"Open sea"):(p.nation>=0?W.nations[p.nation].name:"Unclaimed");
+  const wx=weatherAt(selProv);
+  let h=`<h3>${p.isSea?"Open Sea":p.name}</h3>
+    <div class="stat"><span>Owner</span><span>${owner}</span></div>
+    <div class="stat"><span>Terrain</span><span>${p.isSea?"Sea":TERRAIN[p.terrain].name}</span></div>
+    <div class="stat"><span>Weather</span><span>${wx.icon} ${wx.n}</span></div>`;
+  if(!p.isSea){
+    h+=`<div class="stat"><span>Defense bonus</span><span>+${Math.round(TERRAIN[p.terrain].def*100)}%</span></div>
+        <div class="stat"><span>Entrenchment</span><span>${p.entrench}</span></div>`;
+    const dep=[];if(p.dep.farm)dep.push(`Farm ${p.dep.farm}`);if(p.dep.oil)dep.push(`Oil ${p.dep.oil}`);if(p.dep.ore)dep.push(`Ore ${p.dep.ore}`);if(p.dep.factory)dep.push(`Factory ${p.dep.factory}`);
+    h+=`<div class="stat"><span>Resources</span><span>${dep.join(", ")||"none"}</span></div>`;
+  }
+  // units here
+  h+=`<h4>Forces present</h4>`;
+  const m=provIndex&&provIndex[selProv];
+  if(!m||m.size===0)h+='<p class="muted">No units here.</p>';
+  else{
+    for(const[nid,e]of m){const n=W.nations[nid];
+      h+=`<div style="font-size:11px;color:${n.colorDark};font-weight:bold;margin-top:4px">${n.short}${nid===active?' (you)':''}</div>`;
+      for(const u of e.units){const own=nid===active;const selc=selUnits.has(u.id)?'sel':'';
+        h+=`<div class="urow ${selc}" data-uid="${own?u.id:''}" style="${own?'':'opacity:.7;cursor:default'}">
+          <span style="flex:1 1 auto">${u.type}${u.vet?' ✪'.repeat(u.vet):''}</span>
+          <span class="ubar"><i style="width:${u.men/u.maxMen*100}%"></i></span>
+          <span class="tag">${fmt(u.men)}</span>
+          <span class="tag" title="movement">mp${u.mp}</span></div>`;
+      }
+    }
+    if(active>=0 && unitsIn(selProv,active).length){
+      h+=`<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button id="selAll">Select all (yours)</button>
+        <button id="selNone">Clear</button></div>
+        <p class="muted" style="margin-top:6px">Select units, then click a highlighted province: <span style="color:#2f7a3a">green = move</span>, <span style="color:#a3301d">red ⚔ = attack</span>.</p>`;
+    }
+  }
+  panes.province.innerHTML=h;
+  panes.province.querySelectorAll('.urow[data-uid]').forEach(r=>{const uid=+r.dataset.uid;if(!uid)return;
+    r.addEventListener('click',()=>{if(selUnits.has(uid))selUnits.delete(uid);else selUnits.add(uid);computeTargets();renderAll();});});
+  const sa=document.getElementById('selAll');if(sa)sa.addEventListener('click',()=>{for(const u of unitsIn(selProv,active))selUnits.add(u.id);computeTargets();renderAll();});
+  const sn=document.getElementById('selNone');if(sn)sn.addEventListener('click',()=>{selUnits.clear();computeTargets();renderAll();});
+}
+function renderBuild(){
+  if(active<0){panes.build.innerHTML="";return;}
+  const n=W.nations[active];
+  let h=`<h3>Production — ${n.short}</h3>
+    <p class="muted">Builds in: ${W.provinces[n.capital]?W.provinces[n.capital].name:'capital'} (target province). Spends Steel+Fuel now, IC over turns.</p>`;
+  h+=`<h4>Queue (${n.queue.length})</h4>`;
+  if(!n.queue.length)h+='<p class="muted">Nothing in production.</p>';
+  else n.queue.forEach((it,i)=>{h+=`<div class="qitem"><span>${it.type} → ${W.provinces[it.prov].name}</span><span>${it.remain} turn(s) <button data-cancel="${i}" style="padding:1px 6px">✕</button></span></div>`;});
+  h+=`<h4>Build new unit</h4>`;
+  for(const t of [...GROUND,...AIR,...SEA]){const d=UDEF[t];const aff=canAfford(n,t);
+    h+=`<button class="pbtn" data-build="${t}" ${aff?'':'disabled'}><span><b>${t}</b><br><small>${fmt(d.men)} men · ${d.turns} turns</small></span>
+      <small>IC ${d.ic} · Steel ${d.steel}${d.fuel?` · Fuel ${d.fuel}`:''}</small></button>`;
+  }
+  panes.build.innerHTML=h;
+  panes.build.querySelectorAll('button[data-build]').forEach(b=>b.addEventListener('click',()=>{
+    // build into selected province if owned, else capital
+    const prov=(selProv>=0&&n.provinces.has(selProv))?selProv:n.capital;
+    if(queueUnit(n,b.dataset.build,prov)){log(`${n.short} began producing ${b.dataset.build}.`,"info");renderAll();}
+  }));
+  panes.build.querySelectorAll('button[data-cancel]').forEach(b=>b.addEventListener('click',()=>{
+    const i=+b.dataset.cancel;const it=n.queue[i];if(it){n.res.steel+=UDEF[it.type].steel;n.res.fuel+=UDEF[it.type].fuel;n.queue.splice(i,1);renderAll();}}));
+}
+function renderCards(){
+  if(active<0){panes.cards.innerHTML="";return;}
+  const n=W.nations[active];
+  let h=`<h3>Command Cards — ${n.short}</h3>
+    <div class="stat"><span>Command Points</span><span>${Math.floor(n.res.cp)}</span></div>
+    <div style="margin:8px 0;display:flex;gap:6px">
+      <button id="btnDraw" ${n.res.cp<2?'disabled':''}>🂠 Draw a card (2 CP)</button>
+    </div>
+    <p class="muted">Draws are random — events resolve instantly; action cards go to your hand. Combat wins raise CP/stability; losses drain them.</p>
+    <h4>Hand (${n.hand.length})</h4><div id="hand">`;
+  if(!n.hand.length)h+='<p class="muted">Empty — draw to build a hand.</p>';
+  else n.hand.forEach((c,i)=>{h+=`<div class="gcard cat-${c.cat}" data-play="${i}">
+    <div class="cn">${c.name} <span class="muted" style="font-weight:normal">— ${c.cost} CP</span></div>
+    <div class="cc">${c.desc}</div>
+    <div class="cm" style="color:${catColor(c.cat)}">${catName(c.cat)}</div></div>`;});
+  h+=`</div>`;
+  panes.cards.innerHTML=h;
+  const bd=document.getElementById('btnDraw');if(bd)bd.addEventListener('click',()=>drawCard(n));
+  panes.cards.querySelectorAll('.gcard[data-play]').forEach(el=>el.addEventListener('click',()=>playCard(n,+el.dataset.play)));
+}
+function catColor(c){return{mil:'#8c2a1d',ind:'#9a6a16',pol:'#5a2c7a',dip:'#2a5a7a',evt:'#2f6b3a'}[c]||'#5c4d33';}
+function catName(c){return{mil:'Military',ind:'Industry',pol:'Politics',dip:'Diplomacy',evt:'Event'}[c]||'';}
+function renderLog(){let h="";for(let i=W.log.length-1;i>=0;i--){const e=W.log[i];h+=`<div class="e"><span class="t">[T${e.t}]</span><span class="${e.type}">${e.msg}</span></div>`;}logEl.innerHTML=h;logDirty=false;}
+
+/* ============================================================ *
+ *  COMBAT MODAL                                                *
+ * ============================================================ */
+const modal=document.getElementById('modal'),mHead=document.getElementById('modalHead'),mBody=document.getElementById('modalBody'),mFoot=document.getElementById('modalFoot');
+function closeModal(){modal.classList.remove('show');}
+function openCombatModal(fromProv,toProv,atkUnits){
+  const toP=W.provinces[toProv];
+  const defNationId=toP.isSea?(nationsIn(toProv).find(x=>x!==active)):toP.nation;
+  const dName=defNationId>=0?W.nations[defNationId].short:"undefended position";
+  // auto-declare war if attacking a nation you're not at war with
+  if(defNationId>=0&&defNationId!==active&&!atWar(active,defNationId))declareWar(active,defNationId);
+  mHead.textContent=`Attack on ${toP.isSea?"the waters off "+ (W.provinces[fromProv].name) :toP.name}`;
+  let h=`<p>Choose your battle posture against <b>${dName}</b>. Outcome is decided by chance, weighted by your posture, the weather (<b>${weatherAt(toProv).icon} ${weatherAt(toProv).n}</b>), terrain, and the forces engaged.</p>`;
+  mBody.innerHTML=h+`<div id="postureList"></div>`;
+  const pl=mBody.querySelector('#postureList');
+  POSTURES.forEach((po,i)=>{const btn=document.createElement('button');btn.className="posture";
+    btn.innerHTML=`<b>${po.n}</b> <span class="muted">(${po.win>=0?'+':''}${Math.round(po.win*100)}% odds)</span><small>${po.d}</small>`;
+    btn.addEventListener('click',()=>previewAndResolve(fromProv,toProv,atkUnits,i));pl.appendChild(btn);});
+  mFoot.innerHTML="";const cancel=document.createElement('button');cancel.textContent="Cancel";cancel.addEventListener('click',closeModal);mFoot.appendChild(cancel);
+  modal.classList.add('show');
+}
+function previewAndResolve(fromProv,toProv,atkUnits,postureIdx){
+  const b=computeBattle(fromProv,toProv,atkUnits,postureIdx);
+  const res=resolveBattle(b,postureIdx);
+  // result screen
+  mHead.textContent=res.attackerWins?(res.captured?"Victory — Position Taken":"Attack Succeeded"):"Attack Repelled";
+  let h=`<div class="vs">
+    <div><b>${b.aNation.short}</b><br><span class="muted">attacker · ${b.posture.n}</span><br><br>Casualties<br><span class="cas">${fmt(res.atkCas)}</span><br>men</div>
+    <div><b>${b.dNation?b.dNation.short:"Defenders"}</b><br><span class="muted">defender · ${b.defPosture.n}</span><br><br>Casualties<br><span class="cas">${fmt(res.defCas)}</span><br>men</div>
+  </div>
+  <h4>Battle factors</h4>`;
+  for(const f of b.factors)h+=`<div class="factorrow"><span>${f[0]}</span><span>${f[1]}</span></div>`;
+  h+=`<div class="factorrow"><span><b>Win chance (attacker)</b></span><span><b>${Math.round(b.wp*100)}%</b></span></div>`;
+  h+=`<p style="margin-top:10px">${res.attackerWins?(res.captured?`<b style="color:#2f6b3a">${b.aNation.short} takes ${W.provinces[toProv].name}!</b>`:`<b style="color:#9a6a16">The line bends but holds positions.</b>`):`<b style="color:#8c2a1d">The assault is thrown back.</b>`}</p>`;
+  mBody.innerHTML=h;mFoot.innerHTML="";const ok=document.createElement('button');ok.className="primary";ok.textContent="Continue";ok.addEventListener('click',closeModal);mFoot.appendChild(ok);
+  selUnits.clear();computeTargets();renderAll();
 }
 
 /* ============================================================ *
- *  PANEL / UI                                                   *
+ *  INPUT                                                       *
  * ============================================================ */
-const logEl=document.getElementById('log');
-const natWrap=document.getElementById('nationsWrap');
-const detailEl=document.getElementById('detail');
-const tickLbl=document.getElementById('tickLbl');
-const natCountEl=document.getElementById('natCount');
-
-function setTick(t){ tickLbl.textContent="Turn "+t; }
-
-function renderPanel(force){
-  if(logDirty || force){ renderLog(); logDirty=false; }
-  renderNations();
-  renderDetail();
-}
-function renderLog(){
-  let html="";
-  for(let i=W.log.length-1;i>=0;i--){
-    const e=W.log[i];
-    html+=`<div class="e"><span class="t">[${e.t}]</span><span class="${e.type}">${e.msg}</span></div>`;
-  }
-  logEl.innerHTML=html;
-}
-function renderNations(){
-  const list=W.nations.slice().sort((a,b)=>{
-    if(a.alive!==b.alive) return a.alive?-1:1;
-    return b.provinces.size-a.provinces.size;
-  });
-  const alive=W.nations.filter(n=>n.alive).length;
-  natCountEl.textContent=alive+" of "+W.nations.length+" standing";
-  let html="";
-  for(const n of list){
-    const sel=n.id===W.sel?" sel":"";
-    const dead=n.alive?"":" dead";
-    html+=`<div class="nrow${sel}${dead}" data-nid="${n.id}">
-      <div class="sw" style="background:${n.color}"></div>
-      <div class="ninfo">
-        <div class="nname">${n.name}</div>
-        <div class="nstats">
-          <div class="bar" title="Military"><i class="bm" style="width:${Math.round(n.military*100)}%"></i></div>
-          <div class="bar" title="Industry"><i class="bi" style="width:${Math.round(n.industry*100)}%"></i></div>
-          <div class="bar" title="Manpower"><i class="ba" style="width:${Math.round(n.manpower*100)}%"></i></div>
-          <div class="bar" title="Aggression"><i class="bg" style="width:${Math.round(n.aggression*100)}%"></i></div>
-        </div>
-      </div>
-      <div class="ncount"><b>${n.provinces.size}</b><br>prov</div>
-    </div>`;
-  }
-  natWrap.innerHTML=html;
-}
-function renderDetail(){
-  if(W.sel<0){ detailEl.innerHTML='<em style="color:#8a7a55">Click a nation to inspect its high command.</em>'; return; }
-  const n=W.nations[W.sel];
-  const myUnits=W.units.filter(u=>u.nation===n.id);
-  const byType={};
-  for(const u of myUnits) byType[u.type]=(byType[u.type]||0)+1;
-  let comp=Object.keys(byType).map(t=>`${t}: ${byType[t]}`).join(" · ")||"none";
-  const enemies=[...n.enemies].map(e=>W.nations[e].short).join(", ")||"at peace";
-  const st=v=>Math.round(v*100);
-  detailEl.innerHTML=`
-    <h3>${n.name}</h3>
-    <div class="stat"><span>Status</span><span>${n.alive?"Standing":"Conquered"}</span></div>
-    <div class="stat"><span>Provinces</span><span>${n.provinces.size}</span></div>
-    <div class="stat"><span>Military quality</span><span>${st(n.military)}</span></div>
-    <div class="stat"><span>Industry</span><span>${st(n.industry)}</span></div>
-    <div class="stat"><span>Manpower</span><span>${st(n.manpower)}</span></div>
-    <div class="stat"><span>Aggression</span><span>${st(n.aggression)}</span></div>
-    <div class="units"><b>Forces (${myUnits.length}):</b> ${comp}</div>
-    <div class="wars"><b>At war with:</b> ${enemies}</div>`;
-}
-
-natWrap.addEventListener('click',e=>{
-  const row=e.target.closest('.nrow'); if(!row)return;
-  const nid=+row.dataset.nid;
-  selectNation(W.sel===nid?-1:nid);
-});
-function selectNation(nid){
-  W.sel=nid; selDirty=true; renderNations(); renderDetail();
-}
-
-/* canvas click -> hit test */
 display.addEventListener('click',e=>{
   if(!W)return;
   const r=display.getBoundingClientRect();
-  const px=(e.clientX-r.left)*view.dpr, py=(e.clientY-r.top)*view.dpr;
-  const cx=Math.floor((px-view.ox)/view.scale);
-  const cy=Math.floor((py-view.oy)/view.scale);
-  if(cx<0||cy<0||cx>=GW||cy>=GH){ selectNation(-1); return; }
-  const pid=W.cellProv[cy*GW+cx]; const p=W.provinces[pid];
-  if(p.isSea){ selectNation(p.seaControl); }
-  else selectNation(W.provinces[pid].nation);
+  const px=(e.clientX-r.left)*view.dpr,py=(e.clientY-r.top)*view.dpr;
+  const cx=Math.floor((px-view.ox)/view.scale),cy=Math.floor((py-view.oy)/view.scale);
+  if(cx<0||cy<0||cx>=GW||cy>=GH)return;
+  const pid=W.cellProv[cy*GW+cx];
+  // order resolution first
+  if(orderTargets&&selUnits.size){
+    if(orderTargets.attacks.has(pid)){doAttackInit(pid);return;}
+    if(orderTargets.moves.has(pid)){doMove(pid);return;}
+  }
+  // otherwise select province
+  selProv=pid;selDirty=true;
+  const p=W.provinces[pid];
+  // auto-select your units there & set active if you own it
+  selUnits.clear();
+  if(!p.isSea&&p.nation>=0&&p.nation!==active){ /* keep active, just inspect */ }
+  if(unitsIn(pid,active).length){for(const u of unitsIn(pid,active))selUnits.add(u.id);}
+  computeTargets();
+  switchTab('province');
 });
 
 /* ============================================================ *
- *  LOOP & CONTROLS                                              *
+ *  CONTROLS                                                    *
  * ============================================================ */
-let running=false, speed=1, acc=0, last=performance.now();
-function frame(now){
-  const dt=now-last; last=now;
-  if(running && W){
-    acc+=dt;
-    const interval=BASE_TICK_MS/speed;
-    let guard=0;
-    while(acc>=interval && guard++<6){ acc-=interval; simTick(); }
-  }
-  // draw handled by its own rAF chain
-}
-function loop(now){ frame(now); requestAnimationFrame(loop); }
-
-const btnPlay=document.getElementById('btnPlay');
-btnPlay.addEventListener('click',()=>{
-  running=!running;
-  btnPlay.textContent=running?"❚❚ Pause":"▶ Play";
-  btnPlay.classList.toggle('active',running);
-  acc=0; last=performance.now();
-  if(running) showHint("Fronts are forming — watch the borders creep.");
-});
-document.querySelectorAll('.spd').forEach(b=>{
-  b.addEventListener('click',()=>{
-    speed=parseFloat(b.dataset.spd);
-    document.querySelectorAll('.spd').forEach(x=>x.classList.toggle('active',x===b));
-  });
-});
-document.getElementById('btnNew').addEventListener('click',()=>{
-  newWorld((Math.random()*1e9)>>>0);
-  showHint("A fresh world has been drawn. Press Play.");
-});
-function setDefaultSpeed(){
-  speed=1;
-  document.querySelectorAll('.spd').forEach(x=>x.classList.toggle('active',x.dataset.spd==="1"));
-}
+document.getElementById('btnEnd').addEventListener('click',endTurn);
+document.getElementById('btnNew').addEventListener('click',()=>newWorld((Math.random()*1e9)>>>0));
 
 let hintTimer=null;
-function showHint(msg){
-  const h=document.getElementById('hint'); h.textContent=msg; h.classList.add('show');
-  clearTimeout(hintTimer); hintTimer=setTimeout(()=>h.classList.remove('show'),3200);
-}
+function showHint(m){const h=document.getElementById('hint');h.textContent=m;h.classList.add('show');clearTimeout(hintTimer);hintTimer=setTimeout(()=>h.classList.remove('show'),3600);}
+function toast(m){showHint(m);}
 
-document.getElementById('legend').innerHTML=
-  "◻✕ Infantry &nbsp; ◻◯ Armor &nbsp; ◻• Artillery &nbsp; ✈ Air &nbsp; ⛴ Navy<br>"+
-  "Bars: <b style='color:#8c2a1d'>Mil</b> · <b style='color:#9a6a16'>Ind</b> · <b style='color:#2f6b3a'>Man</b> · <b style='color:#3a5a8c'>Agg</b>";
+document.getElementById('legend').innerHTML="◻✕ Inf · ◻◯ Armor · ◻• Arty · ✈ Air · ⛴ Navy &nbsp;|&nbsp; ⚙Factory ▲Ore ⬢Oil ❖Farm";
 
 /* ---- boot ---- */
-window.addEventListener('resize',()=>{ resize(); });
+window.addEventListener('resize',resize);
 resize();
-setDefaultSpeed();
 newWorld((Math.random()*1e9)>>>0);
-requestAnimationFrame(loop);
 requestAnimationFrame(draw);
 
-// expose a tiny hook for automated verification
-window.__sim={ get tick(){return W?W.tick:0;},
-               get nations(){return W?W.nations.map(n=>({name:n.name,prov:n.provinces.size,alive:n.alive})):[];},
-               get logLen(){return W?W.log.length:0;},
-               get logText(){return W?W.log.map(e=>e.msg).join("\n"):"";},
-               play(){ if(!running) btnPlay.click(); },
-               pause(){ if(running) btnPlay.click(); },
-               setSpeed(s){ const b=[...document.querySelectorAll('.spd')].find(x=>x.dataset.spd==(""+s)); if(b)b.click(); },
-               newWorld(){ document.getElementById('btnNew').click(); } };
+/* ---- test hook ---- */
+window.__game={
+  get turn(){return W.turn;},
+  get active(){return active;},
+  get nations(){return W.nations.map(n=>({name:n.name,prov:n.provinces.size,alive:n.alive,cas:n.casualties,cp:n.res.cp,stab:n.stability}));},
+  get globalCas(){return W.globalCas;},
+  get logText(){return W.log.map(e=>e.msg).join("\n");},
+  get unitCount(){return W.units.length;},
+  setActive:i=>setActive(i),
+  endTurn:()=>endTurn(),
+  newWorld:()=>newWorld((Math.random()*1e9)>>>0),
+  drawCard:()=>drawCard(W.nations[active]),
+  weather:()=>W.bands.slice(),
+  // attack from one of active nation's provinces into an adjacent enemy province
+  autoAttack:(postureIdx=0)=>{
+    rebuildIndex();
+    for(const pid of W.nations[active].provinces){
+      const units=unitsIn(pid,active).filter(u=>u.dom==="ground"&&u.mp>0);
+      if(!units.length)continue;
+      for(const q of W.provinces[pid].neighbors){const pq=W.provinces[q];
+        if(!pq.isSea&&pq.nation>=0&&pq.nation!==active){
+          const b=computeBattle(pid,q,units,postureIdx);const res=resolveBattle(b,postureIdx);
+          return {from:W.provinces[pid].name,to:pq.name,...res,wp:b.wp,factors:b.factors.length};
+        }}
+    }
+    return null;
+  },
+  moveTest:()=>{
+    rebuildIndex();
+    for(const pid of W.nations[active].provinces){
+      const units=unitsIn(pid,active).filter(u=>u.dom==="ground"&&u.mp>0);
+      if(!units.length)continue;
+      for(const q of W.provinces[pid].neighbors){const pq=W.provinces[q];
+        if(!pq.isSea&&pq.nation===active&&q!==pid){
+          const u=units[0],before=u.mp;u.prov=q;u.mp-=moveCost(u,pid,q);
+          return {moved:true,before,after:u.mp};
+        }}
+    }
+    return {moved:false};
+  },
+  // open the real combat modal for the first available front (UI test)
+  openBattleUI:()=>{
+    rebuildIndex();
+    for(let i=0;i<W.nations.length;i++){
+      setActive(i);
+      for(const pid of W.nations[i].provinces){
+        const units=unitsIn(pid,i).filter(u=>u.dom==="ground"&&u.mp>0);
+        if(!units.length)continue;
+        for(const q of W.provinces[pid].neighbors){const pq=W.provinces[q];
+          if(!pq.isSea&&pq.nation>=0&&pq.nation!==i){
+            selProv=pid;selUnits=new Set(units.map(u=>u.id));
+            openCombatModal(pid,q,units);return true;
+          }}
+      }
+    }
+    return false;
+  }
+};
 })();
 </script>
 </body>
