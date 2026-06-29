@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================================================================
+   ORBIS global base styles — holographic war-room console.
+   Only cosmetic styling lives here; no game logic.
+   =========================================================================== */
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #05080f;
+  overflow: hidden;
+  /* Sci-fi console feel */
+  color: #cfe8ff;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The globe canvas sits as a full-bleed living background. */
+#root {
+  position: relative;
+}
+
+/* Thin neon scrollbars to match the console aesthetic. */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(54, 224, 255, 0.25);
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(54, 224, 255, 0.45);
+}
+
+/* Utility: glowing neon text used across the HUD. */
+.text-glow {
+  text-shadow: 0 0 8px rgba(54, 224, 255, 0.55);
+}
+
+/* Cosmetic-only animated scanline shimmer for panels (never touches state). */
+@keyframes orbis-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.animate-orbis-pulse {
+  animation: orbis-pulse 2.4s ease-in-out infinite;
+}
