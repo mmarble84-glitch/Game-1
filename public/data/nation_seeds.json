@@ -1,0 +1,4604 @@
+{
+  "AFG": {
+    "name": "Afghanistan",
+    "color": "#db8f43",
+    "capital": {
+      "lat": 34.804,
+      "lng": 67.691
+    },
+    "resources": {
+      "treasury": 64,
+      "industry": 26,
+      "energy": 76,
+      "food": 87,
+      "rareMaterials": 45
+    },
+    "manpower": {
+      "pool": 341,
+      "available": 102,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 2
+    },
+    "stability": 39,
+    "government": "Federal Republic"
+  },
+  "AGO": {
+    "name": "Angola",
+    "color": "#82db43",
+    "capital": {
+      "lat": -11.024,
+      "lng": 17.555
+    },
+    "resources": {
+      "treasury": 189,
+      "industry": 76,
+      "energy": 82,
+      "food": 75,
+      "rareMaterials": 11
+    },
+    "manpower": {
+      "pool": 293,
+      "available": 88,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 56,
+    "government": "Sovereign State"
+  },
+  "ALB": {
+    "name": "Albania",
+    "color": "#439fdb",
+    "capital": {
+      "lat": 41.28,
+      "lng": 20.117
+    },
+    "resources": {
+      "treasury": 34,
+      "industry": 14,
+      "energy": 10,
+      "food": 10,
+      "rareMaterials": 15
+    },
+    "manpower": {
+      "pool": 30,
+      "available": 9,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 4
+    },
+    "stability": 55,
+    "government": "Sovereign State"
+  },
+  "ARE": {
+    "name": "United Arab Emirates",
+    "color": "#db5e43",
+    "capital": {
+      "lat": 24.195,
+      "lng": 54.243
+    },
+    "resources": {
+      "treasury": 667,
+      "industry": 267,
+      "energy": 96,
+      "food": 17,
+      "rareMaterials": 39
+    },
+    "manpower": {
+      "pool": 61,
+      "available": 18,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 7
+    },
+    "stability": 65,
+    "government": "Republic"
+  },
+  "ARG": {
+    "name": "Argentina",
+    "color": "#8cdb43",
+    "capital": {
+      "lat": -37.218,
+      "lng": -65.185
+    },
+    "resources": {
+      "treasury": 879,
+      "industry": 352,
+      "energy": 199,
+      "food": 113,
+      "rareMaterials": 52
+    },
+    "manpower": {
+      "pool": 443,
+      "available": 133,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 68,
+    "government": "Republic"
+  },
+  "ARM": {
+    "name": "Armenia",
+    "color": "#dbb743",
+    "capital": {
+      "lat": 40.062,
+      "lng": 45.164
+    },
+    "resources": {
+      "treasury": 26,
+      "industry": 11,
+      "energy": 9,
+      "food": 10,
+      "rareMaterials": 6
+    },
+    "manpower": {
+      "pool": 30,
+      "available": 9,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 54,
+    "government": "Sovereign State"
+  },
+  "ATA": {
+    "name": "Antarctica",
+    "color": "#43dbac",
+    "capital": {
+      "lat": -72.987,
+      "lng": -3.127
+    },
+    "resources": {
+      "treasury": 1,
+      "industry": 1,
+      "energy": 1,
+      "food": 2,
+      "rareMaterials": 3
+    },
+    "manpower": {
+      "pool": 1,
+      "available": 0,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 7
+    },
+    "stability": 62,
+    "government": "Federation"
+  },
+  "ATF": {
+    "name": "French Southern and Antarctic Lands",
+    "color": "#db8043",
+    "capital": {
+      "lat": -49.119,
+      "lng": 69.461
+    },
+    "resources": {
+      "treasury": 0,
+      "industry": 1,
+      "energy": 1,
+      "food": 2,
+      "rareMaterials": 18
+    },
+    "manpower": {
+      "pool": 1,
+      "available": 0,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 8
+    },
+    "stability": 72,
+    "government": "Sovereign State"
+  },
+  "AUS": {
+    "name": "Australia",
+    "color": "#db43b5",
+    "capital": {
+      "lat": -23.722,
+      "lng": 133.324
+    },
+    "resources": {
+      "treasury": 1189,
+      "industry": 476,
+      "energy": 195,
+      "food": 60,
+      "rareMaterials": 7
+    },
+    "manpower": {
+      "pool": 232,
+      "available": 70,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 9
+    },
+    "stability": 78,
+    "government": "Constitutional Monarchy"
+  },
+  "AUT": {
+    "name": "Austria",
+    "color": "#43bddb",
+    "capital": {
+      "lat": 47.645,
+      "lng": 13.485
+    },
+    "resources": {
+      "treasury": 417,
+      "industry": 167,
+      "energy": 70,
+      "food": 24,
+      "rareMaterials": 16
+    },
+    "manpower": {
+      "pool": 88,
+      "available": 26,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 9
+    },
+    "stability": 75,
+    "government": "Parliamentary Republic"
+  },
+  "AZE": {
+    "name": "Azerbaijan",
+    "color": "#dba143",
+    "capital": {
+      "lat": 40.285,
+      "lng": 47.409
+    },
+    "resources": {
+      "treasury": 168,
+      "industry": 67,
+      "energy": 41,
+      "food": 27,
+      "rareMaterials": 40
+    },
+    "manpower": {
+      "pool": 100,
+      "available": 30,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 55,
+    "government": "Presidential Republic"
+  },
+  "BDI": {
+    "name": "Burundi",
+    "color": "#43db62",
+    "capital": {
+      "lat": -3.394,
+      "lng": 29.955
+    },
+    "resources": {
+      "treasury": 8,
+      "industry": 3,
+      "energy": 24,
+      "food": 31,
+      "rareMaterials": 25
+    },
+    "manpower": {
+      "pool": 115,
+      "available": 35,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 1
+    },
+    "stability": 37,
+    "government": "Presidential Republic"
+  },
+  "BEL": {
+    "name": "Belgium",
+    "color": "#438edb",
+    "capital": {
+      "lat": 50.743,
+      "lng": 4.309
+    },
+    "resources": {
+      "treasury": 509,
+      "industry": 203,
+      "energy": 87,
+      "food": 31,
+      "rareMaterials": 23
+    },
+    "manpower": {
+      "pool": 115,
+      "available": 35,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 79,
+    "government": "Federation"
+  },
+  "BEN": {
+    "name": "Benin",
+    "color": "#43dba7",
+    "capital": {
+      "lat": 9.808,
+      "lng": 2.327
+    },
+    "resources": {
+      "treasury": 24,
+      "industry": 10,
+      "energy": 25,
+      "food": 30,
+      "rareMaterials": 21
+    },
+    "manpower": {
+      "pool": 110,
+      "available": 33,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 1
+    },
+    "stability": 49,
+    "government": "Sovereign State"
+  },
+  "BFA": {
+    "name": "Burkina Faso",
+    "color": "#43db9a",
+    "capital": {
+      "lat": 12.152,
+      "lng": -1.723
+    },
+    "resources": {
+      "treasury": 33,
+      "industry": 13,
+      "energy": 44,
+      "food": 52,
+      "rareMaterials": 14
+    },
+    "manpower": {
+      "pool": 201,
+      "available": 60,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 51,
+    "government": "Federal Republic"
+  },
+  "BGD": {
+    "name": "Bangladesh",
+    "color": "#db8243",
+    "capital": {
+      "lat": 23.399,
+      "lng": 90.611
+    },
+    "resources": {
+      "treasury": 628,
+      "industry": 251,
+      "energy": 394,
+      "food": 397,
+      "rareMaterials": 77
+    },
+    "manpower": {
+      "pool": 1578,
+      "available": 473,
+      "recruitRate": 16
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 2
+    },
+    "stability": 51,
+    "government": "Parliamentary Republic"
+  },
+  "BGR": {
+    "name": "Bulgaria",
+    "color": "#4389db",
+    "capital": {
+      "lat": 42.894,
+      "lng": 24.687
+    },
+    "resources": {
+      "treasury": 143,
+      "industry": 57,
+      "energy": 32,
+      "food": 20,
+      "rareMaterials": 14
+    },
+    "manpower": {
+      "pool": 71,
+      "available": 21,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 6
+    },
+    "stability": 60,
+    "government": "Federation"
+  },
+  "BHS": {
+    "name": "The Bahamas",
+    "color": "#7943db",
+    "capital": {
+      "lat": 24.351,
+      "lng": -77.864
+    },
+    "resources": {
+      "treasury": 9,
+      "industry": 4,
+      "energy": 2,
+      "food": 3,
+      "rareMaterials": 12
+    },
+    "manpower": {
+      "pool": 3,
+      "available": 1,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 6
+    },
+    "stability": 82,
+    "government": "Sovereign State"
+  },
+  "BIH": {
+    "name": "Bosnia and Herzegovina",
+    "color": "#43cbdb",
+    "capital": {
+      "lat": 44.281,
+      "lng": 17.956
+    },
+    "resources": {
+      "treasury": 43,
+      "industry": 17,
+      "energy": 13,
+      "food": 12,
+      "rareMaterials": 29
+    },
+    "manpower": {
+      "pool": 39,
+      "available": 12,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 4
+    },
+    "stability": 61,
+    "government": "Presidential Republic"
+  },
+  "BLR": {
+    "name": "Belarus",
+    "color": "#4359db",
+    "capital": {
+      "lat": 53.297,
+      "lng": 28.196
+    },
+    "resources": {
+      "treasury": 165,
+      "industry": 66,
+      "energy": 40,
+      "food": 26,
+      "rareMaterials": 38
+    },
+    "manpower": {
+      "pool": 95,
+      "available": 29,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 6
+    },
+    "stability": 54,
+    "government": "Constitutional Monarchy"
+  },
+  "BLZ": {
+    "name": "Belize",
+    "color": "#9643db",
+    "capital": {
+      "lat": 17.417,
+      "lng": -88.63
+    },
+    "resources": {
+      "treasury": 3,
+      "industry": 1,
+      "energy": 1,
+      "food": 3,
+      "rareMaterials": 3
+    },
+    "manpower": {
+      "pool": 4,
+      "available": 1,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 3
+    },
+    "stability": 54,
+    "government": "Federal Republic"
+  },
+  "BOL": {
+    "name": "Bolivia",
+    "color": "#db9043",
+    "capital": {
+      "lat": -16.525,
+      "lng": -64.016
+    },
+    "resources": {
+      "treasury": 78,
+      "industry": 31,
+      "energy": 32,
+      "food": 30,
+      "rareMaterials": 25
+    },
+    "manpower": {
+      "pool": 111,
+      "available": 33,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 4
+    },
+    "stability": 62,
+    "government": "Parliamentary Republic"
+  },
+  "BRA": {
+    "name": "Brazil",
+    "color": "#dbd143",
+    "capital": {
+      "lat": -9.639,
+      "lng": -56.947
+    },
+    "resources": {
+      "treasury": 3081,
+      "industry": 1232,
+      "energy": 800,
+      "food": 520,
+      "rareMaterials": 98
+    },
+    "manpower": {
+      "pool": 2074,
+      "available": 622,
+      "recruitRate": 21
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 6
+    },
+    "stability": 54,
+    "government": "Republic"
+  },
+  "BRN": {
+    "name": "Brunei",
+    "color": "#dbce43",
+    "capital": {
+      "lat": 4.628,
+      "lng": 114.843
+    },
+    "resources": {
+      "treasury": 34,
+      "industry": 13,
+      "energy": 5,
+      "food": 3,
+      "rareMaterials": 33
+    },
+    "manpower": {
+      "pool": 4,
+      "available": 1,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 75,
+    "government": "Sovereign State"
+  },
+  "BTN": {
+    "name": "Bhutan",
+    "color": "#db9c43",
+    "capital": {
+      "lat": 27.468,
+      "lng": 90.615
+    },
+    "resources": {
+      "treasury": 6,
+      "industry": 3,
+      "energy": 2,
+      "food": 4,
+      "rareMaterials": 15
+    },
+    "manpower": {
+      "pool": 8,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 61,
+    "government": "Federal Republic"
+  },
+  "BWA": {
+    "name": "Botswana",
+    "color": "#69db43",
+    "capital": {
+      "lat": -22.477,
+      "lng": 24.471
+    },
+    "resources": {
+      "treasury": 36,
+      "industry": 14,
+      "energy": 9,
+      "food": 8,
+      "rareMaterials": 22
+    },
+    "manpower": {
+      "pool": 22,
+      "available": 7,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 72,
+    "government": "Sovereign State"
+  },
+  "CAF": {
+    "name": "Central African Republic",
+    "color": "#43db81",
+    "capital": {
+      "lat": 6.33,
+      "lng": 20.508
+    },
+    "resources": {
+      "treasury": 3,
+      "industry": 1,
+      "energy": 12,
+      "food": 16,
+      "rareMaterials": 31
+    },
+    "manpower": {
+      "pool": 56,
+      "available": 17,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 2
+    },
+    "stability": 51,
+    "government": "Parliamentary Republic"
+  },
+  "CAN": {
+    "name": "Canada",
+    "color": "#5d43db",
+    "capital": {
+      "lat": 56.439,
+      "lng": -90.872
+    },
+    "resources": {
+      "treasury": 1674,
+      "industry": 670,
+      "energy": 280,
+      "food": 91,
+      "rareMaterials": 48
+    },
+    "manpower": {
+      "pool": 356,
+      "available": 107,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 9
+    },
+    "stability": 78,
+    "government": "Constitutional Monarchy"
+  },
+  "CHE": {
+    "name": "Switzerland",
+    "color": "#43cfdb",
+    "capital": {
+      "lat": 46.797,
+      "lng": 8.307
+    },
+    "resources": {
+      "treasury": 496,
+      "industry": 199,
+      "energy": 79,
+      "food": 23,
+      "rareMaterials": 3
+    },
+    "manpower": {
+      "pool": 82,
+      "available": 25,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 8
+    },
+    "stability": 78,
+    "government": "Federation"
+  },
+  "CHL": {
+    "name": "Chile",
+    "color": "#d9db43",
+    "capital": {
+      "lat": -38.17,
+      "lng": -71.422
+    },
+    "resources": {
+      "treasury": 436,
+      "industry": 174,
+      "energy": 90,
+      "food": 46,
+      "rareMaterials": 35
+    },
+    "manpower": {
+      "pool": 178,
+      "available": 53,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 4
+    },
+    "stability": 55,
+    "government": "Presidential Republic"
+  },
+  "CHN": {
+    "name": "China",
+    "color": "#db5143",
+    "capital": {
+      "lat": 37.284,
+      "lng": 105.646
+    },
+    "resources": {
+      "treasury": 21140,
+      "industry": 8456,
+      "energy": 5401,
+      "food": 3450,
+      "rareMaterials": 446
+    },
+    "manpower": {
+      "pool": 13793,
+      "available": 4138,
+      "recruitRate": 138
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 68,
+    "government": "Presidential Republic"
+  },
+  "CIV": {
+    "name": "Ivory Coast",
+    "color": "#64db43",
+    "capital": {
+      "lat": 7.948,
+      "lng": -6.288
+    },
+    "resources": {
+      "treasury": 87,
+      "industry": 35,
+      "energy": 59,
+      "food": 62,
+      "rareMaterials": 20
+    },
+    "manpower": {
+      "pool": 242,
+      "available": 73,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 43,
+    "government": "Constitutional Monarchy"
+  },
+  "CMR": {
+    "name": "Cameroon",
+    "color": "#69db43",
+    "capital": {
+      "lat": 6.817,
+      "lng": 13.181
+    },
+    "resources": {
+      "treasury": 77,
+      "industry": 31,
+      "energy": 60,
+      "food": 64,
+      "rareMaterials": 28
+    },
+    "manpower": {
+      "pool": 250,
+      "available": 75,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 43,
+    "government": "Parliamentary Republic"
+  },
+  "COD": {
+    "name": "Democratic Republic of the Congo",
+    "color": "#43db66",
+    "capital": {
+      "lat": -3.866,
+      "lng": 23.083
+    },
+    "resources": {
+      "treasury": 66,
+      "industry": 26,
+      "energy": 175,
+      "food": 210,
+      "rareMaterials": 34
+    },
+    "manpower": {
+      "pool": 833,
+      "available": 250,
+      "recruitRate": 8
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 35,
+    "government": "Republic"
+  },
+  "COG": {
+    "name": "Republic of the Congo",
+    "color": "#43db7d",
+    "capital": {
+      "lat": -1.089,
+      "lng": 14.816
+    },
+    "resources": {
+      "treasury": 30,
+      "industry": 12,
+      "energy": 14,
+      "food": 14,
+      "rareMaterials": 33
+    },
+    "manpower": {
+      "pool": 50,
+      "available": 15,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 44,
+    "government": "Republic"
+  },
+  "COL": {
+    "name": "Colombia",
+    "color": "#db7343",
+    "capital": {
+      "lat": 4.491,
+      "lng": -72.653
+    },
+    "resources": {
+      "treasury": 688,
+      "industry": 275,
+      "energy": 181,
+      "food": 121,
+      "rareMaterials": 15
+    },
+    "manpower": {
+      "pool": 477,
+      "available": 143,
+      "recruitRate": 5
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 6
+    },
+    "stability": 67,
+    "government": "Constitutional Monarchy"
+  },
+  "CRI": {
+    "name": "Costa Rica",
+    "color": "#4e43db",
+    "capital": {
+      "lat": 9.785,
+      "lng": -84.173
+    },
+    "resources": {
+      "treasury": 79,
+      "industry": 32,
+      "energy": 20,
+      "food": 14,
+      "rareMaterials": 12
+    },
+    "manpower": {
+      "pool": 49,
+      "available": 15,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 6
+    },
+    "stability": 62,
+    "government": "Sovereign State"
+  },
+  "CUB": {
+    "name": "Cuba",
+    "color": "#6943db",
+    "capital": {
+      "lat": 21.723,
+      "lng": -79.733
+    },
+    "resources": {
+      "treasury": 133,
+      "industry": 53,
+      "energy": 39,
+      "food": 30,
+      "rareMaterials": 24
+    },
+    "manpower": {
+      "pool": 111,
+      "available": 33,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 59,
+    "government": "Federal Republic"
+  },
+  "Northern Cyprus": {
+    "name": "Northern Cyprus",
+    "color": "#db9243",
+    "capital": {
+      "lat": 35.177,
+      "lng": 33.427
+    },
+    "resources": {
+      "treasury": 4,
+      "industry": 1,
+      "energy": 1,
+      "food": 3,
+      "rareMaterials": 11
+    },
+    "manpower": {
+      "pool": 3,
+      "available": 1,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 69,
+    "government": "Republic"
+  },
+  "CYP": {
+    "name": "Cyprus",
+    "color": "#db8a43",
+    "capital": {
+      "lat": 35.025,
+      "lng": 33.244
+    },
+    "resources": {
+      "treasury": 29,
+      "industry": 12,
+      "energy": 6,
+      "food": 5,
+      "rareMaterials": 3
+    },
+    "manpower": {
+      "pool": 12,
+      "available": 4,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 8
+    },
+    "stability": 74,
+    "government": "Federal Republic"
+  },
+  "CZE": {
+    "name": "Czechia",
+    "color": "#439cdb",
+    "capital": {
+      "lat": 49.707,
+      "lng": 15.904
+    },
+    "resources": {
+      "treasury": 351,
+      "industry": 140,
+      "energy": 65,
+      "food": 29,
+      "rareMaterials": 18
+    },
+    "manpower": {
+      "pool": 107,
+      "available": 32,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 7
+    },
+    "stability": 85,
+    "government": "Constitutional Monarchy"
+  },
+  "DEU": {
+    "name": "Germany",
+    "color": "#43dbcc",
+    "capital": {
+      "lat": 50.96,
+      "lng": 10.682
+    },
+    "resources": {
+      "treasury": 3979,
+      "industry": 1592,
+      "energy": 659,
+      "food": 203,
+      "rareMaterials": 45
+    },
+    "manpower": {
+      "pool": 806,
+      "available": 242,
+      "recruitRate": 8
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 8
+    },
+    "stability": 90,
+    "government": "Federation"
+  },
+  "DJI": {
+    "name": "Djibouti",
+    "color": "#43db71",
+    "capital": {
+      "lat": 11.811,
+      "lng": 42.571
+    },
+    "resources": {
+      "treasury": 3,
+      "industry": 1,
+      "energy": 2,
+      "food": 4,
+      "rareMaterials": 38
+    },
+    "manpower": {
+      "pool": 9,
+      "available": 3,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 54,
+    "government": "Parliamentary Republic"
+  },
+  "DNK": {
+    "name": "Denmark",
+    "color": "#4358db",
+    "capital": {
+      "lat": 56.278,
+      "lng": 9.623
+    },
+    "resources": {
+      "treasury": 265,
+      "industry": 106,
+      "energy": 44,
+      "food": 16,
+      "rareMaterials": 22
+    },
+    "manpower": {
+      "pool": 56,
+      "available": 17,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 82,
+    "government": "Sovereign State"
+  },
+  "DOM": {
+    "name": "Dominican Republic",
+    "color": "#9643db",
+    "capital": {
+      "lat": 18.79,
+      "lng": -70.494
+    },
+    "resources": {
+      "treasury": 162,
+      "industry": 65,
+      "energy": 42,
+      "food": 29,
+      "rareMaterials": 6
+    },
+    "manpower": {
+      "pool": 107,
+      "available": 32,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 6
+    },
+    "stability": 57,
+    "government": "Sovereign State"
+  },
+  "DZA": {
+    "name": "Algeria",
+    "color": "#62db43",
+    "capital": {
+      "lat": 29.533,
+      "lng": 3.225
+    },
+    "resources": {
+      "treasury": 609,
+      "industry": 244,
+      "energy": 158,
+      "food": 104,
+      "rareMaterials": 26
+    },
+    "manpower": {
+      "pool": 410,
+      "available": 123,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 6
+    },
+    "stability": 63,
+    "government": "Federal Republic"
+  },
+  "ECU": {
+    "name": "Ecuador",
+    "color": "#b1db43",
+    "capital": {
+      "lat": -1.591,
+      "lng": -78.81
+    },
+    "resources": {
+      "treasury": 182,
+      "industry": 73,
+      "energy": 55,
+      "food": 43,
+      "rareMaterials": 25
+    },
+    "manpower": {
+      "pool": 163,
+      "available": 49,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 5
+    },
+    "stability": 53,
+    "government": "Federation"
+  },
+  "EGY": {
+    "name": "Egypt",
+    "color": "#6adb43",
+    "capital": {
+      "lat": 28.175,
+      "lng": 31.698
+    },
+    "resources": {
+      "treasury": 1105,
+      "industry": 442,
+      "energy": 332,
+      "food": 245,
+      "rareMaterials": 65
+    },
+    "manpower": {
+      "pool": 970,
+      "available": 291,
+      "recruitRate": 10
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 60,
+    "government": "Federal Republic"
+  },
+  "ERI": {
+    "name": "Eritrea",
+    "color": "#43dba5",
+    "capital": {
+      "lat": 14.651,
+      "lng": 39.826
+    },
+    "resources": {
+      "treasury": 9,
+      "industry": 4,
+      "energy": 13,
+      "food": 17,
+      "rareMaterials": 39
+    },
+    "manpower": {
+      "pool": 59,
+      "available": 18,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 3
+    },
+    "stability": 45,
+    "government": "Federation"
+  },
+  "ESP": {
+    "name": "Spain",
+    "color": "#43a5db",
+    "capital": {
+      "lat": 40.269,
+      "lng": -4.482
+    },
+    "resources": {
+      "treasury": 1690,
+      "industry": 676,
+      "energy": 309,
+      "food": 124,
+      "rareMaterials": 42
+    },
+    "manpower": {
+      "pool": 490,
+      "available": 147,
+      "recruitRate": 5
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 8
+    },
+    "stability": 86,
+    "government": "Federation"
+  },
+  "EST": {
+    "name": "Estonia",
+    "color": "#436bdb",
+    "capital": {
+      "lat": 58.609,
+      "lng": 25.949
+    },
+    "resources": {
+      "treasury": 39,
+      "industry": 15,
+      "energy": 7,
+      "food": 5,
+      "rareMaterials": 23
+    },
+    "manpower": {
+      "pool": 13,
+      "available": 4,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 82,
+    "government": "Sovereign State"
+  },
+  "ETH": {
+    "name": "Ethiopia",
+    "color": "#43dba6",
+    "capital": {
+      "lat": 9.06,
+      "lng": 39.117
+    },
+    "resources": {
+      "treasury": 175,
+      "industry": 70,
+      "energy": 233,
+      "food": 265,
+      "rareMaterials": 44
+    },
+    "manpower": {
+      "pool": 1054,
+      "available": 316,
+      "recruitRate": 11
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 32,
+    "government": "Republic"
+  },
+  "FIN": {
+    "name": "Finland",
+    "color": "#43a4db",
+    "capital": {
+      "lat": 65.152,
+      "lng": 25.77
+    },
+    "resources": {
+      "treasury": 224,
+      "industry": 90,
+      "energy": 39,
+      "food": 16,
+      "rareMaterials": 4
+    },
+    "manpower": {
+      "pool": 55,
+      "available": 17,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 9
+    },
+    "stability": 75,
+    "government": "Federal Republic"
+  },
+  "FJI": {
+    "name": "Fiji",
+    "color": "#d243db",
+    "capital": {
+      "lat": -17.725,
+      "lng": 178.046
+    },
+    "resources": {
+      "treasury": 8,
+      "industry": 3,
+      "energy": 3,
+      "food": 4,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 9,
+      "available": 3,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 45,
+    "government": "Constitutional Monarchy"
+  },
+  "FLK": {
+    "name": "Falkland Islands",
+    "color": "#dba043",
+    "capital": {
+      "lat": -51.735,
+      "lng": -59.585
+    },
+    "resources": {
+      "treasury": 0,
+      "industry": 1,
+      "energy": 1,
+      "food": 2,
+      "rareMaterials": 28
+    },
+    "manpower": {
+      "pool": 1,
+      "available": 0,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 7
+    },
+    "stability": 90,
+    "government": "Sovereign State"
+  },
+  "France": {
+    "name": "France",
+    "color": "#4365db",
+    "capital": {
+      "lat": 47.04,
+      "lng": 3.223
+    },
+    "resources": {
+      "treasury": 2699,
+      "industry": 1080,
+      "energy": 472,
+      "food": 170,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 671,
+      "available": 201,
+      "recruitRate": 7
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 8
+    },
+    "stability": 83,
+    "government": "Parliamentary Republic"
+  },
+  "GAB": {
+    "name": "Gabon",
+    "color": "#43db4b",
+    "capital": {
+      "lat": -0.337,
+      "lng": 11.891
+    },
+    "resources": {
+      "treasury": 36,
+      "industry": 14,
+      "energy": 8,
+      "food": 6,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 18,
+      "available": 5,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 6
+    },
+    "stability": 69,
+    "government": "Presidential Republic"
+  },
+  "GBR": {
+    "name": "United Kingdom",
+    "color": "#43c3db",
+    "capital": {
+      "lat": 54.006,
+      "lng": -3.083
+    },
+    "resources": {
+      "treasury": 2788,
+      "industry": 1115,
+      "energy": 478,
+      "food": 164,
+      "rareMaterials": 45
+    },
+    "manpower": {
+      "pool": 648,
+      "available": 194,
+      "recruitRate": 6
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 79,
+    "government": "Presidential Republic"
+  },
+  "GEO": {
+    "name": "Georgia",
+    "color": "#db4347",
+    "capital": {
+      "lat": 42.167,
+      "lng": 43.573
+    },
+    "resources": {
+      "treasury": 37,
+      "industry": 15,
+      "energy": 15,
+      "food": 14,
+      "rareMaterials": 11
+    },
+    "manpower": {
+      "pool": 49,
+      "available": 15,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 54,
+    "government": "Federal Republic"
+  },
+  "GHA": {
+    "name": "Ghana",
+    "color": "#57db43",
+    "capital": {
+      "lat": 8.235,
+      "lng": -1.085
+    },
+    "resources": {
+      "treasury": 121,
+      "industry": 48,
+      "energy": 70,
+      "food": 71,
+      "rareMaterials": 41
+    },
+    "manpower": {
+      "pool": 275,
+      "available": 83,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 59,
+    "government": "Republic"
+  },
+  "GIN": {
+    "name": "Guinea",
+    "color": "#77db43",
+    "capital": {
+      "lat": 10.385,
+      "lng": -10.904
+    },
+    "resources": {
+      "treasury": 16,
+      "industry": 6,
+      "energy": 27,
+      "food": 33,
+      "rareMaterials": 5
+    },
+    "manpower": {
+      "pool": 124,
+      "available": 37,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 42,
+    "government": "Sovereign State"
+  },
+  "GMB": {
+    "name": "Gambia",
+    "color": "#43db69",
+    "capital": {
+      "lat": 13.474,
+      "lng": -15.295
+    },
+    "resources": {
+      "treasury": 3,
+      "industry": 1,
+      "energy": 5,
+      "food": 7,
+      "rareMaterials": 26
+    },
+    "manpower": {
+      "pool": 21,
+      "available": 6,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 33,
+    "government": "Federation"
+  },
+  "GNB": {
+    "name": "Guinea-Bissau",
+    "color": "#4fdb43",
+    "capital": {
+      "lat": 11.99,
+      "lng": -15.057
+    },
+    "resources": {
+      "treasury": 3,
+      "industry": 1,
+      "energy": 4,
+      "food": 6,
+      "rareMaterials": 7
+    },
+    "manpower": {
+      "pool": 18,
+      "available": 5,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 34,
+    "government": "Presidential Republic"
+  },
+  "GNQ": {
+    "name": "Equatorial Guinea",
+    "color": "#43db64",
+    "capital": {
+      "lat": 1.589,
+      "lng": 10.07
+    },
+    "resources": {
+      "treasury": 32,
+      "industry": 13,
+      "energy": 6,
+      "food": 4,
+      "rareMaterials": 3
+    },
+    "manpower": {
+      "pool": 8,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 68,
+    "government": "Federal Republic"
+  },
+  "GRC": {
+    "name": "Greece",
+    "color": "#436fdb",
+    "capital": {
+      "lat": 39.756,
+      "lng": 23.073
+    },
+    "resources": {
+      "treasury": 291,
+      "industry": 116,
+      "energy": 58,
+      "food": 29,
+      "rareMaterials": 40
+    },
+    "manpower": {
+      "pool": 108,
+      "available": 32,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 9
+    },
+    "stability": 83,
+    "government": "Federation"
+  },
+  "GRL": {
+    "name": "Greenland",
+    "color": "#d843db",
+    "capital": {
+      "lat": 74.148,
+      "lng": -41.031
+    },
+    "resources": {
+      "treasury": 2,
+      "industry": 1,
+      "energy": 1,
+      "food": 2,
+      "rareMaterials": 32
+    },
+    "manpower": {
+      "pool": 1,
+      "available": 0,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 6
+    },
+    "stability": 66,
+    "government": "Constitutional Monarchy"
+  },
+  "GTM": {
+    "name": "Guatemala",
+    "color": "#8e43db",
+    "capital": {
+      "lat": 15.625,
+      "lng": -90.182
+    },
+    "resources": {
+      "treasury": 132,
+      "industry": 53,
+      "energy": 47,
+      "food": 41,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 155,
+      "available": 47,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 60,
+    "government": "Constitutional Monarchy"
+  },
+  "GUY": {
+    "name": "Guyana",
+    "color": "#d8db43",
+    "capital": {
+      "lat": 4.482,
+      "lng": -58.898
+    },
+    "resources": {
+      "treasury": 6,
+      "industry": 2,
+      "energy": 2,
+      "food": 4,
+      "rareMaterials": 16
+    },
+    "manpower": {
+      "pool": 7,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 44,
+    "government": "Federation"
+  },
+  "HND": {
+    "name": "Honduras",
+    "color": "#8043db",
+    "capital": {
+      "lat": 14.736,
+      "lng": -86.417
+    },
+    "resources": {
+      "treasury": 43,
+      "industry": 17,
+      "energy": 23,
+      "food": 25,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 90,
+      "available": 27,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 59,
+    "government": "Republic"
+  },
+  "HRV": {
+    "name": "Croatia",
+    "color": "#43d6db",
+    "capital": {
+      "lat": 44.807,
+      "lng": 16.488
+    },
+    "resources": {
+      "treasury": 94,
+      "industry": 38,
+      "energy": 20,
+      "food": 13,
+      "rareMaterials": 20
+    },
+    "manpower": {
+      "pool": 43,
+      "available": 13,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 8
+    },
+    "stability": 81,
+    "government": "Sovereign State"
+  },
+  "HTI": {
+    "name": "Haiti",
+    "color": "#5043db",
+    "capital": {
+      "lat": 18.84,
+      "lng": -72.703
+    },
+    "resources": {
+      "treasury": 19,
+      "industry": 8,
+      "energy": 24,
+      "food": 29,
+      "rareMaterials": 35
+    },
+    "manpower": {
+      "pool": 106,
+      "available": 32,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 1
+    },
+    "stability": 39,
+    "government": "Federal Republic"
+  },
+  "HUN": {
+    "name": "Hungary",
+    "color": "#43acdb",
+    "capital": {
+      "lat": 47.367,
+      "lng": 19.048
+    },
+    "resources": {
+      "treasury": 268,
+      "industry": 107,
+      "energy": 53,
+      "food": 27,
+      "rareMaterials": 27
+    },
+    "manpower": {
+      "pool": 99,
+      "available": 30,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 9
+    },
+    "stability": 84,
+    "government": "Parliamentary Republic"
+  },
+  "IDN": {
+    "name": "Indonesia",
+    "color": "#dbbd43",
+    "capital": {
+      "lat": -2.027,
+      "lng": 121.644
+    },
+    "resources": {
+      "treasury": 3028,
+      "industry": 1211,
+      "energy": 900,
+      "food": 653,
+      "rareMaterials": 80
+    },
+    "manpower": {
+      "pool": 2606,
+      "available": 782,
+      "recruitRate": 26
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 3
+    },
+    "stability": 44,
+    "government": "Federation"
+  },
+  "IND": {
+    "name": "India",
+    "color": "#db4347",
+    "capital": {
+      "lat": 23.92,
+      "lng": 83.554
+    },
+    "resources": {
+      "treasury": 8721,
+      "industry": 3488,
+      "energy": 3654,
+      "food": 3207,
+      "rareMaterials": 415
+    },
+    "manpower": {
+      "pool": 12819,
+      "available": 3846,
+      "recruitRate": 128
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 58,
+    "government": "Constitutional Monarchy"
+  },
+  "IRL": {
+    "name": "Ireland",
+    "color": "#43d0db",
+    "capital": {
+      "lat": 53.629,
+      "lng": -7.829
+    },
+    "resources": {
+      "treasury": 322,
+      "industry": 129,
+      "energy": 50,
+      "food": 15,
+      "rareMaterials": 28
+    },
+    "manpower": {
+      "pool": 50,
+      "available": 15,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 8
+    },
+    "stability": 85,
+    "government": "Federation"
+  },
+  "IRN": {
+    "name": "Iran",
+    "color": "#cedb43",
+    "capital": {
+      "lat": 33.429,
+      "lng": 53.398
+    },
+    "resources": {
+      "treasury": 1459,
+      "industry": 584,
+      "energy": 346,
+      "food": 207,
+      "rareMaterials": 53
+    },
+    "manpower": {
+      "pool": 820,
+      "available": 246,
+      "recruitRate": 8
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 59,
+    "government": "Federation"
+  },
+  "IRQ": {
+    "name": "Iraq",
+    "color": "#db4352",
+    "capital": {
+      "lat": 33.606,
+      "lng": 44.585
+    },
+    "resources": {
+      "treasury": 597,
+      "industry": 239,
+      "energy": 153,
+      "food": 100,
+      "rareMaterials": 13
+    },
+    "manpower": {
+      "pool": 392,
+      "available": 118,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 46,
+    "government": "Sovereign State"
+  },
+  "ISL": {
+    "name": "Iceland",
+    "color": "#437edb",
+    "capital": {
+      "lat": 65.278,
+      "lng": -19.266
+    },
+    "resources": {
+      "treasury": 16,
+      "industry": 6,
+      "energy": 3,
+      "food": 3,
+      "rareMaterials": 11
+    },
+    "manpower": {
+      "pool": 3,
+      "available": 1,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 79,
+    "government": "Presidential Republic"
+  },
+  "ISR": {
+    "name": "Israel",
+    "color": "#dbb443",
+    "capital": {
+      "lat": 31.882,
+      "lng": 35.08
+    },
+    "resources": {
+      "treasury": 297,
+      "industry": 119,
+      "energy": 54,
+      "food": 23,
+      "rareMaterials": 31
+    },
+    "manpower": {
+      "pool": 83,
+      "available": 25,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 9
+    },
+    "stability": 90,
+    "government": "Federal Republic"
+  },
+  "ITA": {
+    "name": "Italy",
+    "color": "#4399db",
+    "capital": {
+      "lat": 43.087,
+      "lng": 12.627
+    },
+    "resources": {
+      "treasury": 2221,
+      "industry": 888,
+      "energy": 402,
+      "food": 157,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 621,
+      "available": 186,
+      "recruitRate": 6
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 9
+    },
+    "stability": 84,
+    "government": "Republic"
+  },
+  "JAM": {
+    "name": "Jamaica",
+    "color": "#c443db",
+    "capital": {
+      "lat": 18.188,
+      "lng": -77.348
+    },
+    "resources": {
+      "treasury": 25,
+      "industry": 10,
+      "energy": 9,
+      "food": 9,
+      "rareMaterials": 36
+    },
+    "manpower": {
+      "pool": 30,
+      "available": 9,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 53,
+    "government": "Federation"
+  },
+  "JOR": {
+    "name": "Jordan",
+    "color": "#db6943",
+    "capital": {
+      "lat": 31.184,
+      "lng": 36.822
+    },
+    "resources": {
+      "treasury": 86,
+      "industry": 34,
+      "energy": 31,
+      "food": 28,
+      "rareMaterials": 39
+    },
+    "manpower": {
+      "pool": 102,
+      "available": 31,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 61,
+    "government": "Presidential Republic"
+  },
+  "JPN": {
+    "name": "Japan",
+    "color": "#db6b43",
+    "capital": {
+      "lat": 35.665,
+      "lng": 135.971
+    },
+    "resources": {
+      "treasury": 4932,
+      "industry": 1973,
+      "energy": 869,
+      "food": 318,
+      "rareMaterials": 65
+    },
+    "manpower": {
+      "pool": 1265,
+      "available": 380,
+      "recruitRate": 13
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 8
+    },
+    "stability": 74,
+    "government": "Constitutional Monarchy"
+  },
+  "KAZ": {
+    "name": "Kazakhstan",
+    "color": "#db4352",
+    "capital": {
+      "lat": 47.264,
+      "lng": 65.252
+    },
+    "resources": {
+      "treasury": 461,
+      "industry": 184,
+      "energy": 95,
+      "food": 48,
+      "rareMaterials": 7
+    },
+    "manpower": {
+      "pool": 186,
+      "available": 56,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 6
+    },
+    "stability": 58,
+    "government": "Federation"
+  },
+  "KEN": {
+    "name": "Kenya",
+    "color": "#69db43",
+    "capital": {
+      "lat": 1.39,
+      "lng": 37.718
+    },
+    "resources": {
+      "treasury": 153,
+      "industry": 61,
+      "energy": 114,
+      "food": 121,
+      "rareMaterials": 15
+    },
+    "manpower": {
+      "pool": 476,
+      "available": 143,
+      "recruitRate": 5
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 3
+    },
+    "stability": 48,
+    "government": "Federation"
+  },
+  "KGZ": {
+    "name": "Kyrgyzstan",
+    "color": "#db8b43",
+    "capital": {
+      "lat": 41.366,
+      "lng": 74.242
+    },
+    "resources": {
+      "treasury": 21,
+      "industry": 8,
+      "energy": 14,
+      "food": 16,
+      "rareMaterials": 41
+    },
+    "manpower": {
+      "pool": 58,
+      "available": 17,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 2
+    },
+    "stability": 34,
+    "government": "Presidential Republic"
+  },
+  "KHM": {
+    "name": "Cambodia",
+    "color": "#db7943",
+    "capital": {
+      "lat": 12.641,
+      "lng": 104.895
+    },
+    "resources": {
+      "treasury": 59,
+      "industry": 24,
+      "energy": 40,
+      "food": 43,
+      "rareMaterials": 22
+    },
+    "manpower": {
+      "pool": 162,
+      "available": 49,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 33,
+    "government": "Republic"
+  },
+  "KOR": {
+    "name": "South Korea",
+    "color": "#db7943",
+    "capital": {
+      "lat": 36.762,
+      "lng": 127.582
+    },
+    "resources": {
+      "treasury": 1929,
+      "industry": 772,
+      "energy": 343,
+      "food": 130,
+      "rareMaterials": 22
+    },
+    "manpower": {
+      "pool": 512,
+      "available": 154,
+      "recruitRate": 5
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 8
+    },
+    "stability": 81,
+    "government": "Sovereign State"
+  },
+  "Kosovo": {
+    "name": "Kosovo",
+    "color": "#4351db",
+    "capital": {
+      "lat": 42.546,
+      "lng": 20.957
+    },
+    "resources": {
+      "treasury": 18,
+      "industry": 7,
+      "energy": 6,
+      "food": 7,
+      "rareMaterials": 39
+    },
+    "manpower": {
+      "pool": 19,
+      "available": 6,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 42,
+    "government": "Federation"
+  },
+  "KWT": {
+    "name": "Kuwait",
+    "color": "#db4b43",
+    "capital": {
+      "lat": 29.239,
+      "lng": 47.586
+    },
+    "resources": {
+      "treasury": 301,
+      "industry": 120,
+      "energy": 43,
+      "food": 9,
+      "rareMaterials": 26
+    },
+    "manpower": {
+      "pool": 29,
+      "available": 9,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 8
+    },
+    "stability": 72,
+    "government": "Constitutional Monarchy"
+  },
+  "LAO": {
+    "name": "Laos",
+    "color": "#dbb443",
+    "capital": {
+      "lat": 18.479,
+      "lng": 103.525
+    },
+    "resources": {
+      "treasury": 41,
+      "industry": 16,
+      "energy": 19,
+      "food": 20,
+      "rareMaterials": 21
+    },
+    "manpower": {
+      "pool": 71,
+      "available": 21,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 47,
+    "government": "Sovereign State"
+  },
+  "LBN": {
+    "name": "Lebanon",
+    "color": "#dbd343",
+    "capital": {
+      "lat": 33.798,
+      "lng": 35.852
+    },
+    "resources": {
+      "treasury": 85,
+      "industry": 34,
+      "energy": 23,
+      "food": 18,
+      "rareMaterials": 17
+    },
+    "manpower": {
+      "pool": 62,
+      "available": 19,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 5
+    },
+    "stability": 68,
+    "government": "Republic"
+  },
+  "LBR": {
+    "name": "Liberia",
+    "color": "#43db77",
+    "capital": {
+      "lat": 6.754,
+      "lng": -9.143
+    },
+    "resources": {
+      "treasury": 4,
+      "industry": 2,
+      "energy": 10,
+      "food": 14,
+      "rareMaterials": 36
+    },
+    "manpower": {
+      "pool": 47,
+      "available": 14,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 46,
+    "government": "Parliamentary Republic"
+  },
+  "LBY": {
+    "name": "Libya",
+    "color": "#43db8b",
+    "capital": {
+      "lat": 28.503,
+      "lng": 16.406
+    },
+    "resources": {
+      "treasury": 91,
+      "industry": 36,
+      "energy": 25,
+      "food": 19,
+      "rareMaterials": 24
+    },
+    "manpower": {
+      "pool": 67,
+      "available": 20,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 69,
+    "government": "Constitutional Monarchy"
+  },
+  "LKA": {
+    "name": "Sri Lanka",
+    "color": "#dba543",
+    "capital": {
+      "lat": 7.631,
+      "lng": 80.864
+    },
+    "resources": {
+      "treasury": 237,
+      "industry": 95,
+      "energy": 74,
+      "food": 58,
+      "rareMaterials": 10
+    },
+    "manpower": {
+      "pool": 224,
+      "available": 67,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 5
+    },
+    "stability": 48,
+    "government": "Parliamentary Republic"
+  },
+  "LSO": {
+    "name": "Lesotho",
+    "color": "#43db64",
+    "capital": {
+      "lat": -29.585,
+      "lng": 28.37
+    },
+    "resources": {
+      "treasury": 6,
+      "industry": 2,
+      "energy": 5,
+      "food": 7,
+      "rareMaterials": 14
+    },
+    "manpower": {
+      "pool": 20,
+      "available": 6,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 42,
+    "government": "Federal Republic"
+  },
+  "LTU": {
+    "name": "Lithuania",
+    "color": "#4376db",
+    "capital": {
+      "lat": 55.201,
+      "lng": 24.017
+    },
+    "resources": {
+      "treasury": 86,
+      "industry": 34,
+      "energy": 16,
+      "food": 9,
+      "rareMaterials": 25
+    },
+    "manpower": {
+      "pool": 28,
+      "available": 8,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 6
+    },
+    "stability": 53,
+    "government": "Republic"
+  },
+  "LUX": {
+    "name": "Luxembourg",
+    "color": "#4396db",
+    "capital": {
+      "lat": 49.727,
+      "lng": 5.929
+    },
+    "resources": {
+      "treasury": 59,
+      "industry": 23,
+      "energy": 9,
+      "food": 3,
+      "rareMaterials": 22
+    },
+    "manpower": {
+      "pool": 6,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 79,
+    "government": "Constitutional Monarchy"
+  },
+  "LVA": {
+    "name": "Latvia",
+    "color": "#4345db",
+    "capital": {
+      "lat": 56.798,
+      "lng": 24.981
+    },
+    "resources": {
+      "treasury": 51,
+      "industry": 20,
+      "energy": 10,
+      "food": 7,
+      "rareMaterials": 3
+    },
+    "manpower": {
+      "pool": 19,
+      "available": 6,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 54,
+    "government": "Federation"
+  },
+  "MAR": {
+    "name": "Morocco",
+    "color": "#43db72",
+    "capital": {
+      "lat": 28.77,
+      "lng": -9.426
+    },
+    "resources": {
+      "treasury": 283,
+      "industry": 113,
+      "energy": 103,
+      "food": 87,
+      "rareMaterials": 13
+    },
+    "manpower": {
+      "pool": 340,
+      "available": 102,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 3
+    },
+    "stability": 47,
+    "government": "Presidential Republic"
+  },
+  "MDA": {
+    "name": "Moldova",
+    "color": "#4350db",
+    "capital": {
+      "lat": 47.047,
+      "lng": 28.47
+    },
+    "resources": {
+      "treasury": 19,
+      "industry": 7,
+      "energy": 9,
+      "food": 11,
+      "rareMaterials": 24
+    },
+    "manpower": {
+      "pool": 35,
+      "available": 11,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 50,
+    "government": "Constitutional Monarchy"
+  },
+  "MDG": {
+    "name": "Madagascar",
+    "color": "#5fdb43",
+    "capital": {
+      "lat": -17.971,
+      "lng": 46.989
+    },
+    "resources": {
+      "treasury": 37,
+      "industry": 15,
+      "energy": 55,
+      "food": 65,
+      "rareMaterials": 33
+    },
+    "manpower": {
+      "pool": 251,
+      "available": 75,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 2
+    },
+    "stability": 32,
+    "government": "Federal Republic"
+  },
+  "MEX": {
+    "name": "Mexico",
+    "color": "#6a43db",
+    "capital": {
+      "lat": 23.792,
+      "lng": -102.961
+    },
+    "resources": {
+      "treasury": 2307,
+      "industry": 923,
+      "energy": 538,
+      "food": 313,
+      "rareMaterials": 74
+    },
+    "manpower": {
+      "pool": 1246,
+      "available": 374,
+      "recruitRate": 12
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 4
+    },
+    "stability": 66,
+    "government": "Federation"
+  },
+  "MKD": {
+    "name": "Macedonia",
+    "color": "#43c5db",
+    "capital": {
+      "lat": 41.601,
+      "lng": 21.551
+    },
+    "resources": {
+      "treasury": 30,
+      "industry": 12,
+      "energy": 8,
+      "food": 7,
+      "rareMaterials": 16
+    },
+    "manpower": {
+      "pool": 21,
+      "available": 6,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 5
+    },
+    "stability": 54,
+    "government": "Presidential Republic"
+  },
+  "MLI": {
+    "name": "Mali",
+    "color": "#43db57",
+    "capital": {
+      "lat": 14.112,
+      "lng": -5.646
+    },
+    "resources": {
+      "treasury": 38,
+      "industry": 15,
+      "energy": 41,
+      "food": 47,
+      "rareMaterials": 28
+    },
+    "manpower": {
+      "pool": 179,
+      "available": 54,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 3
+    },
+    "stability": 48,
+    "government": "Constitutional Monarchy"
+  },
+  "MMR": {
+    "name": "Myanmar",
+    "color": "#d1db43",
+    "capital": {
+      "lat": 20.004,
+      "lng": 97.043
+    },
+    "resources": {
+      "treasury": 311,
+      "industry": 124,
+      "energy": 149,
+      "food": 140,
+      "rareMaterials": 24
+    },
+    "manpower": {
+      "pool": 551,
+      "available": 165,
+      "recruitRate": 6
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 1
+    },
+    "stability": 47,
+    "government": "Republic"
+  },
+  "MNE": {
+    "name": "Montenegro",
+    "color": "#43afdb",
+    "capital": {
+      "lat": 42.741,
+      "lng": 19.447
+    },
+    "resources": {
+      "treasury": 11,
+      "industry": 4,
+      "energy": 3,
+      "food": 4,
+      "rareMaterials": 13
+    },
+    "manpower": {
+      "pool": 6,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 5
+    },
+    "stability": 68,
+    "government": "Federation"
+  },
+  "MNG": {
+    "name": "Mongolia",
+    "color": "#db8143",
+    "capital": {
+      "lat": 47.212,
+      "lng": 104.971
+    },
+    "resources": {
+      "treasury": 37,
+      "industry": 15,
+      "energy": 11,
+      "food": 10,
+      "rareMaterials": 16
+    },
+    "manpower": {
+      "pool": 31,
+      "available": 9,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 4
+    },
+    "stability": 49,
+    "government": "Federation"
+  },
+  "MOZ": {
+    "name": "Mozambique",
+    "color": "#5cdb43",
+    "capital": {
+      "lat": -17.72,
+      "lng": 35.004
+    },
+    "resources": {
+      "treasury": 35,
+      "industry": 14,
+      "energy": 58,
+      "food": 68,
+      "rareMaterials": 29
+    },
+    "manpower": {
+      "pool": 266,
+      "available": 80,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 40,
+    "government": "Parliamentary Republic"
+  },
+  "MRT": {
+    "name": "Mauritania",
+    "color": "#78db43",
+    "capital": {
+      "lat": 18.995,
+      "lng": -12.21
+    },
+    "resources": {
+      "treasury": 17,
+      "industry": 7,
+      "energy": 10,
+      "food": 11,
+      "rareMaterials": 7
+    },
+    "manpower": {
+      "pool": 38,
+      "available": 11,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 43,
+    "government": "Federal Republic"
+  },
+  "MWI": {
+    "name": "Malawi",
+    "color": "#47db43",
+    "capital": {
+      "lat": -12.996,
+      "lng": 34.127
+    },
+    "resources": {
+      "treasury": 21,
+      "industry": 8,
+      "energy": 41,
+      "food": 50,
+      "rareMaterials": 10
+    },
+    "manpower": {
+      "pool": 192,
+      "available": 58,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 38,
+    "government": "Sovereign State"
+  },
+  "MYS": {
+    "name": "Malaysia",
+    "color": "#db8943",
+    "capital": {
+      "lat": 3.689,
+      "lng": 114.669
+    },
+    "resources": {
+      "treasury": 863,
+      "industry": 345,
+      "energy": 171,
+      "food": 80,
+      "rareMaterials": 17
+    },
+    "manpower": {
+      "pool": 314,
+      "available": 94,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 6
+    },
+    "stability": 72,
+    "government": "Federation"
+  },
+  "NAM": {
+    "name": "Namibia",
+    "color": "#43db66",
+    "capital": {
+      "lat": -21.391,
+      "lng": 17.743
+    },
+    "resources": {
+      "treasury": 26,
+      "industry": 10,
+      "energy": 8,
+      "food": 8,
+      "rareMaterials": 40
+    },
+    "manpower": {
+      "pool": 25,
+      "available": 8,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 5
+    },
+    "stability": 56,
+    "government": "Presidential Republic"
+  },
+  "NCL": {
+    "name": "New Caledonia",
+    "color": "#db437f",
+    "capital": {
+      "lat": -21.178,
+      "lng": 165.512
+    },
+    "resources": {
+      "treasury": 11,
+      "industry": 4,
+      "energy": 2,
+      "food": 3,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 3,
+      "available": 1,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 74,
+    "government": "Presidential Republic"
+  },
+  "NER": {
+    "name": "Niger",
+    "color": "#43dba6",
+    "capital": {
+      "lat": 15.285,
+      "lng": 8.544
+    },
+    "resources": {
+      "treasury": 20,
+      "industry": 8,
+      "energy": 41,
+      "food": 50,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 192,
+      "available": 58,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 46,
+    "government": "Federal Republic"
+  },
+  "NGA": {
+    "name": "Nigeria",
+    "color": "#68db43",
+    "capital": {
+      "lat": 9.732,
+      "lng": 8.348
+    },
+    "resources": {
+      "treasury": 1089,
+      "industry": 436,
+      "energy": 517,
+      "food": 479,
+      "rareMaterials": 74
+    },
+    "manpower": {
+      "pool": 1906,
+      "available": 572,
+      "recruitRate": 19
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 47,
+    "government": "Sovereign State"
+  },
+  "NIC": {
+    "name": "Nicaragua",
+    "color": "#bc43db",
+    "capital": {
+      "lat": 13.079,
+      "lng": -84.978
+    },
+    "resources": {
+      "treasury": 34,
+      "industry": 13,
+      "energy": 16,
+      "food": 17,
+      "rareMaterials": 19
+    },
+    "manpower": {
+      "pool": 60,
+      "available": 18,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 5
+    },
+    "stability": 48,
+    "government": "Federal Republic"
+  },
+  "NLD": {
+    "name": "Netherlands",
+    "color": "#4374db",
+    "capital": {
+      "lat": 51.924,
+      "lng": 5.44
+    },
+    "resources": {
+      "treasury": 871,
+      "industry": 348,
+      "energy": 143,
+      "food": 45,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 171,
+      "available": 51,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 8
+    },
+    "stability": 80,
+    "government": "Constitutional Monarchy"
+  },
+  "Norway": {
+    "name": "Norway",
+    "color": "#4346db",
+    "capital": {
+      "lat": 66.222,
+      "lng": 18.036
+    },
+    "resources": {
+      "treasury": 365,
+      "industry": 146,
+      "energy": 56,
+      "food": 15,
+      "rareMaterials": 9
+    },
+    "manpower": {
+      "pool": 53,
+      "available": 16,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 8
+    },
+    "stability": 75,
+    "government": "Presidential Republic"
+  },
+  "NPL": {
+    "name": "Nepal",
+    "color": "#dbd843",
+    "capital": {
+      "lat": 28.309,
+      "lng": 84.254
+    },
+    "resources": {
+      "treasury": 72,
+      "industry": 29,
+      "energy": 68,
+      "food": 75,
+      "rareMaterials": 46
+    },
+    "manpower": {
+      "pool": 294,
+      "available": 88,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 3
+    },
+    "stability": 48,
+    "government": "Presidential Republic"
+  },
+  "NZL": {
+    "name": "New Zealand",
+    "color": "#db43c7",
+    "capital": {
+      "lat": -38.089,
+      "lng": 175.418
+    },
+    "resources": {
+      "treasury": 175,
+      "industry": 70,
+      "energy": 31,
+      "food": 13,
+      "rareMaterials": 40
+    },
+    "manpower": {
+      "pool": 45,
+      "available": 14,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 79,
+    "government": "Constitutional Monarchy"
+  },
+  "OMN": {
+    "name": "Oman",
+    "color": "#db8643",
+    "capital": {
+      "lat": 20.86,
+      "lng": 56.566
+    },
+    "resources": {
+      "treasury": 173,
+      "industry": 69,
+      "energy": 28,
+      "food": 11,
+      "rareMaterials": 38
+    },
+    "manpower": {
+      "pool": 34,
+      "available": 10,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 7
+    },
+    "stability": 81,
+    "government": "Sovereign State"
+  },
+  "PAK": {
+    "name": "Pakistan",
+    "color": "#dbcf43",
+    "capital": {
+      "lat": 30.705,
+      "lng": 69.187
+    },
+    "resources": {
+      "treasury": 988,
+      "industry": 395,
+      "energy": 533,
+      "food": 514,
+      "rareMaterials": 80
+    },
+    "manpower": {
+      "pool": 2049,
+      "available": 615,
+      "recruitRate": 20
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 3
+    },
+    "stability": 43,
+    "government": "Constitutional Monarchy"
+  },
+  "PAN": {
+    "name": "Panama",
+    "color": "#6843db",
+    "capital": {
+      "lat": 8.496,
+      "lng": -80.317
+    },
+    "resources": {
+      "treasury": 93,
+      "industry": 37,
+      "energy": 19,
+      "food": 11,
+      "rareMaterials": 37
+    },
+    "manpower": {
+      "pool": 38,
+      "available": 11,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 55,
+    "government": "Constitutional Monarchy"
+  },
+  "PER": {
+    "name": "Peru",
+    "color": "#afdb43",
+    "capital": {
+      "lat": -7.841,
+      "lng": -74.077
+    },
+    "resources": {
+      "treasury": 410,
+      "industry": 164,
+      "energy": 113,
+      "food": 80,
+      "rareMaterials": 45
+    },
+    "manpower": {
+      "pool": 310,
+      "available": 93,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 4
+    },
+    "stability": 52,
+    "government": "Parliamentary Republic"
+  },
+  "PHL": {
+    "name": "Philippines",
+    "color": "#db9743",
+    "capital": {
+      "lat": 15.378,
+      "lng": 121.785
+    },
+    "resources": {
+      "treasury": 802,
+      "industry": 321,
+      "energy": 309,
+      "food": 263,
+      "rareMaterials": 34
+    },
+    "manpower": {
+      "pool": 1043,
+      "available": 313,
+      "recruitRate": 10
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 50,
+    "government": "Republic"
+  },
+  "PNG": {
+    "name": "Papua New Guinea",
+    "color": "#b043db",
+    "capital": {
+      "lat": -7.963,
+      "lng": 146.214
+    },
+    "resources": {
+      "treasury": 28,
+      "industry": 11,
+      "energy": 17,
+      "food": 19,
+      "rareMaterials": 22
+    },
+    "manpower": {
+      "pool": 69,
+      "available": 21,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 60,
+    "government": "Constitutional Monarchy"
+  },
+  "POL": {
+    "name": "Poland",
+    "color": "#43dadb",
+    "capital": {
+      "lat": 51.745,
+      "lng": 19.476
+    },
+    "resources": {
+      "treasury": 1052,
+      "industry": 421,
+      "energy": 208,
+      "food": 98,
+      "rareMaterials": 24
+    },
+    "manpower": {
+      "pool": 385,
+      "available": 116,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 9
+    },
+    "stability": 75,
+    "government": "Presidential Republic"
+  },
+  "PRI": {
+    "name": "Puerto Rico",
+    "color": "#4d43db",
+    "capital": {
+      "lat": 18.276,
+      "lng": -66.434
+    },
+    "resources": {
+      "treasury": 131,
+      "industry": 52,
+      "energy": 23,
+      "food": 10,
+      "rareMaterials": 27
+    },
+    "manpower": {
+      "pool": 34,
+      "available": 10,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 8
+    },
+    "stability": 81,
+    "government": "Presidential Republic"
+  },
+  "PRK": {
+    "name": "North Korea",
+    "color": "#dbb243",
+    "capital": {
+      "lat": 39.887,
+      "lng": 127.259
+    },
+    "resources": {
+      "treasury": 40,
+      "industry": 16,
+      "energy": 55,
+      "food": 65,
+      "rareMaterials": 36
+    },
+    "manpower": {
+      "pool": 252,
+      "available": 76,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 43,
+    "government": "Presidential Republic"
+  },
+  "PRT": {
+    "name": "Portugal",
+    "color": "#43c2db",
+    "capital": {
+      "lat": 39.764,
+      "lng": -8.039
+    },
+    "resources": {
+      "treasury": 297,
+      "industry": 119,
+      "energy": 59,
+      "food": 29,
+      "rareMaterials": 4
+    },
+    "manpower": {
+      "pool": 108,
+      "available": 32,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 7
+    },
+    "stability": 78,
+    "government": "Federation"
+  },
+  "PRY": {
+    "name": "Paraguay",
+    "color": "#db7e43",
+    "capital": {
+      "lat": -23.471,
+      "lng": -57.463
+    },
+    "resources": {
+      "treasury": 65,
+      "industry": 26,
+      "energy": 22,
+      "food": 19,
+      "rareMaterials": 12
+    },
+    "manpower": {
+      "pool": 69,
+      "available": 21,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 3
+    },
+    "stability": 42,
+    "government": "Republic"
+  },
+  "PSE": {
+    "name": "Palestine",
+    "color": "#dba743",
+    "capital": {
+      "lat": 31.809,
+      "lng": 35.241
+    },
+    "resources": {
+      "treasury": 21,
+      "industry": 8,
+      "energy": 12,
+      "food": 13,
+      "rareMaterials": 20
+    },
+    "manpower": {
+      "pool": 45,
+      "available": 14,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 56,
+    "government": "Parliamentary Republic"
+  },
+  "QAT": {
+    "name": "Qatar",
+    "color": "#db6643",
+    "capital": {
+      "lat": 25.257,
+      "lng": 51.151
+    },
+    "resources": {
+      "treasury": 335,
+      "industry": 134,
+      "energy": 46,
+      "food": 8,
+      "rareMaterials": 26
+    },
+    "manpower": {
+      "pool": 23,
+      "available": 7,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 6
+    },
+    "stability": 64,
+    "government": "Constitutional Monarchy"
+  },
+  "ROU": {
+    "name": "Romania",
+    "color": "#4348db",
+    "capital": {
+      "lat": 45.816,
+      "lng": 25.196
+    },
+    "resources": {
+      "treasury": 441,
+      "industry": 176,
+      "energy": 98,
+      "food": 56,
+      "rareMaterials": 7
+    },
+    "manpower": {
+      "pool": 215,
+      "available": 65,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 67,
+    "government": "Federation"
+  },
+  "RUS": {
+    "name": "Russia",
+    "color": "#438adb",
+    "capital": {
+      "lat": 59.086,
+      "lng": 90.866
+    },
+    "resources": {
+      "treasury": 3745,
+      "industry": 1498,
+      "energy": 753,
+      "food": 358,
+      "rareMaterials": 60
+    },
+    "manpower": {
+      "pool": 1423,
+      "available": 427,
+      "recruitRate": 14
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 6
+    },
+    "stability": 65,
+    "government": "Federation"
+  },
+  "RWA": {
+    "name": "Rwanda",
+    "color": "#43db8a",
+    "capital": {
+      "lat": -2.099,
+      "lng": 29.933
+    },
+    "resources": {
+      "treasury": 22,
+      "industry": 9,
+      "energy": 27,
+      "food": 32,
+      "rareMaterials": 41
+    },
+    "manpower": {
+      "pool": 119,
+      "available": 36,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 2
+    },
+    "stability": 48,
+    "government": "Presidential Republic"
+  },
+  "ESH": {
+    "name": "Western Sahara",
+    "color": "#5cdb43",
+    "capital": {
+      "lat": 24.778,
+      "lng": -12.027
+    },
+    "resources": {
+      "treasury": 1,
+      "industry": 1,
+      "energy": 1,
+      "food": 4,
+      "rareMaterials": 11
+    },
+    "manpower": {
+      "pool": 6,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 2
+    },
+    "stability": 34,
+    "government": "Constitutional Monarchy"
+  },
+  "SAU": {
+    "name": "Saudi Arabia",
+    "color": "#db8743",
+    "capital": {
+      "lat": 23.973,
+      "lng": 43.813
+    },
+    "resources": {
+      "treasury": 1731,
+      "industry": 692,
+      "energy": 274,
+      "food": 73,
+      "rareMaterials": 21
+    },
+    "manpower": {
+      "pool": 286,
+      "available": 86,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 66,
+    "government": "Constitutional Monarchy"
+  },
+  "SDN": {
+    "name": "Sudan",
+    "color": "#78db43",
+    "capital": {
+      "lat": 12.808,
+      "lng": 29.337
+    },
+    "resources": {
+      "treasury": 176,
+      "industry": 71,
+      "energy": 97,
+      "food": 95,
+      "rareMaterials": 47
+    },
+    "manpower": {
+      "pool": 373,
+      "available": 112,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 55,
+    "government": "Federal Republic"
+  },
+  "SSD": {
+    "name": "South Sudan",
+    "color": "#4edb43",
+    "capital": {
+      "lat": 8.037,
+      "lng": 30.038
+    },
+    "resources": {
+      "treasury": 21,
+      "industry": 8,
+      "energy": 29,
+      "food": 35,
+      "rareMaterials": 25
+    },
+    "manpower": {
+      "pool": 130,
+      "available": 39,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 41,
+    "government": "Federation"
+  },
+  "SEN": {
+    "name": "Senegal",
+    "color": "#43db46",
+    "capital": {
+      "lat": 13.851,
+      "lng": -14.473
+    },
+    "resources": {
+      "treasury": 40,
+      "industry": 16,
+      "energy": 34,
+      "food": 39,
+      "rareMaterials": 21
+    },
+    "manpower": {
+      "pool": 147,
+      "available": 44,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 5
+    },
+    "stability": 45,
+    "government": "Republic"
+  },
+  "SLB": {
+    "name": "Solomon Islands",
+    "color": "#db43ae",
+    "capital": {
+      "lat": -7.934,
+      "lng": 159.158
+    },
+    "resources": {
+      "treasury": 1,
+      "industry": 1,
+      "energy": 1,
+      "food": 4,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 6,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 3
+    },
+    "stability": 48,
+    "government": "Parliamentary Republic"
+  },
+  "SLE": {
+    "name": "Sierra Leone",
+    "color": "#43db52",
+    "capital": {
+      "lat": 8.603,
+      "lng": -11.702
+    },
+    "resources": {
+      "treasury": 11,
+      "industry": 4,
+      "energy": 14,
+      "food": 17,
+      "rareMaterials": 23
+    },
+    "manpower": {
+      "pool": 62,
+      "available": 19,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 35,
+    "government": "Presidential Republic"
+  },
+  "SLV": {
+    "name": "El Salvador",
+    "color": "#b143db",
+    "capital": {
+      "lat": 13.82,
+      "lng": -88.957
+    },
+    "resources": {
+      "treasury": 55,
+      "industry": 22,
+      "energy": 19,
+      "food": 17,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 62,
+      "available": 19,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 46,
+    "government": "Sovereign State"
+  },
+  "Somaliland": {
+    "name": "Somaliland",
+    "color": "#68db43",
+    "capital": {
+      "lat": 10.452,
+      "lng": 46.115
+    },
+    "resources": {
+      "treasury": 12,
+      "industry": 5,
+      "energy": 9,
+      "food": 11,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 35,
+      "available": 11,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 4
+    },
+    "stability": 58,
+    "government": "Presidential Republic"
+  },
+  "SOM": {
+    "name": "Somalia",
+    "color": "#43db5e",
+    "capital": {
+      "lat": 6.705,
+      "lng": 46.905
+    },
+    "resources": {
+      "treasury": 5,
+      "industry": 2,
+      "energy": 16,
+      "food": 21,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 75,
+      "available": 23,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 3
+    },
+    "stability": 42,
+    "government": "Presidential Republic"
+  },
+  "SRB": {
+    "name": "Republic of Serbia",
+    "color": "#4364db",
+    "capital": {
+      "lat": 43.86,
+      "lng": 20.935
+    },
+    "resources": {
+      "treasury": 102,
+      "industry": 41,
+      "energy": 27,
+      "food": 20,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 71,
+      "available": 21,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 6
+    },
+    "stability": 67,
+    "government": "Federation"
+  },
+  "SUR": {
+    "name": "Suriname",
+    "color": "#dbc143",
+    "capital": {
+      "lat": 3.698,
+      "lng": -55.871
+    },
+    "resources": {
+      "treasury": 9,
+      "industry": 3,
+      "energy": 2,
+      "food": 3,
+      "rareMaterials": 5
+    },
+    "manpower": {
+      "pool": 6,
+      "available": 2,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 5
+    },
+    "stability": 59,
+    "government": "Republic"
+  },
+  "SVK": {
+    "name": "Slovakia",
+    "color": "#436fdb",
+    "capital": {
+      "lat": 48.735,
+      "lng": 19.183
+    },
+    "resources": {
+      "treasury": 169,
+      "industry": 68,
+      "energy": 32,
+      "food": 16,
+      "rareMaterials": 39
+    },
+    "manpower": {
+      "pool": 54,
+      "available": 16,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 7
+    },
+    "stability": 83,
+    "government": "Sovereign State"
+  },
+  "SVN": {
+    "name": "Slovenia",
+    "color": "#4353db",
+    "capital": {
+      "lat": 46.107,
+      "lng": 14.995
+    },
+    "resources": {
+      "treasury": 68,
+      "industry": 27,
+      "energy": 12,
+      "food": 7,
+      "rareMaterials": 23
+    },
+    "manpower": {
+      "pool": 20,
+      "available": 6,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 9
+    },
+    "stability": 73,
+    "government": "Sovereign State"
+  },
+  "SWE": {
+    "name": "Sweden",
+    "color": "#43badb",
+    "capital": {
+      "lat": 62.996,
+      "lng": 16.804
+    },
+    "resources": {
+      "treasury": 498,
+      "industry": 199,
+      "energy": 82,
+      "food": 27,
+      "rareMaterials": 17
+    },
+    "manpower": {
+      "pool": 100,
+      "available": 30,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 8
+    },
+    "stability": 89,
+    "government": "Sovereign State"
+  },
+  "SWZ": {
+    "name": "Swaziland",
+    "color": "#49db43",
+    "capital": {
+      "lat": -26.339,
+      "lng": 31.416
+    },
+    "resources": {
+      "treasury": 11,
+      "industry": 4,
+      "energy": 4,
+      "food": 6,
+      "rareMaterials": 23
+    },
+    "manpower": {
+      "pool": 15,
+      "available": 5,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 4
+    },
+    "stability": 54,
+    "government": "Federal Republic"
+  },
+  "SYR": {
+    "name": "Syria",
+    "color": "#db8643",
+    "capital": {
+      "lat": 35.314,
+      "lng": 38.196
+    },
+    "resources": {
+      "treasury": 50,
+      "industry": 20,
+      "energy": 42,
+      "food": 47,
+      "rareMaterials": 22
+    },
+    "manpower": {
+      "pool": 180,
+      "available": 54,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 5
+    },
+    "stability": 49,
+    "government": "Republic"
+  },
+  "TCD": {
+    "name": "Chad",
+    "color": "#43db4c",
+    "capital": {
+      "lat": 12.85,
+      "lng": 17.979
+    },
+    "resources": {
+      "treasury": 31,
+      "industry": 12,
+      "energy": 28,
+      "food": 32,
+      "rareMaterials": 8
+    },
+    "manpower": {
+      "pool": 121,
+      "available": 36,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 33,
+    "government": "Constitutional Monarchy"
+  },
+  "TGO": {
+    "name": "Togo",
+    "color": "#49db43",
+    "capital": {
+      "lat": 8.885,
+      "lng": 0.87
+    },
+    "resources": {
+      "treasury": 12,
+      "industry": 5,
+      "energy": 17,
+      "food": 22,
+      "rareMaterials": 35
+    },
+    "manpower": {
+      "pool": 80,
+      "available": 24,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 3
+    },
+    "stability": 37,
+    "government": "Federal Republic"
+  },
+  "THA": {
+    "name": "Thailand",
+    "color": "#db4543",
+    "capital": {
+      "lat": 13.181,
+      "lng": 100.662
+    },
+    "resources": {
+      "treasury": 1161,
+      "industry": 464,
+      "energy": 282,
+      "food": 173,
+      "rareMaterials": 29
+    },
+    "manpower": {
+      "pool": 684,
+      "available": 205,
+      "recruitRate": 7
+    },
+    "military": {
+      "doctrine": "air",
+      "techLevel": 5
+    },
+    "stability": 63,
+    "government": "Sovereign State"
+  },
+  "TJK": {
+    "name": "Tajikistan",
+    "color": "#db6743",
+    "capital": {
+      "lat": 38.52,
+      "lng": 70.962
+    },
+    "resources": {
+      "treasury": 26,
+      "industry": 10,
+      "energy": 20,
+      "food": 23,
+      "rareMaterials": 3
+    },
+    "manpower": {
+      "pool": 85,
+      "available": 26,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 1
+    },
+    "stability": 44,
+    "government": "Federal Republic"
+  },
+  "TKM": {
+    "name": "Turkmenistan",
+    "color": "#dba043",
+    "capital": {
+      "lat": 39.248,
+      "lng": 58.716
+    },
+    "resources": {
+      "treasury": 95,
+      "industry": 38,
+      "energy": 23,
+      "food": 15,
+      "rareMaterials": 33
+    },
+    "manpower": {
+      "pool": 54,
+      "available": 16,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 6
+    },
+    "stability": 56,
+    "government": "Presidential Republic"
+  },
+  "TLS": {
+    "name": "East Timor",
+    "color": "#db5b43",
+    "capital": {
+      "lat": -8.791,
+      "lng": 125.916
+    },
+    "resources": {
+      "treasury": 5,
+      "industry": 2,
+      "energy": 3,
+      "food": 5,
+      "rareMaterials": 26
+    },
+    "manpower": {
+      "pool": 13,
+      "available": 4,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 54,
+    "government": "Sovereign State"
+  },
+  "TTO": {
+    "name": "Trinidad and Tobago",
+    "color": "#7443db",
+    "capital": {
+      "lat": 10.479,
+      "lng": -61.459
+    },
+    "resources": {
+      "treasury": 44,
+      "industry": 17,
+      "energy": 8,
+      "food": 5,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 12,
+      "available": 4,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 6
+    },
+    "stability": 64,
+    "government": "Presidential Republic"
+  },
+  "TUN": {
+    "name": "Tunisia",
+    "color": "#65db43",
+    "capital": {
+      "lat": 34.017,
+      "lng": 9.842
+    },
+    "resources": {
+      "treasury": 131,
+      "industry": 52,
+      "energy": 39,
+      "food": 31,
+      "rareMaterials": 31
+    },
+    "manpower": {
+      "pool": 114,
+      "available": 34,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 58,
+    "government": "Federation"
+  },
+  "TUR": {
+    "name": "Turkey",
+    "color": "#db6443",
+    "capital": {
+      "lat": 38.451,
+      "lng": 36.879
+    },
+    "resources": {
+      "treasury": 1670,
+      "industry": 668,
+      "energy": 370,
+      "food": 204,
+      "rareMaterials": 48
+    },
+    "manpower": {
+      "pool": 808,
+      "available": 242,
+      "recruitRate": 8
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 4
+    },
+    "stability": 53,
+    "government": "Federation"
+  },
+  "TWN": {
+    "name": "Taiwan",
+    "color": "#db5343",
+    "capital": {
+      "lat": 23.861,
+      "lng": 121.105
+    },
+    "resources": {
+      "treasury": 1127,
+      "industry": 451,
+      "energy": 188,
+      "food": 61,
+      "rareMaterials": 45
+    },
+    "manpower": {
+      "pool": 235,
+      "available": 71,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 6
+    },
+    "stability": 66,
+    "government": "Sovereign State"
+  },
+  "TZA": {
+    "name": "United Republic of Tanzania",
+    "color": "#65db43",
+    "capital": {
+      "lat": -6.613,
+      "lng": 34.226
+    },
+    "resources": {
+      "treasury": 151,
+      "industry": 60,
+      "energy": 127,
+      "food": 137,
+      "rareMaterials": 54
+    },
+    "manpower": {
+      "pool": 540,
+      "available": 162,
+      "recruitRate": 5
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 2
+    },
+    "stability": 44,
+    "government": "Presidential Republic"
+  },
+  "UGA": {
+    "name": "Uganda",
+    "color": "#59db43",
+    "capital": {
+      "lat": 1.325,
+      "lng": 31.797
+    },
+    "resources": {
+      "treasury": 85,
+      "industry": 34,
+      "energy": 90,
+      "food": 101,
+      "rareMaterials": 24
+    },
+    "manpower": {
+      "pool": 396,
+      "available": 119,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 1
+    },
+    "stability": 44,
+    "government": "Presidential Republic"
+  },
+  "UKR": {
+    "name": "Ukraine",
+    "color": "#43c0db",
+    "capital": {
+      "lat": 48.681,
+      "lng": 30.362
+    },
+    "resources": {
+      "treasury": 353,
+      "industry": 141,
+      "energy": 132,
+      "food": 112,
+      "rareMaterials": 30
+    },
+    "manpower": {
+      "pool": 440,
+      "available": 132,
+      "recruitRate": 4
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 4
+    },
+    "stability": 54,
+    "government": "Parliamentary Republic"
+  },
+  "URY": {
+    "name": "Uruguay",
+    "color": "#badb43",
+    "capital": {
+      "lat": -32.873,
+      "lng": -56.177
+    },
+    "resources": {
+      "treasury": 73,
+      "industry": 29,
+      "energy": 16,
+      "food": 10,
+      "rareMaterials": 38
+    },
+    "manpower": {
+      "pool": 34,
+      "available": 10,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 4
+    },
+    "stability": 63,
+    "government": "Presidential Republic"
+  },
+  "USA": {
+    "name": "United States of America",
+    "color": "#4348db",
+    "capital": {
+      "lat": 38.274,
+      "lng": -90.365
+    },
+    "resources": {
+      "treasury": 18560,
+      "industry": 7424,
+      "energy": 2973,
+      "food": 819,
+      "rareMaterials": 98
+    },
+    "manpower": {
+      "pool": 3266,
+      "available": 980,
+      "recruitRate": 33
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 9
+    },
+    "stability": 86,
+    "government": "Republic"
+  },
+  "UZB": {
+    "name": "Uzbekistan",
+    "color": "#db6443",
+    "capital": {
+      "lat": 41.076,
+      "lng": 65.509
+    },
+    "resources": {
+      "treasury": 202,
+      "industry": 81,
+      "energy": 85,
+      "food": 76,
+      "rareMaterials": 13
+    },
+    "manpower": {
+      "pool": 297,
+      "available": 89,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 3
+    },
+    "stability": 58,
+    "government": "Presidential Republic"
+  },
+  "VEN": {
+    "name": "Venezuela",
+    "color": "#dbad43",
+    "capital": {
+      "lat": 7.213,
+      "lng": -66.852
+    },
+    "resources": {
+      "treasury": 469,
+      "industry": 187,
+      "energy": 121,
+      "food": 80,
+      "rareMaterials": 47
+    },
+    "manpower": {
+      "pool": 313,
+      "available": 94,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 6
+    },
+    "stability": 57,
+    "government": "Federal Republic"
+  },
+  "VNM": {
+    "name": "Vietnam",
+    "color": "#db5e43",
+    "capital": {
+      "lat": 16.978,
+      "lng": 105.89
+    },
+    "resources": {
+      "treasury": 595,
+      "industry": 238,
+      "energy": 267,
+      "food": 242,
+      "rareMaterials": 61
+    },
+    "manpower": {
+      "pool": 962,
+      "available": 289,
+      "recruitRate": 10
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 43,
+    "government": "Parliamentary Republic"
+  },
+  "VUT": {
+    "name": "Vanuatu",
+    "color": "#d543db",
+    "capital": {
+      "lat": -15.273,
+      "lng": 166.937
+    },
+    "resources": {
+      "treasury": 1,
+      "industry": 1,
+      "energy": 1,
+      "food": 3,
+      "rareMaterials": 24
+    },
+    "manpower": {
+      "pool": 3,
+      "available": 1,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "armor",
+      "techLevel": 5
+    },
+    "stability": 47,
+    "government": "Presidential Republic"
+  },
+  "YEM": {
+    "name": "Yemen",
+    "color": "#dbbd43",
+    "capital": {
+      "lat": 15.512,
+      "lng": 46.472
+    },
+    "resources": {
+      "treasury": 73,
+      "industry": 29,
+      "energy": 65,
+      "food": 72,
+      "rareMaterials": 10
+    },
+    "manpower": {
+      "pool": 280,
+      "available": 84,
+      "recruitRate": 3
+    },
+    "military": {
+      "doctrine": "naval",
+      "techLevel": 5
+    },
+    "stability": 49,
+    "government": "Parliamentary Republic"
+  },
+  "ZAF": {
+    "name": "South Africa",
+    "color": "#75db43",
+    "capital": {
+      "lat": -28.557,
+      "lng": 24.763
+    },
+    "resources": {
+      "treasury": 739,
+      "industry": 296,
+      "energy": 202,
+      "food": 139,
+      "rareMaterials": 38
+    },
+    "manpower": {
+      "pool": 548,
+      "available": 164,
+      "recruitRate": 5
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 4
+    },
+    "stability": 64,
+    "government": "Parliamentary Republic"
+  },
+  "ZMB": {
+    "name": "Zambia",
+    "color": "#43dbb5",
+    "capital": {
+      "lat": -12.985,
+      "lng": 27.855
+    },
+    "resources": {
+      "treasury": 65,
+      "industry": 26,
+      "energy": 40,
+      "food": 42,
+      "rareMaterials": 43
+    },
+    "manpower": {
+      "pool": 160,
+      "available": 48,
+      "recruitRate": 2
+    },
+    "military": {
+      "doctrine": "guerilla",
+      "techLevel": 4
+    },
+    "stability": 52,
+    "government": "Republic"
+  },
+  "ZWE": {
+    "name": "Zimbabwe",
+    "color": "#43db81",
+    "capital": {
+      "lat": -18.866,
+      "lng": 29.611
+    },
+    "resources": {
+      "treasury": 28,
+      "industry": 11,
+      "energy": 31,
+      "food": 37,
+      "rareMaterials": 13
+    },
+    "manpower": {
+      "pool": 138,
+      "available": 41,
+      "recruitRate": 1
+    },
+    "military": {
+      "doctrine": "balanced",
+      "techLevel": 3
+    },
+    "stability": 38,
+    "government": "Parliamentary Republic"
+  }
+}
