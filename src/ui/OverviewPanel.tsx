@@ -2,18 +2,36 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
 import type { Nation } from '@/models/nation';
-import { commas, compact } from '@/ui/format';
+import type { NationTurnReport } from '@/engine/economy';
+import { commas, compact, signedCommas } from '@/ui/format';
 
-/** A labelled value tile. */
-function Stat({ label, value, accent }: { label: string; value: string; accent?: string }) {
+/** A labelled value tile, optionally with a last-turn delta. */
+function Stat({
+  label,
+  value,
+  accent,
+  delta,
+}: {
+  label: string;
+  value: string;
+  accent?: string;
+  delta?: number;
+}) {
   return (
     <div className="rounded-md border border-orbis-edge/60 bg-black/30 px-2.5 py-1.5">
       <div className="text-[9px] uppercase tracking-widest text-orbis-textDim">{label}</div>
-      <div
-        className="mt-0.5 text-sm font-semibold tabular-nums"
-        style={{ color: accent ?? '#cfe8ff' }}
-      >
-        {value}
+      <div className="mt-0.5 flex items-baseline gap-1.5">
+        <span className="text-sm font-semibold tabular-nums" style={{ color: accent ?? '#cfe8ff' }}>
+          {value}
+        </span>
+        {delta !== undefined && delta !== 0 && (
+          <span
+            className="text-[10px] font-semibold tabular-nums"
+            style={{ color: delta >= 0 ? '#46e8a0' : '#ff4d5e' }}
+          >
+            {signedCommas(delta)}
+          </span>
+        )}
       </div>
     </div>
   );
@@ -45,9 +63,10 @@ function stabilityColor(s: number): string {
   return '#ff4d5e';
 }
 
-function NationOverview({ nation }: { nation: Nation }) {
+function NationOverview({ nation, report }: { nation: Nation; report?: NationTurnReport }) {
   const r = nation.resources;
   const m = nation.manpower;
+  const inc = report?.income;
   return (
     <motion.div
       key={nation.id}
@@ -82,6 +101,15 @@ function NationOverview({ nation }: { nation: Nation }) {
         >
           {nation.stability}
         </span>
+        {report && report.stabilityChange !== 0 && (
+          <span
+            className="text-[10px] font-semibold tabular-nums"
+            style={{ color: report.stabilityChange >= 0 ? '#46e8a0' : '#ff4d5e' }}
+          >
+            {report.stabilityChange > 0 ? '+' : ''}
+            {report.stabilityChange}
+          </span>
+        )}
       </div>
 
       {/* Military */}
@@ -95,19 +123,19 @@ function NationOverview({ nation }: { nation: Nation }) {
       {/* Manpower */}
       <SectionTitle>Manpower</SectionTitle>
       <div className="grid grid-cols-3 gap-1.5">
-        <Stat label="Available" value={compact(m.available)} accent="#46e8a0" />
+        <Stat label="Available" value={compact(m.available)} accent="#46e8a0" delta={report?.manpowerGain} />
         <Stat label="Pool" value={compact(m.pool)} />
         <Stat label="Recruit / turn" value={compact(m.recruitRate)} />
       </div>
 
-      {/* Resources */}
+      {/* Resources (deltas = last turn's production / net) */}
       <SectionTitle>Resources</SectionTitle>
       <div className="grid grid-cols-2 gap-1.5">
-        <Stat label="Treasury" value={commas(r.treasury)} accent="#ffb347" />
-        <Stat label="Industry" value={commas(r.industry)} />
-        <Stat label="Energy" value={commas(r.energy)} />
-        <Stat label="Food" value={commas(r.food)} />
-        <Stat label="Rare Materials" value={commas(r.rareMaterials)} />
+        <Stat label="Treasury" value={commas(r.treasury)} accent="#ffb347" delta={report?.netTreasury} />
+        <Stat label="Industry" value={commas(r.industry)} delta={inc?.industry} />
+        <Stat label="Energy" value={commas(r.energy)} delta={inc?.energy} />
+        <Stat label="Food" value={commas(r.food)} delta={inc?.food} />
+        <Stat label="Rare Materials" value={commas(r.rareMaterials)} delta={inc?.rareMaterials} />
       </div>
     </motion.div>
   );
@@ -117,6 +145,7 @@ function NationOverview({ nation }: { nation: Nation }) {
 export default function OverviewPanel() {
   const selectedId = useSelectionStore((s) => s.selectedNationId);
   const nation = useWorldStore((s) => (selectedId ? s.nations[selectedId] : undefined));
+  const report = useWorldStore((s) => (selectedId ? s.lastReports[selectedId] : undefined));
 
   return (
     <div className="pointer-events-auto w-[300px] rounded-lg border border-orbis-edge bg-orbis-panel p-3 shadow-neon backdrop-blur-sm">
@@ -126,7 +155,7 @@ export default function OverviewPanel() {
       </div>
       <AnimatePresence mode="wait">
         {nation ? (
-          <NationOverview nation={nation} />
+          <NationOverview nation={nation} report={report} />
         ) : (
           <motion.div
             key="empty"

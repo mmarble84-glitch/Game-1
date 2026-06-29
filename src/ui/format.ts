@@ -13,3 +13,13 @@ export function compact(n: number): string {
 export function commas(n: number): string {
   return Math.round(n).toLocaleString('en-US');
 }
+
+/** Signed compact delta: 120 -> "+120", -5 -> "-5", 0 -> "+0". */
+export function signedCompact(n: number): string {
+  return (n >= 0 ? '+' : '') + compact(n);
+}
+
+/** Signed thousands delta: 1530 -> "+1,530", -42 -> "-42". */
+export function signedCommas(n: number): string {
+  return (n >= 0 ? '+' : '') + commas(n);
+}
