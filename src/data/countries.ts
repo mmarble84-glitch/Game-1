@@ -1,24 +1,21 @@
 /**
  * Country geometry loader.
- * Reads the committed Natural Earth Admin-0 (110m) GeoJSON from /public/data.
- * This is a pure async fetch with no side effects on game state.
+ * The Natural Earth Admin-0 (110m) GeoJSON is BUNDLED (imported as a raw string)
+ * rather than fetched, so the app works fully offline — including as a single
+ * self-contained HTML file opened from the filesystem (file://), where fetch()
+ * of local files is blocked by the browser.
  */
 
-import type { CountriesGeoJSON, CountryFeature } from '@/models/geo';
-
-// Respect the Vite base path so it works on a GitHub Pages subpath too.
-const COUNTRIES_URL = `${import.meta.env.BASE_URL}data/countries.geojson`;
+import type { CountryFeature, CountriesGeoJSON } from '@/models/geo';
+// eslint-disable-next-line import/no-unresolved -- Vite ?raw import
+import countriesRaw from './countries.geojson?raw';
 
 let cache: CountryFeature[] | null = null;
 
-/** Load (and memoize) the country features. */
+/** Load (and memoize) the country features from the bundled GeoJSON. */
 export async function loadCountries(): Promise<CountryFeature[]> {
   if (cache) return cache;
-  const res = await fetch(COUNTRIES_URL);
-  if (!res.ok) {
-    throw new Error(`Failed to load countries geojson: ${res.status} ${res.statusText}`);
-  }
-  const json = (await res.json()) as CountriesGeoJSON;
+  const json = JSON.parse(countriesRaw) as CountriesGeoJSON;
   cache = json.features;
   return cache;
 }

@@ -1,13 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 import { fileURLToPath, URL } from 'node:url';
 
+// `SINGLE=1 vite build` produces ONE self-contained index.html (all JS, CSS, and
+// data inlined) that runs offline by opening it directly in a browser (file://).
+const SINGLE = process.env.SINGLE === '1';
+
 // Vite config for ORBIS. The app is a static SPA; no server-side anything.
-// Production uses relative asset paths ('./') so it works when served from a
-// GitHub Pages project subpath; dev stays at '/'.
+// Production uses relative asset paths ('./') so it works from a GitHub Pages
+// subpath or the local filesystem; dev stays at '/'.
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? './' : '/',
-  plugins: [react()],
+  plugins: [react(), ...(SINGLE ? [viteSingleFile()] : [])],
   resolve: {
     alias: {
       // Mirror the "@/*" path alias declared in tsconfig.json.
@@ -22,20 +27,24 @@ export default defineConfig(({ command }) => ({
     host: true,
     port: 5173,
   },
-  build: {
-    // The globe stack (three + globe.gl) is large but stable; split it into its
-    // own vendor chunk so app-code changes don't bust its long-lived cache.
-    chunkSizeWarningLimit: 2600,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          // Only peel off the large, stable globe stack; let Rollup handle the
-          // rest (splitting react/framer too caused a circular vendor chunk).
-          if (id.includes('node_modules') && /[\\/](three|globe\.gl|react-globe\.gl)[\\/]/.test(id)) {
-            return 'globe-vendor';
-          }
+  build: SINGLE
+    ? // Single-file: let the plugin inline everything into one chunk.
+      { chunkSizeWarningLimit: 100000 }
+    : {
+        // The globe stack (three + globe.gl) is large but stable; split it into
+        // its own vendor chunk so app-code changes don't bust its long-lived cache.
+        chunkSizeWarningLimit: 2600,
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (
+                id.includes('node_modules') &&
+                /[\\/](three|globe\.gl|react-globe\.gl)[\\/]/.test(id)
+              ) {
+                return 'globe-vendor';
+              }
+            },
+          },
         },
       },
-    },
-  },
 }));

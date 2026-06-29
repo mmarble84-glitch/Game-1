@@ -1,25 +1,22 @@
 /**
  * Nation seed loader + Modern World builder.
- * Pure async fetch + pure transform; no game state mutation here.
+ * Seeds are BUNDLED (imported as a raw string) rather than fetched, so the app
+ * works fully offline — including as a single self-contained HTML file opened
+ * from the filesystem (file://), where fetch() of local files is blocked.
  */
 
 import type { ISO } from '@/models/geo';
 import type { Nation, NationSeeds } from '@/models/nation';
 import { buildNationFromSeed } from '@/engine/nations';
-
-// Respect the Vite base path so it works on a GitHub Pages subpath too.
-const SEEDS_URL = `${import.meta.env.BASE_URL}data/nation_seeds.json`;
+// eslint-disable-next-line import/no-unresolved -- Vite ?raw import
+import seedsRaw from './nation_seeds.json?raw';
 
 let cache: NationSeeds | null = null;
 
-/** Load (and memoize) the authored nation seeds. */
+/** Load (and memoize) the authored nation seeds from the bundled JSON. */
 export async function loadNationSeeds(): Promise<NationSeeds> {
   if (cache) return cache;
-  const res = await fetch(SEEDS_URL);
-  if (!res.ok) {
-    throw new Error(`Failed to load nation seeds: ${res.status} ${res.statusText}`);
-  }
-  cache = (await res.json()) as NationSeeds;
+  cache = JSON.parse(seedsRaw) as NationSeeds;
   return cache;
 }
 
