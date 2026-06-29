@@ -5,6 +5,7 @@ import { RARITY_META } from '@/config/events';
 import type { Effect } from '@/models/event';
 import { UNIT_CONFIG } from '@/config/units';
 import { COMBAT_CONFIG } from '@/config/combat';
+import { playCue } from '@/audio/cues';
 
 /** Short human description of a single effect, for the choice preview. */
 function describeEffect(eff: Effect): { text: string; positive: boolean } {
@@ -74,7 +75,10 @@ export default function EventCardModal() {
                 {current.event.choices.map((choice, i) => (
                   <button
                     key={i}
-                    onClick={() => chooseOption(i)}
+                    onClick={() => {
+                      playCue('select');
+                      chooseOption(i);
+                    }}
                     className="group w-full rounded-md border border-orbis-edge bg-black/30 px-3 py-2 text-left transition-colors hover:border-orbis-neon hover:bg-orbis-neon/10"
                   >
                     <div className="text-sm font-semibold text-orbis-text group-hover:text-orbis-neon">

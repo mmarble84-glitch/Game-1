@@ -18,6 +18,7 @@ import { useSelectionStore } from '@/state/selectionStore';
 import { useUiStore, type BattleRing } from '@/state/uiStore';
 import { useCombatStore } from '@/state/combatStore';
 import { useSandboxStore } from '@/state/sandboxStore';
+import { useSettingsStore } from '@/state/settingsStore';
 import { DIPLOMACY_CONFIG } from '@/config/diplomacy';
 import { compact, commas } from '@/ui/format';
 
@@ -35,24 +36,20 @@ interface DiploArc {
   animateTime: number;
 }
 
-interface GlobeViewProps {
-  /** Cosmetic-only spin. Defaults OFF. Toggling it NEVER advances game state. */
-  autoRotate: boolean;
-}
-
 /**
  * GlobeView — the living 3D Earth.
  *
- * Phase 1: each country is colored by its owning nation. Clicking a country
- * selects that NATION; the selected nation's whole territory brightens and lifts,
- * and the camera flies to its capital.
+ * Each country is colored by its owning nation; clicking selects, units render
+ * as glowing markers, battles pulse rings, and diplomacy draws arcs.
  *
  * IMPORTANT: react-globe.gl's internal requestAnimationFrame loop ONLY renders
  * the scene and updates the camera — it never mutates ORBIS game state. All
  * motion here is cosmetic.
  */
-export default function GlobeView({ autoRotate }: GlobeViewProps) {
+export default function GlobeView() {
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
+  const autoRotate = useSettingsStore((s) => s.autoRotate); // cosmetic-only spin
+  const showArcs = useSettingsStore((s) => s.showArcs);
 
   const [countries, setCountries] = useState<CountryFeature[]>([]);
   const [hoverKey, setHoverKey] = useState<string | null>(null);
@@ -301,6 +298,7 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
 
   // ---- Diplomacy arcs (alliances = colored, wars = red & faster) ----------
   const arcsData = useMemo<DiploArc[]>(() => {
+    if (!showArcs) return [];
     const arcs: DiploArc[] = [];
     // Alliance arcs between every pair of member capitals.
     for (const al of Object.values(alliances)) {
@@ -342,7 +340,7 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
       }
     }
     return arcs;
-  }, [alliances, wars, nations]);
+  }, [alliances, wars, nations, showArcs]);
 
   // ---- Move-mode: interpret the next globe/country click as a destination --
   const tryMove = useCallback(

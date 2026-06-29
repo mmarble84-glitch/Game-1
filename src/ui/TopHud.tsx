@@ -3,12 +3,9 @@ import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
 import { useEventStore } from '@/state/eventStore';
 import { useUiStore } from '@/state/uiStore';
+import { useSettingsStore } from '@/state/settingsStore';
+import { playCue } from '@/audio/cues';
 import { compact, commas, signedCompact, signedCommas } from '@/ui/format';
-
-interface TopHudProps {
-  autoRotate: boolean;
-  setAutoRotate: (v: boolean) => void;
-}
 
 /** Small inline delta tag, colored by sign. */
 function Delta({ text, positive }: { text: string; positive: boolean }) {
@@ -27,16 +24,24 @@ function Delta({ text, positive }: { text: string; positive: boolean }) {
  * ADVANCE TURN button (the only thing that ticks the world), a compact summary
  * of the selected nation with last-turn deltas, and the cosmetic spin toggle.
  */
-export default function TopHud({ autoRotate, setAutoRotate }: TopHudProps) {
+export default function TopHud() {
   const turn = useWorldStore((s) => s.turn);
   const advanceTurn = useWorldStore((s) => s.advanceTurn);
   const loaded = useWorldStore((s) => s.loaded);
   const lastReportTurn = useWorldStore((s) => s.lastReportTurn);
   const drawEvent = useEventStore((s) => s.drawEvent);
   const showToast = useUiStore((s) => s.showToast);
+  const autoRotate = useSettingsStore((s) => s.autoRotate);
+  const setAutoRotate = useSettingsStore((s) => s.setAutoRotate);
+  const setSettingsOpen = useSettingsStore((s) => s.setSettingsOpen);
 
+  const onAdvanceTurn = () => {
+    advanceTurn();
+    playCue('turn');
+  };
   const onDrawEvent = () => {
-    if (!drawEvent()) showToast('No event drew this time', 'info');
+    if (drawEvent()) playCue('event');
+    else showToast('No event drew this time', 'info');
   };
 
   const selectedId = useSelectionStore((s) => s.selectedNationId);
@@ -67,7 +72,7 @@ export default function TopHud({ autoRotate, setAutoRotate }: TopHudProps) {
         <motion.button
           whileTap={{ scale: 0.95 }}
           disabled={!loaded}
-          onClick={advanceTurn}
+          onClick={onAdvanceTurn}
           title="Resolve one turn of economy for every nation. This is the ONLY thing that advances the world."
           className="rounded-md border border-orbis-neon/70 bg-orbis-neon/10 px-3 py-2 text-xs font-bold uppercase tracking-widest text-orbis-neon shadow-neon transition-colors hover:bg-orbis-neon/25 disabled:cursor-not-allowed disabled:opacity-40"
         >
@@ -132,8 +137,8 @@ export default function TopHud({ autoRotate, setAutoRotate }: TopHudProps) {
         )}
       </div>
 
-      {/* Cosmetic spin toggle (off by default) */}
-      <div className="pointer-events-auto rounded-lg border border-orbis-edge bg-orbis-panel px-3 py-2 shadow-neon backdrop-blur-sm">
+      {/* Cosmetic spin toggle + settings */}
+      <div className="pointer-events-auto flex items-center gap-1.5 rounded-lg border border-orbis-edge bg-orbis-panel px-3 py-2 shadow-neon backdrop-blur-sm">
         <label className="flex cursor-pointer items-center gap-2 text-xs text-orbis-text">
           <input
             type="checkbox"
@@ -141,8 +146,15 @@ export default function TopHud({ autoRotate, setAutoRotate }: TopHudProps) {
             onChange={(e) => setAutoRotate(e.target.checked)}
             className="h-3 w-3 accent-orbis-neon"
           />
-          <span className="uppercase tracking-wider">Spin</span>
+          <span className="hidden uppercase tracking-wider sm:inline">Spin</span>
         </label>
+        <button
+          onClick={() => setSettingsOpen(true)}
+          title="Settings"
+          className="rounded-md border border-orbis-edge px-2 py-1 text-sm text-orbis-textDim transition-colors hover:border-orbis-neon hover:text-orbis-neon"
+        >
+          ⚙
+        </button>
       </div>
     </div>
   );

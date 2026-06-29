@@ -6,6 +6,7 @@ import type { Nation } from '@/models/nation';
 import type { UnitType } from '@/models/unit';
 import { UNIT_CONFIG, UNIT_ORDER, recruitManpowerCost, recruitTreasuryCost } from '@/config/units';
 import { SectionTitle, Stat } from '@/ui/nation/StatBits';
+import { playCue } from '@/audio/cues';
 
 /** Military tab: doctrine/tech/rating + the unit roster and recruitment. */
 export default function MilitaryTab({ nation }: { nation: Nation }) {
@@ -27,6 +28,7 @@ export default function MilitaryTab({ nation }: { nation: Nation }) {
 
   const onRecruit = () => {
     const res = recruitUnit(nation.id, type);
+    if (res.ok) playCue('recruit');
     showToast(
       res.ok ? `Recruited ${UNIT_CONFIG.stats[type].label}` : res.reason ?? 'Cannot recruit',
       res.ok ? 'info' : 'error',

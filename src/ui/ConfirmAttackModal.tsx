@@ -10,6 +10,7 @@ import { COMBAT_CONFIG, TERRAIN_TYPES, type TerrainType } from '@/config/combat'
 import type { Unit } from '@/models/unit';
 import type { Nation } from '@/models/nation';
 import { OUTCOME_COLOR, OUTCOME_LABEL, winnerColor } from '@/ui/combatFormat';
+import { playCue } from '@/audio/cues';
 
 /** Compact combatant summary card. */
 function SideCard({ unit, nation, role }: { unit: Unit; nation?: Nation; role: string }) {
@@ -78,6 +79,7 @@ export default function ConfirmAttackModal() {
       return;
     }
     const r = res.result;
+    playCue('battle');
     const color = winnerColor(r, nations);
     const text = `${atkNation?.name ?? '?'} ${UNIT_CONFIG.stats[r.attacker.type].label} → ${defNation?.name ?? '?'} ${UNIT_CONFIG.stats[r.defender.type].label}: ${OUTCOME_LABEL[r.outcome]} (×${r.ratio.toFixed(2)})`;
     addLog({ turn: r.turn, kind: 'combat', text, color, combat: r });

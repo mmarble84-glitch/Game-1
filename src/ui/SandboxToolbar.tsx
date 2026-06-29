@@ -60,7 +60,7 @@ export default function SandboxToolbar() {
 
   return (
     <>
-      <div className="pointer-events-auto flex items-center gap-1.5 rounded-lg border border-orbis-amber/40 bg-orbis-panel px-2.5 py-1.5 shadow-neon backdrop-blur-sm">
+      <div className="pointer-events-auto flex max-w-[96vw] flex-wrap items-center justify-center gap-1.5 rounded-lg border border-orbis-amber/40 bg-orbis-panel px-2.5 py-1.5 shadow-neon backdrop-blur-sm">
         <span className="mr-1 text-[9px] font-bold uppercase tracking-[0.25em] text-orbis-amber">God</span>
 
         <ToolButton active={tool === 'formNation'} onClick={() => toggle('formNation')} title="Click countries to gather them into a new nation">

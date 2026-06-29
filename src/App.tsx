@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import GlobeView from '@/globe/GlobeView';
 import TopHud from '@/ui/TopHud';
 import NationListPanel from '@/ui/NationListPanel';
@@ -10,11 +10,13 @@ import LogTicker from '@/ui/LogTicker';
 import ConfirmAttackModal from '@/ui/ConfirmAttackModal';
 import EventCardModal from '@/ui/EventCardModal';
 import SandboxToolbar from '@/ui/SandboxToolbar';
+import SettingsModal from '@/ui/SettingsModal';
 import { loadNationSeeds, buildModernWorld } from '@/data/nationSeeds';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
 import { useCombatStore } from '@/state/combatStore';
 import { useSandboxStore } from '@/state/sandboxStore';
+import { useSettingsStore } from '@/state/settingsStore';
 
 /**
  * App — Phase 3 shell.
@@ -25,9 +27,6 @@ import { useSandboxStore } from '@/state/sandboxStore';
  * moved, and fortified only on explicit clicks.
  */
 export default function App() {
-  // Cosmetic-only auto-rotate. Defaults OFF per the MANUAL CONTROL rule.
-  const [autoRotate, setAutoRotate] = useState(false);
-
   const loaded = useWorldStore((s) => s.loaded);
   const loadWorld = useWorldStore((s) => s.loadWorld);
 
@@ -42,6 +41,8 @@ export default function App() {
   const cancelAttack = useCombatStore((s) => s.cancel);
   const sandboxTool = useSandboxStore((s) => s.tool);
   const setSandboxTool = useSandboxStore((s) => s.setTool);
+  const settingsOpen = useSettingsStore((s) => s.settingsOpen);
+  const setSettingsOpen = useSettingsStore((s) => s.setSettingsOpen);
 
   // ---- One-time scenario load (setup, not a tick) -------------------------
   useEffect(() => {
@@ -63,7 +64,8 @@ export default function App() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (pendingAttack) cancelAttack();
+      if (settingsOpen) setSettingsOpen(false);
+      else if (pendingAttack) cancelAttack();
       else if (attackMode) setAttackMode(false);
       else if (moveMode) setMoveMode(false);
       else if (sandboxTool !== 'none') setSandboxTool('none');
@@ -73,6 +75,8 @@ export default function App() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [
+    settingsOpen,
+    setSettingsOpen,
     pendingAttack,
     cancelAttack,
     attackMode,
@@ -89,11 +93,11 @@ export default function App() {
   return (
     <div className="relative h-full w-full overflow-hidden bg-orbis-bg">
       {/* The 3D Earth */}
-      <GlobeView autoRotate={autoRotate} />
+      <GlobeView />
 
       {/* Top HUD */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 p-4">
-        <TopHud autoRotate={autoRotate} setAutoRotate={setAutoRotate} />
+      <div className="pointer-events-none absolute inset-x-0 top-0 p-3">
+        <TopHud />
       </div>
 
       {/* Move-mode banner (top center, below HUD) */}
@@ -127,11 +131,14 @@ export default function App() {
       {/* Event card modal (self-gates on a drawn card) */}
       <EventCardModal />
 
+      {/* Settings modal (self-gates on the settings flag) */}
+      <SettingsModal />
+
       {/* Transient status toast */}
       <Toast />
 
-      {/* Controls hint */}
-      <div className="pointer-events-none absolute bottom-4 right-4">
+      {/* Controls hint (hidden on smaller screens to avoid crowding) */}
+      <div className="pointer-events-none absolute bottom-4 right-4 hidden xl:block">
         <div className="rounded-lg border border-orbis-edge bg-orbis-panel px-3 py-2 text-[10px] uppercase tracking-widest text-orbis-textDim shadow-neon backdrop-blur-sm">
           Drag · rotate &nbsp;|&nbsp; Scroll · zoom &nbsp;|&nbsp; Click · select &nbsp;|&nbsp; Esc · back
         </div>
