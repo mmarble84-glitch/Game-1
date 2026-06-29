@@ -137,8 +137,8 @@ export default function App() {
       {/* Transient status toast */}
       <Toast />
 
-      {/* Controls hint (hidden on smaller screens to avoid crowding) */}
-      <div className="pointer-events-none absolute bottom-4 right-4 hidden xl:block">
+      {/* Controls hint (hidden until there's clear room beside the toolbar) */}
+      <div className="pointer-events-none absolute bottom-4 right-4 hidden 2xl:block">
         <div className="rounded-lg border border-orbis-edge bg-orbis-panel px-3 py-2 text-[10px] uppercase tracking-widest text-orbis-textDim shadow-neon backdrop-blur-sm">
           Drag · rotate &nbsp;|&nbsp; Scroll · zoom &nbsp;|&nbsp; Click · select &nbsp;|&nbsp; Esc · back
         </div>

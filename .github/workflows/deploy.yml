@@ -1,10 +1,9 @@
 name: Deploy ORBIS to GitHub Pages
 
 # Builds the Vite app and publishes it to GitHub Pages so it can be played in a
-# browser. Runs on pushes to the ORBIS dev branch and on manual dispatch.
+# browser. Manual-dispatch only: first enable Pages in the repo (Settings →
+# Pages → Source: "GitHub Actions"), then run this workflow from the Actions tab.
 on:
-  push:
-    branches: [claude/orbis-game-dev-gen6p0]
   workflow_dispatch:
 
 # Allow this workflow to deploy to Pages via the Pages API (no branch pushes).
@@ -28,7 +27,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
