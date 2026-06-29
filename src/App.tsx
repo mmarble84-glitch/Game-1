@@ -8,6 +8,7 @@ import Toast from '@/ui/Toast';
 import MoveBanner from '@/ui/MoveBanner';
 import LogTicker from '@/ui/LogTicker';
 import ConfirmAttackModal from '@/ui/ConfirmAttackModal';
+import EventCardModal from '@/ui/EventCardModal';
 import { loadNationSeeds, buildModernWorld } from '@/data/nationSeeds';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
@@ -110,6 +111,9 @@ export default function App() {
 
       {/* Confirm-attack modal (self-gates on a pending order) */}
       <ConfirmAttackModal />
+
+      {/* Event card modal (self-gates on a drawn card) */}
+      <EventCardModal />
 
       {/* Transient status toast */}
       <Toast />

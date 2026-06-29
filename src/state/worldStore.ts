@@ -15,7 +15,9 @@ import type { ISO } from '@/models/geo';
 import type { Nation } from '@/models/nation';
 import type { Unit, UnitType } from '@/models/unit';
 import type { Alliance, War } from '@/models/diplomacy';
+import type { Effect } from '@/models/event';
 import { resolveEconomyTurn, type NationTurnReport } from '@/engine/economy';
+import { computeMilitaryRating } from '@/engine/nations';
 import {
   createUnit,
   fortifyUnit,
@@ -31,7 +33,7 @@ import {
   type CombatContext,
   type CombatResult,
 } from '@/engine/combat';
-import { recruitManpowerCost, recruitTreasuryCost } from '@/config/units';
+import { UNIT_CONFIG, recruitManpowerCost, recruitTreasuryCost } from '@/config/units';
 import { COMBAT_CONFIG, type TerrainType, type WeatherType } from '@/config/combat';
 import {
   adjustRelation as engineAdjustRelation,
@@ -147,6 +149,9 @@ interface WorldState {
   /** Sign peace, ending a war. */
   makePeace: (warId: string) => { ok: boolean; reason?: string; war?: War };
   setPullAlliesIntoWar: (v: boolean) => void;
+
+  /** Apply an event choice's effects to a subject nation. Returns a summary. */
+  applyEventEffects: (subjectId: string, effects: Effect[]) => { summary: string };
 }
 
 export const useWorldStore = create<WorldState>((set, get) => ({
@@ -414,5 +419,92 @@ export const useWorldStore = create<WorldState>((set, get) => ({
     }
     set({ wars: next, relations: nextRel });
     return { ok: true, war };
+  },
+
+  // ---- Events ------------------------------------------------------------
+  applyEventEffects: (subjectId, effects) => {
+    const { nations, units, relations } = get();
+    const subject = nations[subjectId];
+    if (!subject) return { summary: 'No subject nation' };
+
+    let nextNation: Nation = {
+      ...subject,
+      resources: { ...subject.resources },
+      manpower: { ...subject.manpower },
+      military: { ...subject.military },
+      unitIds: [...subject.unitIds],
+    };
+    const nextUnits = { ...units };
+    let nextRelations = relations;
+    let nextWeather: WeatherType | null = null;
+    const parts: string[] = [];
+    const sgn = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
+    const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+    for (const eff of effects) {
+      switch (eff.kind) {
+        case 'resource': {
+          const cur = nextNation.resources[eff.resource];
+          // Treasury may go negative (debt); other stockpiles floor at 0.
+          const v = eff.resource === 'treasury' ? cur + eff.amount : Math.max(0, cur + eff.amount);
+          nextNation.resources[eff.resource] = v;
+          parts.push(`${cap(eff.resource)} ${sgn(eff.amount)}`);
+          break;
+        }
+        case 'manpower': {
+          const v = Math.max(0, Math.min(nextNation.manpower.pool, nextNation.manpower.available + eff.amount));
+          nextNation.manpower.available = v;
+          parts.push(`Manpower ${sgn(eff.amount)}`);
+          break;
+        }
+        case 'stability': {
+          nextNation.stability = Math.max(0, Math.min(100, nextNation.stability + eff.amount));
+          parts.push(`Stability ${sgn(eff.amount)}`);
+          break;
+        }
+        case 'tech': {
+          nextNation.military.techLevel = Math.max(1, Math.min(10, nextNation.military.techLevel + eff.amount));
+          parts.push(`Tech ${sgn(eff.amount)}`);
+          break;
+        }
+        case 'relation': {
+          const others = Object.keys(nations).filter((id) => id !== subjectId);
+          const other = others[Math.floor(Math.random() * others.length)];
+          if (other) {
+            nextRelations = engineAdjustRelation(nextRelations, subjectId, other, eff.amount);
+            parts.push(`Relations w/ ${nations[other]?.name ?? other} ${sgn(eff.amount)}`);
+          }
+          break;
+        }
+        case 'spawnUnit': {
+          const id = `unit-${nanoid(8)}`;
+          nextUnits[id] = createUnit(id, subjectId, eff.unitType, nextNation.capital);
+          nextNation.unitIds.push(id);
+          parts.push(`+${UNIT_CONFIG.stats[eff.unitType].label}`);
+          break;
+        }
+        case 'weather': {
+          nextWeather = eff.weather;
+          parts.push(`Weather → ${COMBAT_CONFIG.weather[eff.weather].label}`);
+          break;
+        }
+      }
+    }
+
+    // Re-derive the rating after any stat change.
+    nextNation.military.rating = computeMilitaryRating({
+      techLevel: nextNation.military.techLevel,
+      manpowerPool: nextNation.manpower.pool,
+      industry: nextNation.resources.industry,
+      stability: nextNation.stability,
+    });
+
+    set({
+      nations: { ...nations, [subjectId]: nextNation },
+      units: nextUnits,
+      relations: nextRelations,
+      ...(nextWeather ? { weather: nextWeather } : {}),
+    });
+    return { summary: parts.join(' · ') || 'No effect' };
   },
 }));

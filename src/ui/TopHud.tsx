@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
+import { useEventStore } from '@/state/eventStore';
+import { useUiStore } from '@/state/uiStore';
 import { compact, commas, signedCompact, signedCommas } from '@/ui/format';
 
 interface TopHudProps {
@@ -30,6 +32,12 @@ export default function TopHud({ autoRotate, setAutoRotate }: TopHudProps) {
   const advanceTurn = useWorldStore((s) => s.advanceTurn);
   const loaded = useWorldStore((s) => s.loaded);
   const lastReportTurn = useWorldStore((s) => s.lastReportTurn);
+  const drawEvent = useEventStore((s) => s.drawEvent);
+  const showToast = useUiStore((s) => s.showToast);
+
+  const onDrawEvent = () => {
+    if (!drawEvent()) showToast('No event drew this time', 'info');
+  };
 
   const selectedId = useSelectionStore((s) => s.selectedNationId);
   const nation = useWorldStore((s) => (selectedId ? s.nations[selectedId] : undefined));
@@ -64,6 +72,15 @@ export default function TopHud({ autoRotate, setAutoRotate }: TopHudProps) {
           className="rounded-md border border-orbis-neon/70 bg-orbis-neon/10 px-3 py-2 text-xs font-bold uppercase tracking-widest text-orbis-neon shadow-neon transition-colors hover:bg-orbis-neon/25 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Advance Turn ▸
+        </motion.button>
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          disabled={!loaded}
+          onClick={onDrawEvent}
+          title="Draw one random event card. Events appear ONLY when you click this — never automatically."
+          className="rounded-md border border-orbis-amber/70 bg-orbis-amber/10 px-3 py-2 text-xs font-bold uppercase tracking-widest text-orbis-amber shadow-neon transition-colors hover:bg-orbis-amber/25 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          ◆ Draw Event
         </motion.button>
       </div>
 
