@@ -19,6 +19,8 @@ interface EventState {
   drawEvent: () => boolean;
   /** Resolve the chosen option: apply its effects, log, and clear the card. */
   chooseOption: (index: number) => void;
+  /** God-tool: force a specific event onto a subject nation. */
+  forceEvent: (eventId: string, subjectId: string) => boolean;
   /** Dismiss the card without applying any effect. */
   dismiss: () => void;
 }
@@ -77,6 +79,14 @@ export const useEventStore = create<EventState>((set, get) => ({
     useUiStore.getState().showToast(`${cur.event.title} · ${summary}`);
 
     set({ current: null });
+  },
+
+  forceEvent: (eventId, subjectId) => {
+    const event = EVENT_DECK.find((e) => e.id === eventId);
+    const subject = useWorldStore.getState().nations[subjectId];
+    if (!event || !subject) return false;
+    set({ current: { event, subjectId } });
+    return true;
   },
 
   dismiss: () => set({ current: null }),

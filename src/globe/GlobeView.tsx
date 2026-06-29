@@ -17,6 +17,7 @@ import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
 import { useUiStore, type BattleRing } from '@/state/uiStore';
 import { useCombatStore } from '@/state/combatStore';
+import { useSandboxStore } from '@/state/sandboxStore';
 import { DIPLOMACY_CONFIG } from '@/config/diplomacy';
 import { compact, commas } from '@/ui/format';
 
@@ -75,6 +76,14 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
   const showToast = useUiStore((s) => s.showToast);
   const battleRings = useUiStore((s) => s.battleRings);
   const openAttack = useCombatStore((s) => s.openAttack);
+
+  // Sandbox / god-tools.
+  const tool = useSandboxStore((s) => s.tool);
+  const formSelection = useSandboxStore((s) => s.formSelection);
+  const toggleFormISO = useSandboxStore((s) => s.toggleFormISO);
+  const spawnType = useSandboxStore((s) => s.spawnType);
+  const transferTerritory = useWorldStore((s) => s.transferTerritory);
+  const spawnUnitAt = useWorldStore((s) => s.spawnUnitAt);
 
   // ---- Load country geometry once -----------------------------------------
   useEffect(() => {
@@ -156,25 +165,32 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
     [territoryOwner, nations],
   );
 
+  // Fast lookup of territories currently gathered for a new nation.
+  const formSet = useMemo(() => new Set(formSelection), [formSelection]);
+
   // ---- Polygon accessors (recomputed on hover/selection) ------------------
   const polyAltitude = useCallback(
     (d: object) => {
       const f = d as CountryFeature;
+      const key = featureKey(f);
+      if (formSet.has(key)) return GLOBE_CONFIG.polygons.selectedAltitude; // gathering for a new nation
       const n = nationForFeature(f);
       if (n && n.id === selectedNationId) return GLOBE_CONFIG.polygons.selectedAltitude;
-      if (featureKey(f) === hoverKey) return GLOBE_CONFIG.polygons.hoverAltitude;
+      if (key === hoverKey) return GLOBE_CONFIG.polygons.hoverAltitude;
       return GLOBE_CONFIG.polygons.baseAltitude;
     },
-    [nationForFeature, selectedNationId, hoverKey],
+    [nationForFeature, selectedNationId, hoverKey, formSet],
   );
 
   const polyCapColor = useCallback(
     (d: object) => {
       const f = d as CountryFeature;
+      const key = featureKey(f);
+      if (formSet.has(key)) return 'rgba(255, 255, 255, 0.55)'; // form-nation highlight
       const n = nationForFeature(f);
       if (!n) return GLOBE_CONFIG.polygons.capColor; // unowned fallback
       const isSelected = n.id === selectedNationId;
-      const isHover = featureKey(f) === hoverKey;
+      const isHover = key === hoverKey;
       const alpha = isSelected
         ? NATION_CONFIG.fill.selected
         : isHover
@@ -182,18 +198,20 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
           : NATION_CONFIG.fill.base;
       return hexToRgba(n.color, alpha);
     },
-    [nationForFeature, selectedNationId, hoverKey],
+    [nationForFeature, selectedNationId, hoverKey, formSet],
   );
 
   const polyStrokeColor = useCallback(
     (d: object) => {
-      const n = nationForFeature(d as CountryFeature);
+      const f = d as CountryFeature;
+      if (formSet.has(featureKey(f))) return '#ffffff';
+      const n = nationForFeature(f);
       if (!n) return GLOBE_CONFIG.polygons.strokeColor;
       return n.id === selectedNationId
         ? brighten(n.color, NATION_CONFIG.selectedBorderBrighten)
         : n.color;
     },
-    [nationForFeature, selectedNationId],
+    [nationForFeature, selectedNationId, formSet],
   );
 
   const polySideColor = useCallback(
@@ -342,22 +360,56 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
     [moveMode, selectedUnitId, moveUnitTo, showToast, setMoveMode],
   );
 
-  // ---- Click: move (if in move mode) else select the owning nation --------
+  // ---- God-tools: a click's meaning depends on the active sandbox tool ----
+  const handleSandboxClick = useCallback(
+    (coords: { lat: number; lng: number }, iso?: string): boolean => {
+      if (tool === 'none') return false;
+      if (tool === 'formNation') {
+        if (iso) toggleFormISO(iso);
+        return true;
+      }
+      if (tool === 'transfer') {
+        if (!iso) return true;
+        if (!selectedNationId) {
+          showToast('Select a recipient nation first', 'error');
+          return true;
+        }
+        const res = transferTerritory(iso, selectedNationId);
+        showToast(res.ok ? 'Territory transferred' : res.reason ?? 'Cannot transfer', res.ok ? 'info' : 'error');
+        return true;
+      }
+      if (tool === 'spawnUnit') {
+        if (!selectedNationId) {
+          showToast('Select an owner nation first', 'error');
+          return true;
+        }
+        spawnUnitAt(selectedNationId, spawnType, { lat: coords.lat, lng: coords.lng });
+        showToast(`Spawned ${spawnType}`, 'info');
+        return true;
+      }
+      return false;
+    },
+    [tool, selectedNationId, spawnType, toggleFormISO, transferTerritory, spawnUnitAt, showToast],
+  );
+
+  // ---- Click: move → sandbox tool → select the owning nation --------------
   const handlePolygonClick = useCallback(
     (polygon: object, _event: MouseEvent, coords: { lat: number; lng: number }) => {
       if (tryMove(coords)) return;
-      const owner = territoryOwner[featureKey(polygon as CountryFeature)];
+      const key = featureKey(polygon as CountryFeature);
+      if (handleSandboxClick(coords, key)) return;
+      const owner = territoryOwner[key];
       if (owner) selectNation(owner);
     },
-    [tryMove, territoryOwner, selectNation],
+    [tryMove, handleSandboxClick, territoryOwner, selectNation],
   );
 
   const handleGlobeClick = useCallback(
     (coords: { lat: number; lng: number }) => {
-      // Lets units move to open sea / any point; otherwise a no-op.
-      tryMove(coords);
+      if (tryMove(coords)) return;
+      handleSandboxClick(coords); // e.g. spawn a unit on open sea
     },
-    [tryMove],
+    [tryMove, handleSandboxClick],
   );
 
   const handlePolygonHover = useCallback((polygon: object | null) => {

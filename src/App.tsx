@@ -9,10 +9,12 @@ import MoveBanner from '@/ui/MoveBanner';
 import LogTicker from '@/ui/LogTicker';
 import ConfirmAttackModal from '@/ui/ConfirmAttackModal';
 import EventCardModal from '@/ui/EventCardModal';
+import SandboxToolbar from '@/ui/SandboxToolbar';
 import { loadNationSeeds, buildModernWorld } from '@/data/nationSeeds';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
 import { useCombatStore } from '@/state/combatStore';
+import { useSandboxStore } from '@/state/sandboxStore';
 
 /**
  * App — Phase 3 shell.
@@ -38,6 +40,8 @@ export default function App() {
   const selectNation = useSelectionStore((s) => s.selectNation);
   const pendingAttack = useCombatStore((s) => s.pending);
   const cancelAttack = useCombatStore((s) => s.cancel);
+  const sandboxTool = useSandboxStore((s) => s.tool);
+  const setSandboxTool = useSandboxStore((s) => s.setTool);
 
   // ---- One-time scenario load (setup, not a tick) -------------------------
   useEffect(() => {
@@ -62,6 +66,7 @@ export default function App() {
       if (pendingAttack) cancelAttack();
       else if (attackMode) setAttackMode(false);
       else if (moveMode) setMoveMode(false);
+      else if (sandboxTool !== 'none') setSandboxTool('none');
       else if (selectedUnitId) selectUnit(null);
       else selectNation(null);
     };
@@ -74,6 +79,8 @@ export default function App() {
     setAttackMode,
     moveMode,
     setMoveMode,
+    sandboxTool,
+    setSandboxTool,
     selectedUnitId,
     selectUnit,
     selectNation,
@@ -107,6 +114,11 @@ export default function App() {
       {/* Bottom-left: combat / event / diplomacy log ticker */}
       <div className="pointer-events-none absolute bottom-4 left-4">
         <LogTicker />
+      </div>
+
+      {/* Bottom-center: god-mode sandbox toolbar */}
+      <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2">
+        <SandboxToolbar />
       </div>
 
       {/* Confirm-attack modal (self-gates on a pending order) */}

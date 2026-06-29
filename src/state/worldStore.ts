@@ -152,6 +152,32 @@ interface WorldState {
 
   /** Apply an event choice's effects to a subject nation. Returns a summary. */
   applyEventEffects: (subjectId: string, effects: Effect[]) => { summary: string };
+
+  // ---- Sandbox / god-tools (all manual) ----
+  /** Carve a brand-new nation out of a set of territories. */
+  formNation: (params: {
+    name: string;
+    color: string;
+    government: string;
+    territory: string[];
+  }) => { ok: boolean; reason?: string; nationId?: string };
+  /** Transfer one territory to another nation. */
+  transferTerritory: (iso: string, toNationId: string) => { ok: boolean; reason?: string };
+  /** Spawn a unit anywhere for any owner (free, god-mode). */
+  spawnUnitAt: (ownerId: string, type: UnitType, pos: { lat: number; lng: number }) => string | null;
+  /** Edit any of a nation's stats live. */
+  editNation: (nationId: string, patch: NationPatch) => void;
+}
+
+/** Editable fields for the god-mode stat editor. */
+export interface NationPatch {
+  name?: string;
+  color?: string;
+  government?: string;
+  stability?: number;
+  resources?: Partial<Nation['resources']>;
+  manpower?: Partial<Nation['manpower']>;
+  military?: { doctrine?: Nation['military']['doctrine']; techLevel?: number };
 }
 
 export const useWorldStore = create<WorldState>((set, get) => ({
@@ -506,5 +532,132 @@ export const useWorldStore = create<WorldState>((set, get) => ({
       ...(nextWeather ? { weather: nextWeather } : {}),
     });
     return { summary: parts.join(' · ') || 'No effect' };
+  },
+
+  // ---- Sandbox / god-tools ----------------------------------------------
+  formNation: ({ name, color, government, territory }) => {
+    const { nations, territoryOwner } = get();
+    if (territory.length === 0) return { ok: false, reason: 'Select at least one territory' };
+
+    // Capital = average of the current owners' capitals.
+    const caps = territory
+      .map((iso) => nations[territoryOwner[iso]]?.capital)
+      .filter((c): c is { lat: number; lng: number } => !!c);
+    const capital = caps.length
+      ? {
+          lat: caps.reduce((s, c) => s + c.lat, 0) / caps.length,
+          lng: caps.reduce((s, c) => s + c.lng, 0) / caps.length,
+        }
+      : { lat: 0, lng: 0 };
+
+    const newId = `nation-custom-${nanoid(6)}`;
+    const nextNations: Record<string, Nation> = { ...nations };
+    const nextOwner = { ...territoryOwner };
+    for (const iso of territory) {
+      const oldId = nextOwner[iso];
+      if (oldId && nextNations[oldId]) {
+        nextNations[oldId] = {
+          ...nextNations[oldId],
+          territory: nextNations[oldId].territory.filter((t) => t !== iso),
+        };
+      }
+      nextOwner[iso] = newId;
+    }
+
+    const count = territory.length;
+    const nation: Nation = {
+      id: newId,
+      name,
+      color,
+      capital,
+      territory: [...territory],
+      resources: {
+        treasury: 200 * count,
+        industry: 120 * count,
+        energy: 100 * count,
+        food: 120 * count,
+        rareMaterials: 30 * count,
+      },
+      manpower: { available: 200 * count, pool: 600 * count, recruitRate: 6 * count },
+      military: { rating: 0, doctrine: 'balanced', techLevel: 5 },
+      stability: 60,
+      government,
+      unitIds: [],
+    };
+    nation.military.rating = computeMilitaryRating({
+      techLevel: nation.military.techLevel,
+      manpowerPool: nation.manpower.pool,
+      industry: nation.resources.industry,
+      stability: nation.stability,
+    });
+    nextNations[newId] = nation;
+
+    set({ nations: nextNations, territoryOwner: nextOwner });
+    return { ok: true, nationId: newId };
+  },
+
+  transferTerritory: (iso, toNationId) => {
+    const { nations, territoryOwner } = get();
+    if (!nations[toNationId]) return { ok: false, reason: 'No recipient nation' };
+    const fromId = territoryOwner[iso];
+    if (fromId === toNationId) return { ok: false, reason: 'Already owned by that nation' };
+
+    const nextNations = { ...nations };
+    if (fromId && nextNations[fromId]) {
+      nextNations[fromId] = {
+        ...nextNations[fromId],
+        territory: nextNations[fromId].territory.filter((t) => t !== iso),
+      };
+    }
+    nextNations[toNationId] = {
+      ...nextNations[toNationId],
+      territory: [...nextNations[toNationId].territory, iso],
+    };
+    set({ nations: nextNations, territoryOwner: { ...territoryOwner, [iso]: toNationId } });
+    return { ok: true };
+  },
+
+  spawnUnitAt: (ownerId, type, pos) => {
+    const { nations, units } = get();
+    const owner = nations[ownerId];
+    if (!owner) return null;
+    const id = `unit-${nanoid(8)}`;
+    const unit = createUnit(id, ownerId, type, pos);
+    set({
+      units: { ...units, [id]: unit },
+      nations: { ...nations, [ownerId]: { ...owner, unitIds: [...owner.unitIds, id] } },
+    });
+    return id;
+  },
+
+  editNation: (nationId, patch) => {
+    const { nations } = get();
+    const n = nations[nationId];
+    if (!n) return;
+    const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+    const updated: Nation = {
+      ...n,
+      name: patch.name ?? n.name,
+      color: patch.color ?? n.color,
+      government: patch.government ?? n.government,
+      stability: patch.stability !== undefined ? clamp(patch.stability, 0, 100) : n.stability,
+      resources: { ...n.resources, ...patch.resources },
+      manpower: { ...n.manpower, ...patch.manpower },
+      military: {
+        ...n.military,
+        doctrine: patch.military?.doctrine ?? n.military.doctrine,
+        techLevel:
+          patch.military?.techLevel !== undefined
+            ? clamp(patch.military.techLevel, 1, 10)
+            : n.military.techLevel,
+      },
+    };
+    updated.military.rating = computeMilitaryRating({
+      techLevel: updated.military.techLevel,
+      manpowerPool: updated.manpower.pool,
+      industry: updated.resources.industry,
+      stability: updated.stability,
+    });
+    set({ nations: { ...nations, [nationId]: updated } });
   },
 }));
