@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 
 // Vite config for ORBIS. The app is a static SPA; no server-side anything.
-export default defineConfig({
+// Production uses relative asset paths ('./') so it works when served from a
+// GitHub Pages project subpath; dev stays at '/'.
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? './' : '/',
   plugins: [react()],
   resolve: {
     alias: {
@@ -35,4 +38,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

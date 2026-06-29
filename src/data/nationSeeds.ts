@@ -7,7 +7,8 @@ import type { ISO } from '@/models/geo';
 import type { Nation, NationSeeds } from '@/models/nation';
 import { buildNationFromSeed } from '@/engine/nations';
 
-const SEEDS_URL = '/data/nation_seeds.json';
+// Respect the Vite base path so it works on a GitHub Pages subpath too.
+const SEEDS_URL = `${import.meta.env.BASE_URL}data/nation_seeds.json`;
 
 let cache: NationSeeds | null = null;
 

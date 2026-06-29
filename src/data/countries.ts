@@ -6,7 +6,8 @@
 
 import type { CountriesGeoJSON, CountryFeature } from '@/models/geo';
 
-const COUNTRIES_URL = '/data/countries.geojson';
+// Respect the Vite base path so it works on a GitHub Pages subpath too.
+const COUNTRIES_URL = `${import.meta.env.BASE_URL}data/countries.geojson`;
 
 let cache: CountryFeature[] | null = null;
 
