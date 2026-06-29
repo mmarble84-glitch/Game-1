@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import GlobeView from '@/globe/GlobeView';
 import TopHud from '@/ui/TopHud';
 import NationListPanel from '@/ui/NationListPanel';
-import OverviewPanel from '@/ui/OverviewPanel';
+import NationPanel from '@/ui/NationPanel';
 import UnitPanel from '@/ui/UnitPanel';
 import Toast from '@/ui/Toast';
 import MoveBanner from '@/ui/MoveBanner';
@@ -98,9 +98,9 @@ export default function App() {
         <NationListPanel />
       </div>
 
-      {/* Right: unit panel when a unit is selected, else nation Overview */}
+      {/* Right: unit panel when a unit is selected, else the nation panel */}
       <div className="pointer-events-none absolute right-4 top-[104px]">
-        {selectedUnitId ? <UnitPanel /> : <OverviewPanel />}
+        {selectedUnitId ? <UnitPanel /> : <NationPanel />}
       </div>
 
       {/* Bottom-left: combat / event / diplomacy log ticker */}

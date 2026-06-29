@@ -17,10 +17,22 @@ import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
 import { useUiStore, type BattleRing } from '@/state/uiStore';
 import { useCombatStore } from '@/state/combatStore';
+import { DIPLOMACY_CONFIG } from '@/config/diplomacy';
 import { compact, commas } from '@/ui/format';
 
 /** A unit decorated with render-time owner color + selection flag. */
 type RenderUnit = Unit & { __color: string; __selected: boolean };
+
+/** A diplomacy arc between two capitals (alliance or war front). */
+interface DiploArc {
+  id: string;
+  startLat: number;
+  startLng: number;
+  endLat: number;
+  endLng: number;
+  color: string | string[];
+  animateTime: number;
+}
 
 interface GlobeViewProps {
   /** Cosmetic-only spin. Defaults OFF. Toggling it NEVER advances game state. */
@@ -49,6 +61,8 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
   const nations = useWorldStore((s) => s.nations);
   const territoryOwner = useWorldStore((s) => s.territoryOwner);
   const units = useWorldStore((s) => s.units);
+  const alliances = useWorldStore((s) => s.alliances);
+  const wars = useWorldStore((s) => s.wars);
   const moveUnitTo = useWorldStore((s) => s.moveUnitTo);
   const selectedNationId = useSelectionStore((s) => s.selectedNationId);
   const selectNation = useSelectionStore((s) => s.selectNation);
@@ -267,6 +281,51 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
     return (t: number) => hexToRgba(c, 1 - t);
   }, []);
 
+  // ---- Diplomacy arcs (alliances = colored, wars = red & faster) ----------
+  const arcsData = useMemo<DiploArc[]>(() => {
+    const arcs: DiploArc[] = [];
+    // Alliance arcs between every pair of member capitals.
+    for (const al of Object.values(alliances)) {
+      const ms = al.memberIds;
+      for (let i = 0; i < ms.length; i++) {
+        for (let j = i + 1; j < ms.length; j++) {
+          const a = nations[ms[i]]?.capital;
+          const b = nations[ms[j]]?.capital;
+          if (!a || !b) continue;
+          arcs.push({
+            id: `al-${al.id}-${ms[i]}-${ms[j]}`,
+            startLat: a.lat,
+            startLng: a.lng,
+            endLat: b.lat,
+            endLng: b.lng,
+            color: al.color,
+            animateTime: 4500, // slow, calm pulse for alliances
+          });
+        }
+      }
+    }
+    // War (conflict) arcs between every opposing capital pair.
+    for (const w of Object.values(wars)) {
+      for (const x of w.sideA) {
+        for (const y of w.sideB) {
+          const a = nations[x]?.capital;
+          const b = nations[y]?.capital;
+          if (!a || !b) continue;
+          arcs.push({
+            id: `war-${w.id}-${x}-${y}`,
+            startLat: a.lat,
+            startLng: a.lng,
+            endLat: b.lat,
+            endLng: b.lng,
+            color: DIPLOMACY_CONFIG.warArcColor as unknown as string[],
+            animateTime: 1100, // fast, urgent flicker for war fronts
+          });
+        }
+      }
+    }
+    return arcs;
+  }, [alliances, wars, nations]);
+
   // ---- Move-mode: interpret the next globe/country click as a destination --
   const tryMove = useCallback(
     (coords: { lat: number; lng: number }): boolean => {
@@ -344,6 +403,17 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
       ringPropagationSpeed={4}
       ringRepeatPeriod={750}
       ringAltitude={0.011}
+      // --- Diplomacy arcs (ARCS layer): alliances + war fronts ---
+      arcsData={arcsData}
+      arcStartLat={(d: object) => (d as DiploArc).startLat}
+      arcStartLng={(d: object) => (d as DiploArc).startLng}
+      arcEndLat={(d: object) => (d as DiploArc).endLat}
+      arcEndLng={(d: object) => (d as DiploArc).endLng}
+      arcColor={(d: object) => (d as DiploArc).color}
+      arcStroke={0.6}
+      arcDashLength={0.45}
+      arcDashGap={0.25}
+      arcDashAnimateTime={(d: object) => (d as DiploArc).animateTime}
     />
   );
 }

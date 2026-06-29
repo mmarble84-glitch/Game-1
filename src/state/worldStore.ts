@@ -14,6 +14,7 @@ import { nanoid } from 'nanoid';
 import type { ISO } from '@/models/geo';
 import type { Nation } from '@/models/nation';
 import type { Unit, UnitType } from '@/models/unit';
+import type { Alliance, War } from '@/models/diplomacy';
 import { resolveEconomyTurn, type NationTurnReport } from '@/engine/economy';
 import {
   createUnit,
@@ -32,6 +33,15 @@ import {
 } from '@/engine/combat';
 import { recruitManpowerCost, recruitTreasuryCost } from '@/config/units';
 import { COMBAT_CONFIG, type TerrainType, type WeatherType } from '@/config/combat';
+import {
+  adjustRelation as engineAdjustRelation,
+  setRelation as engineSetRelation,
+  allianceOf,
+  areAllied,
+  areAtWar,
+  expandSides,
+} from '@/engine/diplomacy';
+import { DIPLOMACY_CONFIG } from '@/config/diplomacy';
 
 /**
  * Build the combat context for an engagement: doctrines, tech levels, and the
@@ -82,6 +92,14 @@ interface WorldState {
   /** Global weather, feeding combat. Changed by events / god-tools (later phases). */
   weather: WeatherType;
 
+  // ---- Diplomacy ----
+  /** Bilateral relations, keyed by canonical pair key. -100..100. */
+  relations: Record<string, number>;
+  alliances: Record<string, Alliance>;
+  wars: Record<string, War>;
+  /** When on, declaring war pulls each side's allies in. Player-controlled. */
+  pullAlliesIntoWar: boolean;
+
   loadWorld: (nations: Record<string, Nation>, territoryOwner: Record<ISO, string>) => void;
   setWeather: (w: WeatherType) => void;
 
@@ -117,6 +135,18 @@ interface WorldState {
     defenderId: string,
     terrain: TerrainType,
   ) => CombatResult | null;
+
+  // ---- Diplomacy actions (all manual) ----
+  adjustRelationBetween: (a: string, b: string, delta: number) => void;
+  /** Ally two nations: join an existing alliance or form a new bilateral one. */
+  allyNations: (a: string, b: string) => { ok: boolean; reason?: string; alliance?: Alliance };
+  /** Break the alliance tie between two nations. */
+  breakAllianceBetween: (a: string, b: string) => { ok: boolean; reason?: string };
+  /** Declare war (pulls allies if the toggle is on). */
+  declareWar: (aggressor: string, target: string) => { ok: boolean; reason?: string; war?: War };
+  /** Sign peace, ending a war. */
+  makePeace: (warId: string) => { ok: boolean; reason?: string; war?: War };
+  setPullAlliesIntoWar: (v: boolean) => void;
 }
 
 export const useWorldStore = create<WorldState>((set, get) => ({
@@ -128,6 +158,10 @@ export const useWorldStore = create<WorldState>((set, get) => ({
   lastReports: {},
   lastReportTurn: 0,
   weather: 'clear',
+  relations: {},
+  alliances: {},
+  wars: {},
+  pullAlliesIntoWar: false,
 
   loadWorld: (nations, territoryOwner) => set({ nations, territoryOwner, loaded: true }),
   setWeather: (weather) => set({ weather }),
@@ -276,5 +310,109 @@ export const useWorldStore = create<WorldState>((set, get) => ({
     if (!attacker || !defender) return null;
     const ctx = buildCombatContext(units, nations, weather, attacker, defender, terrain);
     return previewCombat(attacker, defender, ctx);
+  },
+
+  // ---- Diplomacy ---------------------------------------------------------
+  setPullAlliesIntoWar: (v) => set({ pullAlliesIntoWar: v }),
+
+  adjustRelationBetween: (a, b, delta) =>
+    set((s) => ({ relations: engineAdjustRelation(s.relations, a, b, delta) })),
+
+  allyNations: (a, b) => {
+    const { alliances, nations, relations } = get();
+    if (a === b) return { ok: false, reason: 'A nation cannot ally itself' };
+    if (areAllied(alliances, a, b)) return { ok: false, reason: 'Already allied' };
+
+    const next = { ...alliances };
+    // Enforce single-alliance membership: drop each nation from any prior pact.
+    const dropFrom = (id: string) => {
+      for (const al of Object.values(next)) {
+        if (al.memberIds.includes(id)) {
+          const members = al.memberIds.filter((m) => m !== id);
+          if (members.length < 2) delete next[al.id];
+          else next[al.id] = { ...al, memberIds: members };
+        }
+      }
+    };
+
+    const allianceA = allianceOf(alliances, a);
+    let alliance: Alliance;
+    if (allianceA) {
+      dropFrom(b);
+      alliance = { ...allianceA, memberIds: [...allianceA.memberIds, b] };
+      next[alliance.id] = alliance;
+    } else {
+      const allianceB = allianceOf(alliances, b);
+      if (allianceB) {
+        dropFrom(a);
+        alliance = { ...allianceB, memberIds: [...allianceB.memberIds, a] };
+        next[alliance.id] = alliance;
+      } else {
+        // Form a fresh bilateral pact.
+        const palette = DIPLOMACY_CONFIG.alliancePalette;
+        const color = palette[Object.keys(alliances).length % palette.length];
+        const nameA = nations[a]?.name ?? a;
+        const nameB = nations[b]?.name ?? b;
+        alliance = { id: `al-${nanoid(6)}`, name: `${nameA}–${nameB} Pact`, color, memberIds: [a, b] };
+        next[alliance.id] = alliance;
+      }
+    }
+
+    set({
+      alliances: next,
+      relations: engineSetRelation(relations, a, b, DIPLOMACY_CONFIG.relation.onAlly),
+    });
+    return { ok: true, alliance };
+  },
+
+  breakAllianceBetween: (a, b) => {
+    const { alliances } = get();
+    const shared = Object.values(alliances).find(
+      (al) => al.memberIds.includes(a) && al.memberIds.includes(b),
+    );
+    if (!shared) return { ok: false, reason: 'Not allied' };
+    const next = { ...alliances };
+    if (shared.memberIds.length <= 2) {
+      delete next[shared.id];
+    } else {
+      // Remove the partner from the bloc.
+      next[shared.id] = { ...shared, memberIds: shared.memberIds.filter((m) => m !== b) };
+    }
+    set({ alliances: next });
+    return { ok: true };
+  },
+
+  declareWar: (aggressor, target) => {
+    const { alliances, wars, relations, turn, pullAlliesIntoWar } = get();
+    if (aggressor === target) return { ok: false, reason: 'Cannot declare war on yourself' };
+    if (areAllied(alliances, aggressor, target))
+      return { ok: false, reason: 'Allies cannot declare war — break the alliance first' };
+    if (areAtWar(wars, aggressor, target)) return { ok: false, reason: 'Already at war' };
+
+    const { sideA, sideB } = expandSides(alliances, aggressor, target, pullAlliesIntoWar);
+    const war: War = { id: `war-${nanoid(6)}`, sideA, sideB, startedTurn: turn };
+
+    // Set every cross-pair to hostile.
+    let nextRel = relations;
+    for (const x of sideA) for (const y of sideB) {
+      nextRel = engineSetRelation(nextRel, x, y, DIPLOMACY_CONFIG.relation.onDeclareWar);
+    }
+    set({ wars: { ...wars, [war.id]: war }, relations: nextRel });
+    return { ok: true, war };
+  },
+
+  makePeace: (warId) => {
+    const { wars, relations } = get();
+    const war = wars[warId];
+    if (!war) return { ok: false, reason: 'No such war' };
+    const next = { ...wars };
+    delete next[warId];
+    // Thaw cross-pair relations toward neutral.
+    let nextRel = relations;
+    for (const x of war.sideA) for (const y of war.sideB) {
+      nextRel = engineSetRelation(nextRel, x, y, DIPLOMACY_CONFIG.relation.onPeace);
+    }
+    set({ wars: next, relations: nextRel });
+    return { ok: true, war };
   },
 }));
