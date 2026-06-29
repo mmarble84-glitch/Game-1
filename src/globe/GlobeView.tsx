@@ -4,15 +4,22 @@ import * as THREE from 'three';
 
 import { GLOBE_CONFIG } from '@/config/globe';
 import { NATION_CONFIG } from '@/config/nations';
+import { UNIT_CONFIG } from '@/config/units';
 import type { CountryFeature } from '@/models/geo';
 import { featureKey } from '@/models/geo';
 import type { Nation } from '@/models/nation';
+import type { Unit } from '@/models/unit';
 import { loadCountries } from '@/data/countries';
 import { makeHolographicEarthTexture, makeStarfieldDataUrl } from '@/globe/proceduralTexture';
 import { hexToRgba, brighten } from '@/globe/colorUtils';
+import { buildUnitObject } from '@/globe/unitMesh';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
+import { useUiStore } from '@/state/uiStore';
 import { compact, commas } from '@/ui/format';
+
+/** A unit decorated with render-time owner color + selection flag. */
+type RenderUnit = Unit & { __color: string; __selected: boolean };
 
 interface GlobeViewProps {
   /** Cosmetic-only spin. Defaults OFF. Toggling it NEVER advances game state. */
@@ -40,8 +47,15 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
   // World + selection state.
   const nations = useWorldStore((s) => s.nations);
   const territoryOwner = useWorldStore((s) => s.territoryOwner);
+  const units = useWorldStore((s) => s.units);
+  const moveUnitTo = useWorldStore((s) => s.moveUnitTo);
   const selectedNationId = useSelectionStore((s) => s.selectedNationId);
   const selectNation = useSelectionStore((s) => s.selectNation);
+  const selectedUnitId = useSelectionStore((s) => s.selectedUnitId);
+  const selectUnit = useSelectionStore((s) => s.selectUnit);
+  const moveMode = useSelectionStore((s) => s.moveMode);
+  const setMoveMode = useSelectionStore((s) => s.setMoveMode);
+  const showToast = useUiStore((s) => s.showToast);
 
   // ---- Load country geometry once -----------------------------------------
   useEffect(() => {
@@ -198,13 +212,68 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
     [nationForFeature],
   );
 
-  // ---- Click: select the nation owning the clicked country ----------------
+  // ---- Unit markers -------------------------------------------------------
+  // Decorate units with owner color + selection so a changed array forces the
+  // object layer to rebuild markers when selection changes.
+  const renderUnits = useMemo<RenderUnit[]>(
+    () =>
+      Object.values(units).map((u) => ({
+        ...u,
+        __color: nations[u.ownerId]?.color ?? '#ffffff',
+        __selected: u.id === selectedUnitId,
+      })),
+    [units, nations, selectedUnitId],
+  );
+
+  const objectThreeObject = useCallback((d: object) => {
+    const u = d as RenderUnit;
+    return buildUnitObject(u.type, u.__color, u.__selected);
+  }, []);
+
+  const objectAltitude = useCallback((d: object) => UNIT_CONFIG.visual[(d as Unit).type].altitude, []);
+  const objectLat = useCallback((d: object) => (d as Unit).pos.lat, []);
+  const objectLng = useCallback((d: object) => (d as Unit).pos.lng, []);
+
+  const handleObjectClick = useCallback(
+    (obj: object) => {
+      const u = obj as Unit;
+      selectUnit(u.id, u.ownerId);
+    },
+    [selectUnit],
+  );
+
+  // ---- Move-mode: interpret the next globe/country click as a destination --
+  const tryMove = useCallback(
+    (coords: { lat: number; lng: number }): boolean => {
+      if (!moveMode || !selectedUnitId) return false;
+      const res = moveUnitTo(selectedUnitId, { lat: coords.lat, lng: coords.lng });
+      if (res.ok) {
+        showToast(`Moved · ${Math.round(res.distanceKm ?? 0)} km`, 'info');
+      } else {
+        showToast(res.reason ?? 'Cannot move there', 'error');
+      }
+      setMoveMode(false);
+      return true;
+    },
+    [moveMode, selectedUnitId, moveUnitTo, showToast, setMoveMode],
+  );
+
+  // ---- Click: move (if in move mode) else select the owning nation --------
   const handlePolygonClick = useCallback(
-    (polygon: object) => {
+    (polygon: object, _event: MouseEvent, coords: { lat: number; lng: number }) => {
+      if (tryMove(coords)) return;
       const owner = territoryOwner[featureKey(polygon as CountryFeature)];
       if (owner) selectNation(owner);
     },
-    [territoryOwner, selectNation],
+    [tryMove, territoryOwner, selectNation],
+  );
+
+  const handleGlobeClick = useCallback(
+    (coords: { lat: number; lng: number }) => {
+      // Lets units move to open sea / any point; otherwise a no-op.
+      tryMove(coords);
+    },
+    [tryMove],
   );
 
   const handlePolygonHover = useCallback((polygon: object | null) => {
@@ -232,6 +301,15 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
       polygonsTransitionDuration={GLOBE_CONFIG.polygons.transitionMs}
       onPolygonClick={handlePolygonClick}
       onPolygonHover={handlePolygonHover}
+      onGlobeClick={handleGlobeClick}
+      // --- Unit markers (custom 3D objects layer) ---
+      objectsData={renderUnits}
+      objectLat={objectLat}
+      objectLng={objectLng}
+      objectAltitude={objectAltitude}
+      objectFacesSurfaces={true}
+      objectThreeObject={objectThreeObject}
+      onObjectClick={handleObjectClick}
     />
   );
 }
