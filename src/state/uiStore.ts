@@ -7,12 +7,25 @@
  */
 
 import { create } from 'zustand';
+import { nanoid } from 'nanoid';
+
+/** A transient expanding ring drawn at a battle site (purely cosmetic). */
+export interface BattleRing {
+  id: string;
+  lat: number;
+  lng: number;
+  color: string;
+}
 
 interface UiState {
   toast: string | null;
   toastKind: 'info' | 'error';
   showToast: (msg: string, kind?: 'info' | 'error') => void;
   clearToast: () => void;
+
+  /** Cosmetic battle rings; they animate via the globe's render loop and expire. */
+  battleRings: BattleRing[];
+  addBattleRing: (lat: number, lng: number, color: string) => void;
 }
 
 // Module-scoped handle so a new toast cancels the previous cosmetic clear timer.
@@ -30,5 +43,15 @@ export const useUiStore = create<UiState>((set) => ({
   clearToast: () => {
     if (clearTimer) clearTimeout(clearTimer);
     set({ toast: null });
+  },
+
+  battleRings: [],
+  addBattleRing: (lat, lng, color) => {
+    const id = nanoid(6);
+    set((s) => ({ battleRings: [...s.battleRings, { id, lat, lng, color }] }));
+    // Cosmetic only: remove the ring after its expansion finishes. No game state.
+    setTimeout(() => {
+      set((s) => ({ battleRings: s.battleRings.filter((r) => r.id !== id) }));
+    }, 4200);
   },
 }));

@@ -15,7 +15,8 @@ import { hexToRgba, brighten } from '@/globe/colorUtils';
 import { buildUnitObject } from '@/globe/unitMesh';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
-import { useUiStore } from '@/state/uiStore';
+import { useUiStore, type BattleRing } from '@/state/uiStore';
+import { useCombatStore } from '@/state/combatStore';
 import { compact, commas } from '@/ui/format';
 
 /** A unit decorated with render-time owner color + selection flag. */
@@ -55,7 +56,11 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
   const selectUnit = useSelectionStore((s) => s.selectUnit);
   const moveMode = useSelectionStore((s) => s.moveMode);
   const setMoveMode = useSelectionStore((s) => s.setMoveMode);
+  const attackMode = useSelectionStore((s) => s.attackMode);
+  const setAttackMode = useSelectionStore((s) => s.setAttackMode);
   const showToast = useUiStore((s) => s.showToast);
+  const battleRings = useUiStore((s) => s.battleRings);
+  const openAttack = useCombatStore((s) => s.openAttack);
 
   // ---- Load country geometry once -----------------------------------------
   useEffect(() => {
@@ -237,10 +242,30 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
   const handleObjectClick = useCallback(
     (obj: object) => {
       const u = obj as Unit;
+      // In attack mode, the clicked enemy unit becomes the target (then confirm).
+      if (attackMode && selectedUnitId) {
+        const attacker = units[selectedUnitId];
+        if (attacker && u.ownerId === attacker.ownerId) {
+          showToast('Cannot attack your own unit', 'error');
+        } else if (attacker) {
+          openAttack(selectedUnitId, u.id);
+        }
+        setAttackMode(false);
+        return;
+      }
       selectUnit(u.id, u.ownerId);
     },
-    [selectUnit],
+    [attackMode, selectedUnitId, units, openAttack, setAttackMode, showToast, selectUnit],
   );
+
+  // ---- Battle rings (cosmetic, colored by winner) -------------------------
+  const ringLat = useCallback((d: object) => (d as BattleRing).lat, []);
+  const ringLng = useCallback((d: object) => (d as BattleRing).lng, []);
+  const ringColor = useCallback((d: object) => {
+    const c = (d as BattleRing).color;
+    // Fade alpha out as each ring expands (t: 0 → 1). Purely cosmetic.
+    return (t: number) => hexToRgba(c, 1 - t);
+  }, []);
 
   // ---- Move-mode: interpret the next globe/country click as a destination --
   const tryMove = useCallback(
@@ -310,6 +335,15 @@ export default function GlobeView({ autoRotate }: GlobeViewProps) {
       objectFacesSurfaces={true}
       objectThreeObject={objectThreeObject}
       onObjectClick={handleObjectClick}
+      // --- Battle rings (RINGS layer) ---
+      ringsData={battleRings}
+      ringLat={ringLat}
+      ringLng={ringLng}
+      ringColor={ringColor}
+      ringMaxRadius={6}
+      ringPropagationSpeed={4}
+      ringRepeatPeriod={750}
+      ringAltitude={0.011}
     />
   );
 }

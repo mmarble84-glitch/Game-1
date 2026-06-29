@@ -35,6 +35,8 @@ export interface Unit {
   fatigue: number;
   /** 0..100 — logistics; drained by movement, replenished when resting. */
   supply: number;
+  /** Dug-in: set by Fortify, cleared by moving. Grants a defensive combat bonus. */
+  fortified: boolean;
   /** Whether this unit has already used its action this turn. */
   movedThisTurn: boolean;
 }

@@ -45,6 +45,7 @@ export function createUnit(id: string, ownerId: string, type: UnitType, pos: Lat
     experience: r.startExperience,
     fatigue: r.startFatigue,
     supply: r.startSupply,
+    fortified: false,
     movedThisTurn: false,
   };
 }
@@ -83,6 +84,7 @@ export function moveUnit(unit: Unit, dest: LatLng): MoveAttempt {
     pos: { ...dest },
     fatigue: clamp(unit.fatigue + frac * mv.fatiguePerFullMove, 0, 100),
     supply: clamp(unit.supply - frac * mv.supplyDrainPerFullMove, 0, 100),
+    fortified: false, // moving breaks the dug-in state
     movedThisTurn: true,
   };
   return { ok: true, distanceKm, maxRangeKm, unit: moved };
@@ -101,6 +103,7 @@ export function fortifyUnit(unit: Unit): { ok: boolean; reason?: string; unit: U
       ...unit,
       organization: clamp(unit.organization + t.organizationRecovery, 0, 100),
       supply: clamp(unit.supply + t.supplyRecovery, 0, 100),
+      fortified: true, // dug in: grants a defensive bonus in combat
       movedThisTurn: true,
     },
   };
@@ -119,6 +122,27 @@ export function resolveUnitTurn(unit: Unit): Unit {
     supply: clamp(unit.supply + t.supplyRecovery, 0, 100),
     movedThisTurn: false,
   };
+}
+
+/**
+ * Point a fraction `f` (0..1) of the way along the great circle from a to b.
+ * Used to fall back a routed unit toward safety. Pure.
+ */
+export function intermediatePoint(a: LatLng, b: LatLng, f: number): LatLng {
+  const phi1 = toRad(a.lat);
+  const lam1 = toRad(a.lng);
+  const phi2 = toRad(b.lat);
+  const lam2 = toRad(b.lng);
+  const delta = greatCircleDistanceKm(a, b) / EARTH_RADIUS_KM; // angular distance
+  if (delta < 1e-9) return { ...a };
+  const A = Math.sin((1 - f) * delta) / Math.sin(delta);
+  const B = Math.sin(f * delta) / Math.sin(delta);
+  const x = A * Math.cos(phi1) * Math.cos(lam1) + B * Math.cos(phi2) * Math.cos(lam2);
+  const y = A * Math.cos(phi1) * Math.sin(lam1) + B * Math.cos(phi2) * Math.sin(lam2);
+  const z = A * Math.sin(phi1) + B * Math.sin(phi2);
+  const phi = Math.atan2(z, Math.sqrt(x * x + y * y));
+  const lam = Math.atan2(y, x);
+  return { lat: (phi * 180) / Math.PI, lng: (lam * 180) / Math.PI };
 }
 
 /** Sum unit upkeep per owning nation (feeds the economy's upkeep term). */

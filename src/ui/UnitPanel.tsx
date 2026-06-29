@@ -59,6 +59,8 @@ function UnitDetails({ unit }: { unit: Unit }) {
   const removeUnit = useWorldStore((s) => s.removeUnit);
   const setMoveMode = useSelectionStore((s) => s.setMoveMode);
   const moveMode = useSelectionStore((s) => s.moveMode);
+  const setAttackMode = useSelectionStore((s) => s.setAttackMode);
+  const attackMode = useSelectionStore((s) => s.attackMode);
   const selectUnit = useSelectionStore((s) => s.selectUnit);
   const showToast = useUiStore((s) => s.showToast);
 
@@ -74,6 +76,11 @@ function UnitDetails({ unit }: { unit: Unit }) {
   const onFortify = () => {
     const res = fortify(unit.id);
     showToast(res.ok ? 'Unit fortified' : res.reason ?? 'Cannot fortify', res.ok ? 'info' : 'error');
+  };
+  const onAttack = () => {
+    if (acted) return showToast('Unit has already acted this turn', 'error');
+    setAttackMode(true);
+    showToast('Attack mode · click an enemy unit', 'info');
   };
   const onDisband = () => {
     selectUnit(null);
@@ -124,7 +131,13 @@ function UnitDetails({ unit }: { unit: Unit }) {
       <div className="mt-3 flex gap-1.5">
         <ActionButton label={moveMode ? 'Pick…' : 'Move'} onClick={onMove} disabled={acted} tone="neon" />
         <ActionButton label="Fortify" onClick={onFortify} disabled={acted} tone="amber" />
-        <ActionButton label="Attack" disabled tone="danger" title="Combat arrives in Phase 4" />
+        <ActionButton
+          label={attackMode ? 'Target…' : 'Attack'}
+          onClick={onAttack}
+          disabled={acted}
+          tone="danger"
+          title="Order an attack on an enemy unit (you'll confirm the engagement)"
+        />
       </div>
       <div className="mt-1.5 flex">
         <ActionButton label="Disband" onClick={onDisband} tone="danger" />

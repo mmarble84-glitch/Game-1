@@ -6,9 +6,12 @@ import OverviewPanel from '@/ui/OverviewPanel';
 import UnitPanel from '@/ui/UnitPanel';
 import Toast from '@/ui/Toast';
 import MoveBanner from '@/ui/MoveBanner';
+import LogTicker from '@/ui/LogTicker';
+import ConfirmAttackModal from '@/ui/ConfirmAttackModal';
 import { loadNationSeeds, buildModernWorld } from '@/data/nationSeeds';
 import { useWorldStore } from '@/state/worldStore';
 import { useSelectionStore } from '@/state/selectionStore';
+import { useCombatStore } from '@/state/combatStore';
 
 /**
  * App — Phase 3 shell.
@@ -28,8 +31,12 @@ export default function App() {
   const selectedUnitId = useSelectionStore((s) => s.selectedUnitId);
   const moveMode = useSelectionStore((s) => s.moveMode);
   const setMoveMode = useSelectionStore((s) => s.setMoveMode);
+  const attackMode = useSelectionStore((s) => s.attackMode);
+  const setAttackMode = useSelectionStore((s) => s.setAttackMode);
   const selectUnit = useSelectionStore((s) => s.selectUnit);
   const selectNation = useSelectionStore((s) => s.selectNation);
+  const pendingAttack = useCombatStore((s) => s.pending);
+  const cancelAttack = useCombatStore((s) => s.cancel);
 
   // ---- One-time scenario load (setup, not a tick) -------------------------
   useEffect(() => {
@@ -47,17 +54,29 @@ export default function App() {
     };
   }, [loaded, loadWorld]);
 
-  // ---- Esc = step back: cancel move → deselect unit → deselect nation -----
+  // ---- Esc = step back: cancel order → exit modes → deselect unit → nation -
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (moveMode) setMoveMode(false);
+      if (pendingAttack) cancelAttack();
+      else if (attackMode) setAttackMode(false);
+      else if (moveMode) setMoveMode(false);
       else if (selectedUnitId) selectUnit(null);
       else selectNation(null);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [moveMode, selectedUnitId, setMoveMode, selectUnit, selectNation]);
+  }, [
+    pendingAttack,
+    cancelAttack,
+    attackMode,
+    setAttackMode,
+    moveMode,
+    setMoveMode,
+    selectedUnitId,
+    selectUnit,
+    selectNation,
+  ]);
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-orbis-bg">
@@ -83,6 +102,14 @@ export default function App() {
       <div className="pointer-events-none absolute right-4 top-[104px]">
         {selectedUnitId ? <UnitPanel /> : <OverviewPanel />}
       </div>
+
+      {/* Bottom-left: combat / event / diplomacy log ticker */}
+      <div className="pointer-events-none absolute bottom-4 left-4">
+        <LogTicker />
+      </div>
+
+      {/* Confirm-attack modal (self-gates on a pending order) */}
+      <ConfirmAttackModal />
 
       {/* Transient status toast */}
       <Toast />
